@@ -1,10 +1,12 @@
 # NirmanSathi
 
-> **A National Digital Construction Governance & Marketplace Platform for Nepal**
+## A Digital Residential Construction Governance & Marketplace Platform for Nepal
 
-NirmanSathi is a centralized web-based platform designed to modernize residential construction governance in Nepal by digitizing permit approval processes while providing a trusted marketplace for construction professionals, suppliers, and equipment rental providers.
+NirmanSathi is a web-based platform developed as a BCS CSIT semester project that integrates e-governance services with a construction marketplace for residential building projects in Nepal.
 
-The platform enables municipalities across Nepal to manage construction-related services digitally while allowing citizens to complete the entire construction journey—from permit application to project completion—through a single integrated system.
+The platform enables citizens to digitally apply for building permits, upload construction documents, track application status, and communicate with municipalities while also providing access to verified architects, contractors, construction material suppliers, and equipment rental providers through a unified system.
+
+The project is designed using a multi-municipality architecture, allowing multiple municipalities to operate independently on the same platform while maintaining complete separation of their administrative data.
 
 ---
 
@@ -23,24 +25,21 @@ The platform enables municipalities across Nepal to manage construction-related 
 
 ### E-Governance Module
 
-- Building Permit Application
-- Renovation Permit
+- Building Permit Application (New Construction & Renovation)
 - Completion Inspection
-- Occupancy Certificate
+- Completion & Occupancy Certificate Issuance
 - Application Tracking
 - Digital Document Submission
 - Complaint Management
 
 ### Construction Marketplace
 
-- Architect Marketplace
-- Contractor Marketplace
+- Construction Professional Marketplace (Architects & Contractors)
 - Construction Material Store
 - Equipment Rental
 - Quotation System
 - Shopping Cart
 - Order Management
-- Reviews & Ratings
 
 ---
 
@@ -59,15 +58,16 @@ The platform enables municipalities across Nepal to manage construction-related 
 
 ## Technology Stack
 
-| Category | Technology |
-|----------|------------|
-| Backend | Django (Python) |
-| Frontend | HTML, CSS, Bootstrap, JavaScript |
-| Database | PostgreSQL |
-| Version Control | Git & GitHub |
-| Documentation | Markdown |
-| UI/UX Design | Figma |
-| Deployment *(Planned)* | Render / Railway |
+| Category        | Technology                       |
+| --------------- | -------------------------------- |
+| Backend         | Django (Python)                  |
+| Frontend        | HTML, CSS, Bootstrap, JavaScript |
+| Database        | PostgreSQL                       |
+| Payment         | Simulated eSewa Workflow         |
+| Version Control | Git & GitHub                     |
+| Documentation   | Markdown                         |
+| UI/UX Design    | Figma                            |
+| Deployment      | Render / Railway                 |
 
 ---
 
@@ -114,7 +114,7 @@ Current progress includes:
 - ✅ Project Vision
 - ✅ Project Scope
 - ✅ Technology Stack Selection
-- 🔄 Project Proposal
+- ✅ Project Proposal
 - 🔄 Feasibility Study
 - ⏳ Software Requirement Specification (SRS)
 - ⏳ UML Design
@@ -137,10 +137,12 @@ This project is licensed under the **MIT License**.
 
 ---
 
-## Developer
+## Developers
 
-**Binit Kumar Singh Alkesh Chaudhary Prince Upadhaya**
+- **Binit Kumar Singh**
+- **Alkesh Chaudhary**
+- **Prine Upadhaya**
 
-BCS CSIT Student
+BCS CSIT Students
 
 Building software with a focus on clean architecture, practical problem-solving, and real-world impact.
