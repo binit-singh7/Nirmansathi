@@ -1,6 +1,6 @@
 # NirmanSathi
 
-## A Digital Residential Construction Governance & Marketplace Platform for Nepal
+## An Integrated Residential Construction Governance & Marketplace Platform for Nepal
 
 NirmanSathi is a web-based platform developed as a BCS CSIT semester project that integrates e-governance services with a construction marketplace for residential building projects in Nepal.
 
@@ -115,7 +115,7 @@ Current progress includes:
 - ✅ Project Scope
 - ✅ Technology Stack Selection
 - ✅ Project Proposal
-- 🔄 Feasibility Study
+- ✅ Feasibility Study
 - ⏳ Software Requirement Specification (SRS)
 - ⏳ UML Design
 - ⏳ Database Design
