@@ -494,4 +494,4 @@ _Insert Class Diagram here._
 
 The Entity-Relationship (ER) Diagram illustrates the database structure of NirmanSathi. It shows the entities, their attributes, and the relationships between them, providing a blueprint for the database schema.
 
-_Insert ER Diagram here._
+![ER Diagram](docs/uml/exported/ER-Diagram.png)
