@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}Citizen Dashboard - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome Banner -->
+    <div class="card card-ns bg-primary text-white p-4 mb-4 shadow">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h2 class="fw-bold mb-2" id="citizenWelcome">Welcome back!</h2>
+                <p class="mb-0 text-light opacity-90">Manage your residential building permit applications and purchase
+                    verified construction materials directly online.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="/permits/apply/" class="btn btn-warning fw-bold"><i
+                        class="bi bi-file-earmark-plus me-1"></i>New Application</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center">
+                <h6 class="text-muted small text-uppercase font-weight-bold">Total Permits</h6>
+                <h2 class="fw-bold text-navy mb-0" id="totalPermitsCount">0</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center">
+                <h6 class="text-muted small text-uppercase font-weight-bold">Approved</h6>
+                <h2 class="fw-bold text-success mb-0" id="approvedPermitsCount">0</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center">
+                <h6 class="text-muted small text-uppercase font-weight-bold">Pending / Review</h6>
+                <h2 class="fw-bold text-warning mb-0" id="pendingPermitsCount">0</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center">
+                <h6 class="text-muted small text-uppercase font-weight-bold">Orders Placed</h6>
+                <h2 class="fw-bold text-info mb-0" id="ordersCount">0</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Permits Section -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+            <div class="card card-ns shadow-sm h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-0">
+                    <h5 class="fw-bold mb-0 text-navy"><i class="bi bi-journal-text me-2"></i>My Permit Applications
+                    </h5>
+                    <a href="/permits/my-applications/" class="btn btn-sm btn-outline-primary fw-semibold">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Ref Number</th>
+                                    <th>Type</th>
+                                    <th>Municipality</th>
+                                    <th>Status</th>
+                                    <th>Submitted</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="permitsTableBody">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4 text-muted">
+                                        <span class="loading-spinner me-2"></span>Loading permit applications...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Marketplace & eSewa Card -->
+        <div class="col-lg-4">
+            <div class="card card-ns shadow-sm mb-4">
+                <div class="card-body p-4 text-center">
+                    <div class="rounded-circle bg-warning bg-opacity-20 text-warning d-inline-flex p-3 mb-3">
+                        <i class="bi bi-cart-check fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold">Construction Marketplace</h5>
+                    <p class="text-muted small mb-3">Order verified cement, rod, bricks, and sand from local suppliers
+                        with eSewa payments.</p>
+                    <a href="/marketplace/" class="btn btn-ns-primary w-100 fw-bold"><i
+                            class="bi bi-shop me-2"></i>Browse Products</a>
+                </div>
+            </div>
+
+            <div class="card card-ns shadow-sm">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold text-navy mb-3"><i class="bi bi-info-circle me-2"></i>E-Permit Process Status
+                    </h6>
+                    <div class="timeline-ns">
+                        <div class="timeline-item completed">
+                            <div class="timeline-icon"><i class="bi bi-check"></i></div>
+                            <p class="mb-0 fw-semibold">Submit Application</p>
+                            <small class="text-muted">Fill land details & upload blueprints</small>
+                        </div>
+                        <div class="timeline-item active">
+                            <div class="timeline-icon"><i class="bi bi-clock"></i></div>
+                            <p class="mb-0 fw-semibold">Municipal Review</p>
+                            <small class="text-muted">Officer inspects documentation</small>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="bi bi-file-earmark-check"></i></div>
+                            <p class="mb-0 fw-semibold">Permit Approval</p>
+                            <small class="text-muted">Download approved permit letter</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const user = getUser();
+        if (user) {
+            document.getElementById('citizenWelcome').textContent = `Welcome back, ${user.first_name || user.username}!`;
+        }
+
+        // Load permit applications
+        try {
+            const permits = await apiFetch('/permits/applications/');
+            const tbody = document.getElementById('permitsTableBody');
+
+            document.getElementById('totalPermitsCount').textContent = permits.length || 0;
+            const approved = permits.filter(p => p.status === 'APPROVED').length;
+            const pending = permits.filter(p => p.status === 'PENDING' || p.status === 'UNDER_REVIEW').length;
+
+            document.getElementById('approvedPermitsCount').textContent = approved;
+            document.getElementById('pendingPermitsCount').textContent = pending;
+
+            if (!permits || permits.length === 0) {
+                tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center py-4 text-muted">
+            <i class="bi bi-file-earmark-x fs-3 d-block mb-2 text-secondary"></i>
+            No building permit applications found. <a href="/permits/apply/" class="fw-bold">Apply now</a>.
+          </td>
+        </tr>
+      `;
+            } else {
+                tbody.innerHTML = permits.slice(0, 5).map(p => {
+                    const badgeClass = p.status === 'APPROVED' ? 'badge-approved' :
+                        p.status === 'REJECTED' ? 'badge-rejected' :
+                            p.status === 'UNDER_REVIEW' ? 'badge-review' : 'badge-pending';
+                    const dateStr = new Date(p.created_at).toLocaleDateString();
+                    return `
+          <tr>
+            <td class="fw-bold">${p.reference_number}</td>
+            <td>${p.application_type_display || p.application_type}</td>
+            <td>${p.municipality_name || 'N/A'}</td>
+            <td><span class="badge ${badgeClass}">${p.status_display || p.status}</span></td>
+            <td class="small text-muted">${dateStr}</td>
+            <td>
+              <a href="/permits/${p.id}/" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
+            </td>
+          </tr>
+        `;
+                }).join('');
+            }
+        } catch (err) {
+            document.getElementById('permitsTableBody').innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center text-danger py-4">${err.message || 'Failed to load permit applications.'}</td>
+      </tr>
+    `;
+        }
+
+        // Load orders count
+        try {
+            const orders = await apiFetch('/marketplace/orders/');
+            document.getElementById('ordersCount').textContent = orders.length || 0;
+        } catch (e) {
+            document.getElementById('ordersCount').textContent = 0;
+        }
+    });
+</script>
+{% endblock %}

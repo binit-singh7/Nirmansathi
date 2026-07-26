@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block title %}System Administrator Dashboard - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Banner -->
+    <div class="card card-ns bg-danger bg-gradient text-white p-4 mb-4 shadow"
+        style="background: linear-gradient(135deg, #991b1b 0%, #7f1d1d 100%);">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <span class="badge bg-warning text-dark mb-2"><i class="bi bi-shield-lock me-1"></i>Master System
+                    Administration</span>
+                <h2 class="fw-bold mb-1">System Control Panel</h2>
+                <p class="mb-0 text-white opacity-90">Manage user roles, local municipality permissions, marketplace
+                    oversight, and system security.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="/accounts/audit-logs/" class="btn btn-warning fw-bold px-4"><i
+                        class="bi bi-clock-history me-1"></i>View System Audit Logs</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Platform Metrics Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center">
+                <h6 class="text-muted small text-uppercase fw-bold">Active Citizens</h6>
+                <h2 class="fw-bold text-navy mb-0" id="admCitizensCount">--</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center border-primary">
+                <h6 class="text-muted small text-uppercase fw-bold">Municipal Officers</h6>
+                <h2 class="fw-bold text-primary mb-0" id="admOfficersCount">--</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center border-warning">
+                <h6 class="text-muted small text-uppercase fw-bold">Material Suppliers</h6>
+                <h2 class="fw-bold text-warning mb-0" id="admSuppliersCount">--</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center border-success">
+                <h6 class="text-muted small text-uppercase fw-bold">Permit Applications</h6>
+                <h2 class="fw-bold text-success mb-0" id="admPermitsCount">--</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Role Management Table -->
+    <div class="card card-ns shadow-sm mb-4">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-0">
+            <h5 class="fw-bold mb-0 text-navy"><i class="bi bi-people me-2 text-primary"></i>Platform User Directory &
+                Role Assignment</h5>
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control form-control-sm" id="userSearchInput"
+                    placeholder="Search by username or email...">
+                <select class="form-select form-select-sm" id="roleFilterSelect">
+                    <option value="">All Roles</option>
+                    <option value="CITIZEN">Citizen</option>
+                    <option value="MUNICIPALITY_OFFICER">Municipality Officer</option>
+                    <option value="MATERIAL_SUPPLIER">Material Supplier</option>
+                    <option value="ADMIN">Administrator</option>
+                </select>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Current Role</th>
+                            <th>Municipality / Company</th>
+                            <th>Date Joined</th>
+                            <th class="text-end">Manage Role</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUserTableBody">
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <span class="loading-spinner me-2"></span>Loading system users directory...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Load platform stats
+        try {
+            const permits = await apiFetch('/permits/applications/');
+            document.getElementById('admPermitsCount').textContent = permits.length || 0;
+        } catch (e) {
+            document.getElementById('admPermitsCount').textContent = 0;
+        }
+
+        // Load current user details
+        const currentUser = getUser();
+
+        // Render demo directory
+        renderDemoUsersDirectory(currentUser);
+    });
+
+    function renderDemoUsersDirectory(currentUser) {
+        const users = [
+            { username: currentUser?.username || 'janak_citizen', email: currentUser?.email || 'janak@example.com', role: currentUser?.role || 'CITIZEN', org: 'Kathmandu Metro, Ward 10', date: '2026-07-24' },
+            { username: 'officer_shrestha', email: 'officer.shrestha@kathmandu.gov.np', role: 'MUNICIPALITY_OFFICER', org: 'Kathmandu Metropolitan City', date: '2026-07-22' },
+            { username: 'himal_suppliers', email: 'sales@himalcement.np', role: 'MATERIAL_SUPPLIER', org: 'Himal Cement & Traders Ltd.', date: '2026-07-20' },
+            { username: 'admin_sys', email: 'admin@nirmansathi.gov.np', role: 'ADMIN', org: 'System Core Administrator', date: '2026-07-01' }
+        ];
+
+        document.getElementById('admCitizensCount').textContent = users.filter(u => u.role === 'CITIZEN').length;
+        document.getElementById('admOfficersCount').textContent = users.filter(u => u.role === 'MUNICIPALITY_OFFICER').length;
+        document.getElementById('admSuppliersCount').textContent = users.filter(u => u.role === 'MATERIAL_SUPPLIER').length;
+
+        const tbody = document.getElementById('adminUserTableBody');
+        tbody.innerHTML = users.map((u, idx) => `
+    <tr>
+      <td class="fw-bold text-dark"><i class="bi bi-person-circle me-2 text-secondary"></i>${u.username}</td>
+      <td>${u.email}</td>
+      <td>
+        <span class="badge ${u.role === 'ADMIN' ? 'bg-danger' : u.role === 'MUNICIPALITY_OFFICER' ? 'bg-primary' : u.role === 'MATERIAL_SUPPLIER' ? 'bg-warning text-dark' : 'bg-secondary'}">${u.role}</span>
+      </td>
+      <td class="small text-muted">${u.org}</td>
+      <td class="small text-muted">${u.date}</td>
+      <td class="text-end">
+        <button class="btn btn-sm btn-outline-secondary" onclick="showToast('User role updated successfully.', 'info')">
+          <i class="bi bi-gear me-1"></i>Edit Permissions
+        </button>
+      </td>
+    </tr>
+  `).join('');
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Municipality Officer Dashboard - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Banner -->
+    <div class="card card-ns bg-dark text-white p-4 mb-4 shadow"
+        style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <span class="badge bg-primary mb-2"><i class="bi bi-shield-check me-1"></i>Municipal E-Governance
+                    Inspection Portal</span>
+                <h2 class="fw-bold mb-1" id="officerNameText">Officer Dashboard</h2>
+                <p class="mb-0 text-light opacity-75" id="officerMuniText">Municipality Application Review Queue</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <span class="badge bg-warning text-dark px-3 py-2 fs-6 fw-bold"><i
+                        class="bi bi-building me-1"></i>Official Reviewer</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Metrics Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center">
+                <h6 class="text-muted small text-uppercase fw-bold">Total Assigned</h6>
+                <h2 class="fw-bold text-navy mb-0" id="statTotal">0</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center border-warning">
+                <h6 class="text-muted small text-uppercase fw-bold">Pending Review</h6>
+                <h2 class="fw-bold text-warning mb-0" id="statPending">0</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center border-success">
+                <h6 class="text-muted small text-uppercase fw-bold">Approved</h6>
+                <h2 class="fw-bold text-success mb-0" id="statApproved">0</h2>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card card-ns p-3 text-center border-danger">
+                <h6 class="text-muted small text-uppercase fw-bold">Rejected</h6>
+                <h2 class="fw-bold text-danger mb-0" id="statRejected">0</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Applications Review Queue Table -->
+    <div class="card card-ns shadow-sm">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-0">
+            <h5 class="fw-bold mb-0 text-navy"><i class="bi bi-list-check me-2 text-primary"></i>Permit Applications
+                Queue</h5>
+            <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" id="statusFilterSelect">
+                    <option value="">All Statuses</option>
+                    <option value="PENDING" selected>Pending Review</option>
+                    <option value="UNDER_REVIEW">Under Technical Review</option>
+                    <option value="APPROVED">Approved</option>
+                    <option value="REJECTED">Rejected</option>
+                </select>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Ref Number</th>
+                            <th>Applicant</th>
+                            <th>Application Type</th>
+                            <th>Ward / Tole</th>
+                            <th>Built-Up Area</th>
+                            <th>Status</th>
+                            <th>Submitted Date</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="officerQueueBody">
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                <span class="loading-spinner me-2"></span>Loading permit applications queue...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let allQueuePermits = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const user = getUser();
+        if (user) {
+            document.getElementById('officerNameText').textContent = `Welcome, ${user.first_name || user.username}`;
+            document.getElementById('officerMuniText').textContent = `Jurisdiction: ${user.municipality_name || 'All Municipalities'}`;
+        }
+
+        await loadOfficerQueue();
+        document.getElementById('statusFilterSelect').addEventListener('change', renderQueue);
+    });
+
+    async function loadOfficerQueue() {
+        try {
+            allQueuePermits = await apiFetch('/permits/applications/');
+
+            const total = allQueuePermits.length;
+            const pending = allQueuePermits.filter(p => p.status === 'PENDING' || p.status === 'UNDER_REVIEW').length;
+            const approved = allQueuePermits.filter(p => p.status === 'APPROVED').length;
+            const rejected = allQueuePermits.filter(p => p.status === 'REJECTED').length;
+
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statPending').textContent = pending;
+            document.getElementById('statApproved').textContent = approved;
+            document.getElementById('statRejected').textContent = rejected;
+
+            renderQueue();
+        } catch (err) {
+            document.getElementById('officerQueueBody').innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center text-danger py-4">${err.message || 'Failed to load officer queue.'}</td>
+      </tr>
+    `;
+        }
+    }
+
+    function renderQueue() {
+        const filterVal = document.getElementById('statusFilterSelect').value;
+        const tbody = document.getElementById('officerQueueBody');
+
+        const filtered = allQueuePermits.filter(p => !filterVal || p.status === filterVal);
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center py-5 text-muted">
+          <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+          No permit applications found matching the selected filter.
+        </td>
+      </tr>
+    `;
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(p => {
+            const badgeClass = p.status === 'APPROVED' ? 'badge-approved' :
+                p.status === 'REJECTED' ? 'badge-rejected' :
+                    p.status === 'UNDER_REVIEW' ? 'badge-review' : 'badge-pending';
+            const dateStr = new Date(p.created_at).toLocaleDateString();
+
+            return `
+      <tr>
+        <td class="fw-bold text-primary">${p.reference_number}</td>
+        <td class="fw-semibold">${p.applicant_name}</td>
+        <td>${p.application_type_display || p.application_type}</td>
+        <td>Ward ${p.ward_number || ''}, ${p.tole_address}</td>
+        <td>${p.total_built_up_area_sqft} sq ft</td>
+        <td><span class="badge ${badgeClass}">${p.status_display || p.status}</span></td>
+        <td class="small text-muted">${dateStr}</td>
+        <td class="text-end">
+          <a href="/permits/officer/review/${p.id}/" class="btn btn-sm btn-primary fw-bold">
+            <i class="bi bi-journal-check me-1"></i>Review
+          </a>
+        </td>
+      </tr>
+    `;
+        }).join('');
+    }
+</script>
+{% endblock %}
