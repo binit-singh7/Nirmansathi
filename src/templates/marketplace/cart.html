@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - NirmanSathi Marketplace{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-navy mb-0"><i class="bi bi-cart3 text-warning me-2"></i>My Shopping Cart</h2>
+        <a href="/marketplace/" class="btn btn-outline-primary"><i class="bi bi-arrow-left me-1"></i>Continue
+            Shopping</a>
+    </div>
+
+    <div id="cartLoading" class="text-center py-5">
+        <span class="loading-spinner fs-3 me-2"></span>Loading shopping cart...
+    </div>
+
+    <div class="row g-4 d-none" id="cartContent">
+        <div class="col-lg-8">
+            <div class="card card-ns shadow-sm">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartTableBody">
+                                <!-- Dynamic Cart Items -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card card-ns shadow-sm p-4">
+                <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Order Summary</h5>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Subtotal:</span>
+                    <span class="fw-bold" id="cartSubtotal">Rs. 0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Delivery Charges:</span>
+                    <span class="text-success fw-bold">FREE</span>
+                </div>
+                <hr class="my-3">
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="fw-bold text-dark fs-5">Total Amount:</span>
+                    <span class="fw-bold text-primary fs-4" id="cartTotal">Rs. 0</span>
+                </div>
+
+                <a href="/marketplace/checkout/" class="btn btn-warning w-100 py-2 fw-bold" id="checkoutBtn">
+                    <i class="bi bi-shield-check me-2"></i>Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/cart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        await renderCart();
+    });
+
+    async function renderCart() {
+        try {
+            const cart = await apiFetch('/marketplace/cart/');
+            document.getElementById('cartLoading').classList.add('d-none');
+            document.getElementById('cartContent').classList.remove('d-none');
+
+            const tbody = document.getElementById('cartTableBody');
+            const items = cart.items || [];
+
+            if (items.length === 0) {
+                tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="text-center py-5 text-muted">
+            <i class="bi bi-cart-x fs-1 d-block mb-3 text-secondary"></i>
+            <h5>Your shopping cart is empty</h5>
+            <p class="small mb-3">Browse our marketplace for cement, steel rods, and bricks.</p>
+            <a href="/marketplace/" class="btn btn-primary btn-sm fw-bold">Explore Materials</a>
+          </td>
+        </tr>
+      `;
+                document.getElementById('cartSubtotal').textContent = 'Rs. 0';
+                document.getElementById('cartTotal').textContent = 'Rs. 0';
+                document.getElementById('checkoutBtn').classList.add('disabled');
+                return;
+            }
+
+            let grandTotal = 0;
+
+            tbody.innerHTML = items.map(item => {
+                const subtotal = item.quantity * parseFloat(item.unit_price || item.product_price);
+                grandTotal += subtotal;
+
+                return `
+        <tr>
+          <td>
+            <span class="fw-bold d-block text-dark">${item.product_name}</span>
+            <small class="text-muted">Supplier: ${item.supplier_name || 'Verified Supplier'}</small>
+          </td>
+          <td>Rs. ${parseFloat(item.unit_price || item.product_price).toLocaleString('en-IN')}</td>
+          <td>
+            <span class="fw-bold px-2">${item.quantity}</span>
+          </td>
+          <td class="fw-bold text-primary">Rs. ${subtotal.toLocaleString('en-IN')}</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-danger" onclick="handleRemove(${item.id})">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+            }).join('');
+
+            document.getElementById('cartSubtotal').textContent = `Rs. ${grandTotal.toLocaleString('en-IN')}`;
+            document.getElementById('cartTotal').textContent = `Rs. ${grandTotal.toLocaleString('en-IN')}`;
+            document.getElementById('checkoutBtn').classList.remove('disabled');
+        } catch (err) {
+            document.getElementById('cartLoading').innerHTML = `<p class="text-danger py-4">${err.message || 'Failed to load cart.'}</p>`;
+        }
+    }
+
+    async function handleRemove(itemId) {
+        await removeFromCart(itemId);
+        await renderCart();
+    }
+</script>
+{% endblock %}

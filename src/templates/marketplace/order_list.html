@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}My Orders - NirmanSathi Marketplace{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-navy mb-1"><i class="bi bi-bag-check text-success me-2"></i>My Orders</h2>
+            <p class="text-muted small mb-0">View all your past and active construction material orders and track
+                delivery statuses.</p>
+        </div>
+        <a href="/marketplace/" class="btn btn-warning fw-bold"><i class="bi bi-shop me-1"></i>Marketplace</a>
+    </div>
+
+    <div class="card card-ns shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Order Ref</th>
+                            <th>Date</th>
+                            <th>Total Amount</th>
+                            <th>Payment Status</th>
+                            <th>Delivery Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersListBody">
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <span class="loading-spinner me-2"></span>Loading orders...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const tbody = document.getElementById('ordersListBody');
+
+        try {
+            const orders = await apiFetch('/marketplace/orders/');
+            if (!orders || orders.length === 0) {
+                tbody.innerHTML = `
+        <tr>
+          <td colspan="6" class="text-center py-5 text-muted">
+            <i class="bi bi-bag-x fs-1 d-block mb-3 text-secondary"></i>
+            <h5>No orders found</h5>
+            <p class="small mb-3">You haven't placed any construction material orders yet.</p>
+            <a href="/marketplace/" class="btn btn-warning btn-sm fw-bold">Explore Marketplace</a>
+          </td>
+        </tr>
+      `;
+                return;
+            }
+
+            tbody.innerHTML = orders.map(o => {
+                const payBadge = o.payment_status === 'PAID' ? 'bg-success' : 'bg-danger';
+                const statusBadge = o.status === 'DELIVERED' ? 'badge-approved' :
+                    o.status === 'SHIPPED' ? 'badge-review' :
+                        o.status === 'CONFIRMED' ? 'badge-pending' : 'badge-pending';
+                const dateStr = new Date(o.created_at).toLocaleDateString();
+
+                return `
+        <tr>
+          <td class="fw-bold text-primary">${o.order_reference}</td>
+          <td class="small text-muted">${dateStr}</td>
+          <td class="fw-bold">Rs. ${parseFloat(o.total_amount).toLocaleString('en-IN')}</td>
+          <td><span class="badge ${payBadge}">${o.payment_status}</span></td>
+          <td><span class="badge ${statusBadge}">${o.status_display || o.status}</span></td>
+          <td class="text-end">
+            <a href="/marketplace/orders/${o.id}/" class="btn btn-sm btn-outline-primary fw-semibold"><i class="bi bi-eye me-1"></i>Details</a>
+          </td>
+        </tr>
+      `;
+            }).join('');
+        } catch (err) {
+            tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center text-danger py-4">${err.message || 'Failed to load orders.'}</td>
+      </tr>
+    `;
+        }
+    });
+</script>
+{% endblock %}

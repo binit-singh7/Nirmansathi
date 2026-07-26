@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block title %}Order Details - NirmanSathi Marketplace{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <span class="badge bg-secondary mb-1" id="orderRefBadge">Ref: Loading...</span>
+            <h2 class="fw-bold text-navy mb-0">Order Status & Tracking</h2>
+        </div>
+        <a href="/marketplace/orders/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back to
+            Orders</a>
+    </div>
+
+    <div id="orderLoading" class="text-center py-5">
+        <span class="loading-spinner fs-3 me-2"></span>Loading order details...
+    </div>
+
+    <div id="orderContainer" class="d-none">
+        <!-- Fulfillment Timeline Card -->
+        <div class="card card-ns shadow-sm p-4 mb-4">
+            <h5 class="fw-bold text-navy mb-3">Delivery Status Timeline</h5>
+
+            <div class="row text-center my-2" id="orderTimeline">
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <div class="p-3 rounded bg-light border" id="stepPlaced">
+                        <i class="bi bi-bag-check fs-2 text-success"></i>
+                        <h6 class="fw-bold mt-2 mb-0">1. Order Placed</h6>
+                        <small class="text-muted" id="orderDate"></small>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <div class="p-3 rounded bg-light border" id="stepConfirmed">
+                        <i class="bi bi-check2-circle fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0">2. Confirmed</h6>
+                        <small class="text-muted">Supplier Verification</small>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-2 mb-md-0">
+                    <div class="p-3 rounded bg-light border" id="stepShipped">
+                        <i class="bi bi-truck fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0">3. Shipped</h6>
+                        <small class="text-muted">In Transit</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 rounded bg-light border" id="stepDelivered">
+                        <i class="bi bi-house-check fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0">4. Delivered</h6>
+                        <small class="text-muted">Completed</small>
+                    </div>
+                </div>
+            </div>
+
+            <div id="unpaidAlert"
+                class="alert alert-warning d-flex align-items-center justify-content-between mt-3 mb-0 d-none"
+                role="alert">
+                <div>
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                    <strong>Payment Pending:</strong> This order has not been paid yet via eSewa.
+                </div>
+                <a id="payNowBtn" href="#" class="btn btn-sm btn-success fw-bold"><i class="bi bi-wallet2 me-1"></i>Pay
+                    Now via eSewa</a>
+            </div>
+        </div>
+
+        <!-- Order Items & Shipping Address -->
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card card-ns shadow-sm p-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Items Purchased</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th class="text-end">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderItemsBody">
+                                <!-- Items list -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card card-ns shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Shipping Details</h5>
+                    <p class="mb-2"><strong>Address:</strong> <span id="shippingAddr"></span></p>
+                    <p class="mb-2"><strong>Phone:</strong> <span id="contactPhone"></span></p>
+                    <p class="mb-0"><strong>Payment Status:</strong> <span class="badge" id="paymentStatusBadge"></span>
+                    </p>
+                </div>
+
+                <div class="card card-ns shadow-sm p-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Order Summary</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Items Total:</span>
+                        <span class="fw-bold" id="itemsTotal">Rs. 0</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Delivery:</span>
+                        <span class="text-success fw-bold">FREE</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold fs-5">Grand Total:</span>
+                        <span class="fw-bold text-primary fs-4" id="orderGrandTotal">Rs. 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        const orderId = parts[2]; // /marketplace/orders/<id>/
+
+        try {
+            const order = await apiFetch(`/marketplace/orders/${orderId}/`);
+            document.getElementById('orderLoading').classList.add('d-none');
+            document.getElementById('orderContainer').classList.remove('d-none');
+
+            document.getElementById('orderRefBadge').textContent = `Ref: ${order.order_reference}`;
+            document.getElementById('orderDate').textContent = new Date(order.created_at).toLocaleDateString();
+            document.getElementById('shippingAddr').textContent = order.shipping_address;
+            document.getElementById('contactPhone').textContent = order.contact_phone;
+
+            // Payment Status Badge
+            const payBadge = document.getElementById('paymentStatusBadge');
+            payBadge.textContent = order.payment_status;
+            payBadge.className = `badge ${order.payment_status === 'PAID' ? 'bg-success' : 'bg-danger'}`;
+
+            if (order.payment_status === 'UNPAID') {
+                const unpaidAlert = document.getElementById('unpaidAlert');
+                unpaidAlert.classList.remove('d-none');
+                document.getElementById('payNowBtn').href = `/marketplace/payment-simulation/?order_id=${order.id}`;
+            }
+
+            // Timeline Updates
+            const stConfirmed = document.getElementById('stepConfirmed');
+            const stShipped = document.getElementById('stepShipped');
+            const stDelivered = document.getElementById('stepDelivered');
+
+            if (order.status === 'CONFIRMED' || order.status === 'SHIPPED' || order.status === 'DELIVERED') {
+                stConfirmed.className = 'p-3 rounded bg-success bg-opacity-20 border border-success';
+                stConfirmed.querySelector('i').className = 'bi bi-check2-circle fs-2 text-success';
+            }
+            if (order.status === 'SHIPPED' || order.status === 'DELIVERED') {
+                stShipped.className = 'p-3 rounded bg-info bg-opacity-20 border border-info';
+                stShipped.querySelector('i').className = 'bi bi-truck fs-2 text-info';
+            }
+            if (order.status === 'DELIVERED') {
+                stDelivered.className = 'p-3 rounded bg-success text-white border border-success';
+                stDelivered.querySelector('i').className = 'bi bi-house-check fs-2 text-white';
+            }
+
+            // Render items
+            const items = order.items || [];
+            const tbody = document.getElementById('orderItemsBody');
+            let total = 0;
+
+            tbody.innerHTML = items.map(item => {
+                const sub = parseFloat(item.subtotal);
+                total += sub;
+                return `
+        <tr>
+          <td>
+            <span class="fw-bold text-dark d-block">${item.product_name}</span>
+            <small class="text-muted">Supplier: ${item.supplier_name || 'Verified Supplier'}</small>
+          </td>
+          <td>Rs. ${parseFloat(item.unit_price).toLocaleString('en-IN')}</td>
+          <td>${item.quantity}</td>
+          <td class="text-end fw-bold text-primary">Rs. ${sub.toLocaleString('en-IN')}</td>
+        </tr>
+      `;
+            }).join('');
+
+            document.getElementById('itemsTotal').textContent = `Rs. ${total.toLocaleString('en-IN')}`;
+            document.getElementById('orderGrandTotal').textContent = `Rs. ${parseFloat(order.total_amount).toLocaleString('en-IN')}`;
+        } catch (err) {
+            document.getElementById('orderLoading').innerHTML = `<p class="text-danger py-4">${err.message || 'Failed to load order details.'}</p>`;
+        }
+    });
+</script>
+{% endblock %}

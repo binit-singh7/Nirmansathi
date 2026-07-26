@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - NirmanSathi Marketplace{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="fw-bold text-navy mb-0"><i class="bi bi-credit-card text-success me-2"></i>Order Checkout
+                </h2>
+                <a href="/marketplace/cart/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back
+                    to Cart</a>
+            </div>
+
+            <div id="checkoutAlert" class="alert alert-danger d-none" role="alert"></div>
+
+            <div class="row g-4">
+                <div class="col-md-7">
+                    <div class="card card-ns shadow-sm p-4">
+                        <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                                class="bi bi-truck me-2 text-primary"></i>Delivery & Contact Details</h5>
+                        <form id="checkoutForm">
+                            <div class="mb-3">
+                                <label for="shippingAddress" class="form-label fw-semibold">Delivery Address / Tole
+                                    *</label>
+                                <textarea class="form-control" id="shippingAddress" rows="3"
+                                    placeholder="e.g. House No. 42, Sanepa, Ward 2, Lalitpur" required></textarea>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="contactPhone" class="form-label fw-semibold">Contact Phone Number *</label>
+                                <input type="tel" class="form-control" id="contactPhone" placeholder="98XXXXXXXX"
+                                    required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold d-block">Payment Option</label>
+                                <div
+                                    class="form-check p-3 rounded border bg-light d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <input class="form-check-input me-2" type="radio" name="paymentOption"
+                                            id="esewaRadio" checked>
+                                        <label class="form-check-label fw-bold text-dark" for="esewaRadio">
+                                            <span class="text-success fw-bold">eSewa</span> Digital Wallet (Simulated)
+                                        </label>
+                                        <small class="d-block text-muted">Instant online wallet payment
+                                            simulation</small>
+                                    </div>
+                                    <span class="badge bg-success">Instant</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-warning w-100 py-3 fw-bold fs-5" id="placeOrderBtn">
+                                <i class="bi bi-wallet2 me-2"></i>Place Order & Pay via eSewa
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="card card-ns shadow-sm p-4">
+                        <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Cart Breakdown</h5>
+                        <div id="checkoutItemsList" class="mb-3">
+                            <span class="loading-spinner me-2"></span>Loading items...
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Total Payable:</span>
+                            <span class="fw-bold text-primary fs-4" id="checkoutTotal">Rs. 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const user = getUser();
+        if (user && user.phone_number) {
+            document.getElementById('contactPhone').value = user.phone_number;
+        }
+
+        try {
+            const cart = await apiFetch('/marketplace/cart/');
+            const items = cart.items || [];
+            const listEl = document.getElementById('checkoutItemsList');
+
+            if (items.length === 0) {
+                window.location.href = '/marketplace/cart/';
+                return;
+            }
+
+            let grandTotal = 0;
+            listEl.innerHTML = items.map(item => {
+                const sub = item.quantity * parseFloat(item.unit_price || item.product_price);
+                grandTotal += sub;
+                return `
+        <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom small">
+          <div>
+            <span class="fw-bold text-dark d-block">${item.product_name}</span>
+            <span class="text-muted">Qty: ${item.quantity} x Rs. ${parseFloat(item.unit_price || item.product_price).toLocaleString('en-IN')}</span>
+          </div>
+          <span class="fw-bold text-primary">Rs. ${sub.toLocaleString('en-IN')}</span>
+        </div>
+      `;
+            }).join('');
+
+            document.getElementById('checkoutTotal').textContent = `Rs. ${grandTotal.toLocaleString('en-IN')}`;
+        } catch (err) {
+            showToast('Failed to load checkout details', 'danger');
+        }
+    });
+
+    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const alertEl = document.getElementById('checkoutAlert');
+        const btn = document.getElementById('placeOrderBtn');
+
+        alertEl.classList.add('d-none');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>Creating Order...`;
+
+        const shipping_address = document.getElementById('shippingAddress').value.trim();
+        const contact_phone = document.getElementById('contactPhone').value.trim();
+
+        try {
+            const res = await apiFetch('/marketplace/cart/checkout/', {
+                method: 'POST',
+                body: JSON.stringify({ shipping_address, contact_phone })
+            });
+
+            const orderId = res.order.id;
+            showToast('Order created! Redirecting to eSewa Payment Portal...', 'success');
+
+            setTimeout(() => {
+                window.location.href = `/marketplace/payment-simulation/?order_id=${orderId}`;
+            }, 1000);
+        } catch (err) {
+            alertEl.textContent = err.message || 'Checkout failed. Please try again.';
+            alertEl.classList.remove('d-none');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-wallet2 me-2"></i>Place Order & Pay via eSewa`;
+        }
+    });
+</script>
+{% endblock %}

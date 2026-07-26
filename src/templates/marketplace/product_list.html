@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}Construction Material Marketplace - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Banner -->
+    <div class="card card-ns bg-gradient text-white p-4 mb-4 shadow"
+        style="background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h2 class="fw-bold mb-2"><i class="bi bi-shop text-warning me-2"></i>Construction Material Marketplace
+                </h2>
+                <p class="mb-0 text-light opacity-90">Purchase verified cement, steel rods, bricks, and aggregates
+                    directly from licensed Nepalese suppliers.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="/marketplace/cart/" class="btn btn-warning fw-bold px-4 position-relative">
+                    <i class="bi bi-cart3 me-1"></i>View Cart
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
+                        id="navCartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search & Filter Bar -->
+    <div class="card card-ns p-3 mb-4 shadow-sm">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control border-start-0" id="searchInput"
+                        placeholder="Search products (e.g. OPC Cement, TMT Rod)...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex flex-wrap gap-2 justify-content-md-end" id="categoryFilters">
+                    <button class="btn btn-sm btn-primary active filter-btn" data-category="">All Products</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="productsLoading" class="text-center py-5">
+        <span class="loading-spinner fs-3 me-2"></span>Loading construction materials...
+    </div>
+
+    <div class="row g-4 d-none" id="productsGrid">
+        <!-- Dynamic Product Cards -->
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/cart.js"></script>
+<script>
+    let allProducts = [];
+    let currentCategory = '';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadCategories();
+        await loadProducts();
+
+        document.getElementById('searchInput').addEventListener('input', filterAndRenderProducts);
+    });
+
+    async function loadCategories() {
+        try {
+            const categories = await apiFetch('/marketplace/categories/');
+            const filterContainer = document.getElementById('categoryFilters');
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-sm btn-outline-secondary filter-btn';
+                btn.dataset.category = cat.id;
+                btn.textContent = cat.name;
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('btn-primary', 'active');
+                        b.classList.add('btn-outline-secondary');
+                    });
+                    e.target.classList.remove('btn-outline-secondary');
+                    e.target.classList.add('btn-primary', 'active');
+                    currentCategory = cat.id;
+                    filterAndRenderProducts();
+                });
+                filterContainer.appendChild(btn);
+            });
+        } catch (err) {
+            console.error('Failed to load categories', err);
+        }
+    }
+
+    async function loadProducts() {
+        try {
+            allProducts = await apiFetch('/marketplace/products/');
+            document.getElementById('productsLoading').classList.add('d-none');
+            document.getElementById('productsGrid').classList.remove('d-none');
+            filterAndRenderProducts();
+        } catch (err) {
+            document.getElementById('productsLoading').innerHTML = `<p class="text-danger py-4">${err.message || 'Failed to load products.'}</p>`;
+        }
+    }
+
+    function filterAndRenderProducts() {
+        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        const grid = document.getElementById('productsGrid');
+
+        const filtered = allProducts.filter(p => {
+            const matchesCat = !currentCategory || String(p.category) === String(currentCategory);
+            const matchesSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || (p.description && p.description.toLowerCase().includes(searchTerm));
+            return matchesCat && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+      <div class="col-12 text-center py-5">
+        <i class="bi bi-box-seam fs-1 text-secondary d-block mb-3"></i>
+        <h5>No construction materials found</h5>
+        <p class="text-muted small">Try adjusting your search query or category filter.</p>
+      </div>
+    `;
+            return;
+        }
+
+        grid.innerHTML = filtered.map(p => `
+    <div class="col-sm-6 col-lg-4 col-xl-3">
+      <div class="card card-ns product-card shadow-sm">
+        <div class="product-img-wrapper">
+          ${p.image ? `<img src="${p.image}" alt="${p.name}">` : `<i class="bi bi-box-seam text-secondary fs-1"></i>`}
+        </div>
+        <div class="card-body">
+          <div class="mb-1">
+            <span class="badge bg-secondary opacity-75">${p.category_name || 'Material'}</span>
+          </div>
+          <h6 class="fw-bold text-dark mb-1 text-truncate">${p.name}</h6>
+          <small class="text-muted d-block mb-2"><i class="bi bi-shop me-1"></i>${p.supplier_name || 'Supplier'}</small>
+          
+          <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+            <div>
+              <span class="product-price">Rs. ${parseFloat(p.price).toLocaleString('en-IN')}</span>
+              <small class="text-muted d-block font-monospace">Stock: ${p.available_stock} ${p.unit || 'units'}</small>
+            </div>
+            <button class="btn btn-sm btn-ns-primary fw-bold" onclick="addToCart(${p.id})">
+              <i class="bi bi-cart-plus"></i> Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+    }
+</script>
+{% endblock %}
