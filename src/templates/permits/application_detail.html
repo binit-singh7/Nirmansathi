@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block title %}Permit Application Details - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <span class="badge bg-secondary mb-1" id="detailRef">Ref: Loading...</span>
+            <h2 class="fw-bold text-navy mb-0">Building Permit Status</h2>
+        </div>
+        <a href="/permits/my-applications/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back
+            to Permits</a>
+    </div>
+
+    <div id="detailLoading" class="text-center py-5">
+        <span class="loading-spinner fs-3 me-2"></span>Loading application details...
+    </div>
+
+    <div id="detailContainer" class="d-none">
+        <!-- Status Progress Timeline Card -->
+        <div class="card card-ns shadow-sm p-4 mb-4">
+            <h5 class="fw-bold text-navy mb-3">Application Progress & Status Timeline</h5>
+
+            <div class="row align-items-center text-center my-3" id="statusTimelineRow">
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <div class="p-3 rounded bg-light border" id="stepSubmitted">
+                        <i class="bi bi-send-check fs-2 text-success"></i>
+                        <h6 class="fw-bold mt-2 mb-0">1. Submitted</h6>
+                        <small class="text-muted" id="submittedDate"></small>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <div class="p-3 rounded bg-light border" id="stepReview">
+                        <i class="bi bi-person-workspace fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0">2. Technical Review</h6>
+                        <small class="text-muted">Municipal Inspection</small>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <div class="p-3 rounded bg-light border" id="stepDecision">
+                        <i class="bi bi-award fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0">3. Decision</h6>
+                        <small class="text-muted" id="statusBadgeText"></small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 rounded bg-light border" id="stepApprovalLetter">
+                        <i class="bi bi-file-earmark-pdf fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0">4. Permit Letter</h6>
+                        <small class="text-muted" id="permitLetterSub">Pending Approval</small>
+                    </div>
+                </div>
+            </div>
+
+            <div id="officerRemarksBox" class="alert alert-info d-none mt-3 mb-0" role="alert">
+                <h6 class="fw-bold mb-1"><i class="bi bi-chat-left-text me-2"></i>Officer Remarks & Feedback:</h6>
+                <p class="mb-0" id="officerRemarksText"></p>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <!-- Specifications & Location -->
+            <div class="col-lg-6">
+                <div class="card card-ns shadow-sm h-100 p-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-info-circle me-2 text-primary"></i>Application Specifications</h5>
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr>
+                                <th class="text-muted">Application Type:</th>
+                                <td class="fw-bold" id="detailType"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Applicant:</th>
+                                <td class="fw-bold" id="detailApplicant"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Municipality:</th>
+                                <td class="fw-bold" id="detailMunicipality"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Ward Number:</th>
+                                <td class="fw-bold" id="detailWard"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Tole / Address:</th>
+                                <td class="fw-bold" id="detailAddress"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Plot / Kitta No.:</th>
+                                <td class="fw-bold" id="detailPlot"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Land Area:</th>
+                                <td class="fw-bold" id="detailLandArea"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Built-Up Area:</th>
+                                <td class="fw-bold" id="detailBuiltArea"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Storeys:</th>
+                                <td class="fw-bold" id="detailStoreys"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Est. Cost:</th>
+                                <td class="fw-bold text-success" id="detailCost"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Uploaded Documents & Additional Upload -->
+            <div class="col-lg-6">
+                <div class="card card-ns shadow-sm h-100 p-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-paperclip me-2 text-warning"></i>Attached Documents</h5>
+
+                    <div id="documentsList" class="mb-4">
+                        <p class="text-muted small">Loading attached files...</p>
+                    </div>
+
+                    <hr>
+
+                    <h6 class="fw-bold text-navy mb-3"><i class="bi bi-cloud-upload me-2 text-success"></i>Upload
+                        Additional Document</h6>
+                    <form id="addDocForm">
+                        <div class="mb-2">
+                            <label for="docTitle" class="form-label small fw-semibold">Document Title</label>
+                            <input type="text" class="form-control form-control-sm" id="docTitle"
+                                placeholder="e.g. Revised Structural Blueprint" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="docType" class="form-label small fw-semibold">Document Type</label>
+                            <select class="form-select form-select-sm" id="docType" required>
+                                <option value="BLUEPRINT">Blueprint</option>
+                                <option value="CITIZENSHIP">Citizenship Certificate</option>
+                                <option value="LALPURJA">Lalpurja (Land Ownership)</option>
+                                <option value="TAX_CLEARANCE">Tax Clearance Receipt</option>
+                                <option value="OTHER" selected>Other Document</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="docFile" class="form-label small fw-semibold">File</label>
+                            <input type="file" class="form-control form-control-sm" id="docFile"
+                                accept=".pdf,.png,.jpg,.jpeg" required>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-ns-primary fw-bold w-100" id="addDocBtn">
+                            <i class="bi bi-upload me-1"></i>Upload Document
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentAppId = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        currentAppId = parts[1]; // /permits/<id>/
+
+        await loadPermitDetail();
+    });
+
+    async function loadPermitDetail() {
+        try {
+            const data = await apiFetch(`/permits/applications/${currentAppId}/`);
+            document.getElementById('detailLoading').classList.add('d-none');
+            document.getElementById('detailContainer').classList.remove('d-none');
+
+            document.getElementById('detailRef').textContent = `Ref: ${data.reference_number}`;
+            document.getElementById('detailType').textContent = data.application_type_display || data.application_type;
+            document.getElementById('detailApplicant').textContent = data.applicant_name;
+            document.getElementById('detailMunicipality').textContent = data.municipality_name || 'N/A';
+            document.getElementById('detailWard').textContent = data.ward_number ? `Ward ${data.ward_number}` : 'N/A';
+            document.getElementById('detailAddress').textContent = data.tole_address;
+            document.getElementById('detailPlot').textContent = data.plot_number;
+            document.getElementById('detailLandArea').textContent = `${data.land_area_sqft} sq ft`;
+            document.getElementById('detailBuiltArea').textContent = `${data.total_built_up_area_sqft} sq ft`;
+            document.getElementById('detailStoreys').textContent = `${data.storeys_count} Storey(s)`;
+            document.getElementById('detailCost').textContent = `Rs. ${parseFloat(data.estimated_cost).toLocaleString('en-IN')}`;
+            document.getElementById('submittedDate').textContent = new Date(data.created_at).toLocaleDateString();
+            document.getElementById('statusBadgeText').textContent = data.status_display;
+
+            // Update Status Timeline
+            const stepReview = document.getElementById('stepReview');
+            const stepDecision = document.getElementById('stepDecision');
+            const stepApprovalLetter = document.getElementById('stepApprovalLetter');
+            const permitLetterSub = document.getElementById('permitLetterSub');
+
+            if (data.status === 'UNDER_REVIEW') {
+                stepReview.className = 'p-3 rounded bg-warning bg-opacity-20 border border-warning';
+                stepReview.querySelector('i').className = 'bi bi-person-workspace fs-2 text-warning';
+            } else if (data.status === 'APPROVED') {
+                stepReview.className = 'p-3 rounded bg-success bg-opacity-20 border border-success';
+                stepDecision.className = 'p-3 rounded bg-success bg-opacity-20 border border-success';
+                stepDecision.querySelector('i').className = 'bi bi-award fs-2 text-success';
+                stepApprovalLetter.className = 'p-3 rounded bg-success text-white border border-success';
+                permitLetterSub.textContent = 'Ready to Download';
+                permitLetterSub.className = 'text-white font-weight-bold';
+            } else if (data.status === 'REJECTED') {
+                stepDecision.className = 'p-3 rounded bg-danger bg-opacity-20 border border-danger';
+                stepDecision.querySelector('i').className = 'bi bi-x-circle fs-2 text-danger';
+                permitLetterSub.textContent = 'Application Rejected';
+            }
+
+            // Officer Remarks
+            if (data.remarks) {
+                document.getElementById('officerRemarksText').textContent = data.remarks;
+                document.getElementById('officerRemarksBox').classList.remove('d-none');
+            }
+
+            // Documents List
+            const docsBox = document.getElementById('documentsList');
+            if (!data.documents || data.documents.length === 0) {
+                docsBox.innerHTML = `<p class="text-muted small mb-0">No documents attached yet.</p>`;
+            } else {
+                docsBox.innerHTML = `
+        <div class="list-group list-group-flush">
+          ${data.documents.map(d => `
+            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+              <div>
+                <span class="fw-semibold d-block text-dark small">${d.title}</span>
+                <span class="badge bg-secondary me-2">${d.document_type_display || d.document_type}</span>
+                <small class="text-muted">${new Date(d.uploaded_at).toLocaleDateString()}</small>
+              </div>
+              <a href="${d.file}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> Download</a>
+            </div>
+          `).join('')}
+        </div>
+      `;
+            }
+        } catch (err) {
+            document.getElementById('detailLoading').innerHTML = `<p class="text-danger">${err.message || 'Failed to load permit details.'}</p>`;
+        }
+    }
+
+    document.getElementById('addDocForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('addDocBtn');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>Uploading...`;
+
+        const fd = new FormData();
+        fd.append('application', currentAppId);
+        fd.append('title', document.getElementById('docTitle').value.trim());
+        fd.append('document_type', document.getElementById('docType').value);
+        fd.append('file', document.getElementById('docFile').files[0]);
+
+        try {
+            await apiFetch('/permits/documents/', {
+                method: 'POST',
+                body: fd
+            });
+            showToast('Document uploaded successfully!', 'success');
+            document.getElementById('addDocForm').reset();
+            await loadPermitDetail();
+        } catch (err) {
+            showToast(err.message || 'Failed to upload document.', 'danger');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-upload me-1"></i>Upload Document`;
+        }
+    });
+</script>
+{% endblock %}

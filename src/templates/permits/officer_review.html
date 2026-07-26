@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+
+{% block title %}Permit Inspection & Review - NirmanSathi Officer Portal{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <span class="badge bg-warning text-dark mb-1" id="reviewRefBadge">Ref: Loading...</span>
+            <h2 class="fw-bold text-navy mb-0">Officer Permit Review & Approval</h2>
+        </div>
+        <a href="/dashboard/officer/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back to
+            Review Queue</a>
+    </div>
+
+    <div id="reviewLoading" class="text-center py-5">
+        <span class="loading-spinner fs-3 me-2"></span>Loading permit application for inspection...
+    </div>
+
+    <div id="reviewContainer" class="d-none">
+        <div class="row g-4">
+            <!-- Left Column: Details & Documents -->
+            <div class="col-lg-7">
+                <!-- Application Details Card -->
+                <div class="card card-ns shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-file-earmark-text me-2 text-primary"></i>Building Permit Application</h5>
+
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr>
+                                <th class="text-muted">Applicant:</th>
+                                <td class="fw-bold" id="revApplicant"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Application Type:</th>
+                                <td class="fw-bold" id="revType"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Jurisdiction:</th>
+                                <td class="fw-bold" id="revMuniWard"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Address & Kitta No.:</th>
+                                <td class="fw-bold" id="revAddressPlot"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Land Area:</th>
+                                <td class="fw-bold" id="revLandArea"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Built-Up Area:</th>
+                                <td class="fw-bold" id="revBuiltArea"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Storeys Count:</th>
+                                <td class="fw-bold" id="revStoreys"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Estimated Cost:</th>
+                                <td class="fw-bold text-success" id="revCost"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Current Status:</th>
+                                <td><span class="badge" id="revCurrentStatusBadge"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Documents Card -->
+                <div class="card card-ns shadow-sm p-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-paperclip me-2 text-warning"></i>Uploaded Blueprints & Ownership Deeds</h5>
+                    <div id="revDocumentsList">
+                        <p class="text-muted small">Loading attachments...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Decision Form & Decision Log -->
+            <div class="col-lg-5">
+                <div class="card card-ns shadow-sm p-4 mb-4 border-primary">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-award me-2 text-success"></i>Officer Official Decision</h5>
+
+                    <div id="decisionAlert" class="alert alert-danger d-none" role="alert"></div>
+
+                    <form id="officerDecisionForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Select Decision *</label>
+                            <div class="d-grid gap-2">
+                                <input type="radio" class="btn-check" name="decisionChoice" id="decApprove"
+                                    value="APPROVED" autocomplete="off" required>
+                                <label class="btn btn-outline-success text-start fw-bold p-3" for="decApprove">
+                                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>Approve Application
+                                    <small class="d-block text-muted fw-normal">Issue building permit approval
+                                        letter</small>
+                                </label>
+
+                                <input type="radio" class="btn-check" name="decisionChoice" id="decReview"
+                                    value="UNDER_REVIEW" autocomplete="off">
+                                <label class="btn btn-outline-warning text-start fw-bold p-3" for="decReview">
+                                    <i class="bi bi-clock-history me-2 fs-5"></i>Mark Under Technical Review
+                                    <small class="d-block text-muted fw-normal">Request technical modifications / site
+                                        inspection</small>
+                                </label>
+
+                                <input type="radio" class="btn-check" name="decisionChoice" id="decReject"
+                                    value="REJECTED" autocomplete="off">
+                                <label class="btn btn-outline-danger text-start fw-bold p-3" for="decReject">
+                                    <i class="bi bi-x-circle-fill me-2 fs-5"></i>Reject Application
+                                    <small class="d-block text-muted fw-normal">Deny permit application due to code
+                                        violation</small>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="officerRemarks" class="form-label fw-semibold">Inspection Remarks &
+                                Justification *</label>
+                            <textarea class="form-control" id="officerRemarks" rows="4"
+                                placeholder="Enter detailed inspection notes, setback verification, structural compliance remarks..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold fs-5" id="submitDecisionBtn">
+                            <i class="bi bi-send-check me-2"></i>Submit Official Decision
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Decision Log History Card -->
+                <div class="card card-ns shadow-sm p-4">
+                    <h6 class="fw-bold text-navy mb-3"><i class="bi bi-history me-2"></i>Decision Log History</h6>
+                    <div id="decisionHistoryList">
+                        <p class="text-muted small mb-0">No past decision history recorded.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    let currentReviewAppId = null;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        currentReviewAppId = parts[3]; // /permits/officer/review/<id>/
+
+        await loadReviewDetail();
+    });
+
+    async function loadReviewDetail() {
+        try {
+            const app = await apiFetch(`/permits/applications/${currentReviewAppId}/`);
+            document.getElementById('reviewLoading').classList.add('d-none');
+            document.getElementById('reviewContainer').classList.remove('d-none');
+
+            document.getElementById('reviewRefBadge').textContent = `Ref: ${app.reference_number}`;
+            document.getElementById('revApplicant').textContent = app.applicant_name;
+            document.getElementById('revType').textContent = app.application_type_display || app.application_type;
+            document.getElementById('revMuniWard').textContent = `${app.municipality_name || 'N/A'}, Ward ${app.ward_number || ''}`;
+            document.getElementById('revAddressPlot').textContent = `${app.tole_address} (Plot: ${app.plot_number})`;
+            document.getElementById('revLandArea').textContent = `${app.land_area_sqft} sq ft`;
+            document.getElementById('revBuiltArea').textContent = `${app.total_built_up_area_sqft} sq ft`;
+            document.getElementById('revStoreys').textContent = `${app.storeys_count} storey(s)`;
+            document.getElementById('revCost').textContent = `Rs. ${parseFloat(app.estimated_cost).toLocaleString('en-IN')}`;
+
+            const badge = document.getElementById('revCurrentStatusBadge');
+            badge.textContent = app.status_display;
+            badge.className = `badge ${app.status === 'APPROVED' ? 'badge-approved' : app.status === 'REJECTED' ? 'badge-rejected' : 'badge-pending'}`;
+
+            // Prefill remarks if present
+            if (app.remarks) {
+                document.getElementById('officerRemarks').value = app.remarks;
+            }
+
+            // Set decision radio
+            if (app.status === 'APPROVED') document.getElementById('decApprove').checked = true;
+            else if (app.status === 'REJECTED') document.getElementById('decReject').checked = true;
+            else if (app.status === 'UNDER_REVIEW') document.getElementById('decReview').checked = true;
+
+            // Render documents
+            const docBox = document.getElementById('revDocumentsList');
+            if (!app.documents || app.documents.length === 0) {
+                docBox.innerHTML = `<p class="text-muted small">No document attachments uploaded.</p>`;
+            } else {
+                docBox.innerHTML = app.documents.map(d => `
+        <div class="card p-3 mb-2 bg-light border">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="fw-bold mb-1">${d.title}</h6>
+              <span class="badge bg-secondary mb-1">${d.document_type_display || d.document_type}</span>
+              <small class="text-muted d-block">Uploaded: ${new Date(d.uploaded_at).toLocaleDateString()}</small>
+            </div>
+            <a href="${d.file}" target="_blank" class="btn btn-sm btn-outline-primary fw-bold">
+              <i class="bi bi-box-arrow-up-right me-1"></i>Inspect File
+            </a>
+          </div>
+        </div>
+      `).join('');
+            }
+
+            // Render decisions history
+            const decHistoryBox = document.getElementById('decisionHistoryList');
+            if (!app.decisions || app.decisions.length === 0) {
+                decHistoryBox.innerHTML = `<p class="text-muted small mb-0">No past decisions recorded for this permit.</p>`;
+            } else {
+                decHistoryBox.innerHTML = app.decisions.map(d => `
+        <div class="border-start border-3 border-primary ps-3 mb-3">
+          <div class="d-flex justify-content-between">
+            <span class="fw-bold small text-dark">${d.officer_name}</span>
+            <span class="badge ${d.decision === 'APPROVED' ? 'bg-success' : d.decision === 'REJECTED' ? 'bg-danger' : 'bg-warning'}">${d.decision_display}</span>
+          </div>
+          <p class="small mb-1 text-muted">${d.remarks}</p>
+          <small class="text-secondary font-monospace">${new Date(d.decision_date).toLocaleString()}</small>
+        </div>
+      `).join('');
+            }
+
+        } catch (err) {
+            document.getElementById('reviewLoading').innerHTML = `<p class="text-danger py-4">${err.message || 'Failed to load application.'}</p>`;
+        }
+    }
+
+    document.getElementById('officerDecisionForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const alertEl = document.getElementById('decisionAlert');
+        const btn = document.getElementById('submitDecisionBtn');
+
+        alertEl.classList.add('d-none');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>Submitting Official Decision...`;
+
+        const selectedDecision = document.querySelector('input[name="decisionChoice"]:checked')?.value;
+        const remarks = document.getElementById('officerRemarks').value.trim();
+
+        if (!selectedDecision) {
+            alertEl.textContent = 'Please select a decision (Approve, Under Review, or Reject).';
+            alertEl.classList.remove('d-none');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-send-check me-2"></i>Submit Official Decision`;
+            return;
+        }
+
+        try {
+            const res = await apiFetch(`/permits/applications/${currentReviewAppId}/review/`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    decision: selectedDecision,
+                    remarks: remarks
+                })
+            });
+
+            showToast(`Decision recorded! Application status updated to ${res.application.status_display}`, 'success');
+
+            setTimeout(() => {
+                window.location.href = '/dashboard/officer/';
+            }, 1200);
+        } catch (err) {
+            alertEl.textContent = err.message || 'Failed to submit officer decision.';
+            alertEl.classList.remove('d-none');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-send-check me-2"></i>Submit Official Decision`;
+        }
+    });
+</script>
+{% endblock %}

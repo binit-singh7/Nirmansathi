@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+
+{% block title %}Apply for Residential Building Permit - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div>
+                    <h2 class="fw-bold text-navy mb-1"><i class="bi bi-file-earmark-plus text-warning me-2"></i>New
+                        Building Permit Application</h2>
+                    <p class="text-muted small mb-0">Fill out official property specifications & upload architectural
+                        blueprints for municipal review.</p>
+                </div>
+                <a href="/dashboard/citizen/" class="btn btn-outline-secondary"><i
+                        class="bi bi-arrow-left me-1"></i>Back to Dashboard</a>
+            </div>
+
+            <div id="applicationAlert" class="alert alert-danger d-none" role="alert"></div>
+
+            <form id="permitForm">
+                <!-- Card 1: Application Type & Location -->
+                <div class="card card-ns shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-geo-alt me-2 text-primary"></i>1. Application Type & Location Details</h5>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="applicationType" class="form-label fw-semibold">Application Type *</label>
+                            <select class="form-select" id="applicationType" required>
+                                <option value="NEW_CONSTRUCTION" selected>New Residential Building Construction</option>
+                                <option value="RENOVATION">Building Renovation</option>
+                                <option value="EXTENSION">Building Extension / Storey Addition</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="province" class="form-label fw-semibold">Province *</label>
+                            <select class="form-select" id="province" required>
+                                <option value="">-- Loading Provinces --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label for="district" class="form-label fw-semibold">District *</label>
+                            <select class="form-select" id="district" disabled required>
+                                <option value="">-- Select Province First --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="municipality" class="form-label fw-semibold">Municipality / Nagarpalika
+                                *</label>
+                            <select class="form-select" id="municipality" disabled required>
+                                <option value="">-- Select District First --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="ward" class="form-label fw-semibold">Ward Number *</label>
+                            <select class="form-select" id="ward" disabled required>
+                                <option value="">-- Select Municipality First --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label for="toleAddress" class="form-label fw-semibold">Tole / Street Address *</label>
+                            <input type="text" class="form-control" id="toleAddress"
+                                placeholder="e.g. Buddhanagar, Ward 10" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="plotNumber" class="form-label fw-semibold">Kitta / Plot Number *</label>
+                            <input type="text" class="form-control" id="plotNumber" placeholder="e.g. Kitta No. 452"
+                                required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Building Specifications -->
+                <div class="card card-ns shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-rulers me-2 text-success"></i>2. Building Specifications & Estimates</h5>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="landArea" class="form-label fw-semibold">Land Area (Sq. Ft.) *</label>
+                            <input type="number" step="0.01" min="1" class="form-control" id="landArea"
+                                placeholder="e.g. 1715.00 (5 Aana)" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="builtUpArea" class="form-label fw-semibold">Proposed Built-Up Area (Sq. Ft.)
+                                *</label>
+                            <input type="number" step="0.01" min="1" class="form-control" id="builtUpArea"
+                                placeholder="e.g. 2400.00" required>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="storeysCount" class="form-label fw-semibold">Number of Storeys / Floors
+                                *</label>
+                            <input type="number" min="1" max="10" class="form-control" id="storeysCount" value="2"
+                                required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="estimatedCost" class="form-label fw-semibold">Estimated Construction Cost (NPR)
+                                *</label>
+                            <div class="input-group">
+                                <span class="input-group-text">Rs.</span>
+                                <input type="number" step="1000" min="10000" class="form-control" id="estimatedCost"
+                                    placeholder="e.g. 4500000" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Document Uploads -->
+                <div class="card card-ns shadow-sm p-4 mb-4">
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
+                            class="bi bi-cloud-arrow-up me-2 text-warning"></i>3. Document Attachments</h5>
+                    <p class="text-muted small">Attach official blueprint and land documents (PDF or image files, max
+                        5MB each).</p>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="blueprintFile" class="form-label fw-semibold">Architectural Blueprint File
+                                *</label>
+                            <input type="file" class="form-control" id="blueprintFile" accept=".pdf,.png,.jpg,.jpeg"
+                                required>
+                            <div class="form-text">Structural / Cadastral blueprint drawing.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lalpurjaFile" class="form-label fw-semibold">Lalpurja (Land Ownership
+                                Certificate) *</label>
+                            <input type="file" class="form-control" id="lalpurjaFile" accept=".pdf,.png,.jpg,.jpeg"
+                                required>
+                            <div class="form-text">Official land ownership registration deed.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-end gap-3 mb-5">
+                    <a href="/dashboard/citizen/" class="btn btn-light btn-lg px-4">Cancel</a>
+                    <button type="submit" class="btn btn-warning btn-lg fw-bold px-5" id="submitPermitBtn">
+                        <span>Submit Application</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/permits.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initLocationCascades('province', 'district', 'municipality', 'ward');
+    });
+
+    document.getElementById('permitForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const alertEl = document.getElementById('applicationAlert');
+        const btn = document.getElementById('submitPermitBtn');
+
+        alertEl.classList.add('d-none');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>Submitting Permit Application...`;
+
+        const payload = {
+            application_type: document.getElementById('applicationType').value,
+            municipality: parseInt(document.getElementById('municipality').value),
+            ward: parseInt(document.getElementById('ward').value),
+            tole_address: document.getElementById('toleAddress').value.trim(),
+            plot_number: document.getElementById('plotNumber').value.trim(),
+            land_area_sqft: parseFloat(document.getElementById('landArea').value),
+            total_built_up_area_sqft: parseFloat(document.getElementById('builtUpArea').value),
+            storeys_count: parseInt(document.getElementById('storeysCount').value),
+            estimated_cost: parseFloat(document.getElementById('estimatedCost').value)
+        };
+
+        try {
+            // Step 1: Create Permit Application
+            const application = await apiFetch('/permits/applications/', {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+
+            const appId = application.id;
+
+            // Step 2: Upload Documents if selected
+            const blueprintFile = document.getElementById('blueprintFile').files[0];
+            const lalpurjaFile = document.getElementById('lalpurjaFile').files[0];
+
+            if (blueprintFile) {
+                const fd = new FormData();
+                fd.append('application', appId);
+                fd.append('document_type', 'BLUEPRINT');
+                fd.append('title', 'Architectural Blueprint');
+                fd.append('file', blueprintFile);
+                await apiFetch('/permits/documents/', { method: 'POST', body: fd });
+            }
+
+            if (lalpurjaFile) {
+                const fd = new FormData();
+                fd.append('application', appId);
+                fd.append('document_type', 'LALPURJA');
+                fd.append('title', 'Lalpurja Land Ownership Certificate');
+                fd.append('file', lalpurjaFile);
+                await apiFetch('/permits/documents/', { method: 'POST', body: fd });
+            }
+
+            showToast(`Building permit application ${application.reference_number} submitted successfully!`, 'success');
+
+            setTimeout(() => {
+                window.location.href = `/permits/${appId}/`;
+            }, 1200);
+
+        } catch (err) {
+            alertEl.textContent = err.message || 'Failed to submit application. Please check form fields.';
+            alertEl.classList.remove('d-none');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<span>Submit Application</span>`;
+        }
+    });
+</script>
+{% endblock %}
