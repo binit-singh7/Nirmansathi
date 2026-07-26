@@ -2,11 +2,13 @@
 __pycache__/
 *.py[cod]
 *.pyo
+*$py.class
 
 # Virtual Environment
 venv/
 .venv/
 env/
+src/venv/
 
 # Django
 db.sqlite3
@@ -30,3 +32,8 @@ Thumbs.db
 # Python cache
 .pytest_cache/
 .mypy_cache/
+
+# Build
+build/
+dist/
+*.egg-info/
