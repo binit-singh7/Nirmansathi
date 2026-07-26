@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}NirmanSathi - Building Permit & Construction Marketplace{% endblock %}</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+  
+  <!-- Custom Base CSS -->
+  <link rel="stylesheet" href="/static/css/base.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-ns">
+    <div class="container-fluid px-lg-4">
+      <a class="navbar-brand" href="/">
+        <i class="bi bi-building-gear text-warning"></i>
+        <span>Nirman<span class="text-warning">Sathi</span></span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMainContent" aria-controls="navbarMainContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarMainContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarRoleNav">
+          <!-- Dynamic Role Navigation Items via base.js -->
+        </ul>
+        <div class="d-flex align-items-center gap-3" id="navbarAuthNav">
+          <!-- Dynamic Auth Navigation via base.js -->
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Notification Toast Container -->
+  <div id="toastContainer"></div>
+
+  <!-- Main Body Content -->
+  <main class="py-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4 mt-auto">
+    <div class="container text-center text-md-start">
+      <div class="row gy-3">
+        <div class="col-md-6">
+          <h5 class="fw-bold text-warning"><i class="bi bi-building-gear me-2"></i>NirmanSathi</h5>
+          <p class="small text-secondary mb-0">Nepal Residential Building Permit E-Governance & Construction Material Marketplace. Streamlining urban construction and governance.</p>
+        </div>
+        <div class="col-md-3">
+          <h6>Quick Links</h6>
+          <ul class="list-unstyled small mb-0">
+            <li><a href="/" class="text-secondary text-decoration-none">Home</a></li>
+            <li><a href="/marketplace/" class="text-secondary text-decoration-none">Marketplace</a></li>
+            <li><a href="/login/" class="text-secondary text-decoration-none">Login</a></li>
+          </ul>
+        </div>
+        <div class="col-md-3">
+          <h6>E-Governance Portal</h6>
+          <p class="small text-secondary mb-1"><i class="bi bi-geo-alt me-1"></i>Ministry of Urban Development, Nepal</p>
+          <p class="small text-secondary"><i class="bi bi-shield-check me-1"></i>Official CSIT E-Governance Project</p>
+        </div>
+      </div>
+      <hr class="border-secondary my-3">
+      <div class="text-center small text-secondary">
+        &copy; {% now "Y" %} NirmanSathi E-Governance Platform. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Base Utilities JS -->
+  <script src="/static/js/base.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
