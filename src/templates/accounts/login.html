@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card card-ns shadow-lg p-4">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex p-3 mb-2">
+                            <i class="bi bi-shield-lock fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold text-navy">Account Login</h3>
+                        <p class="text-muted small">Access your NirmanSathi E-Governance Dashboard</p>
+                    </div>
+
+                    <div id="loginAlert" class="alert alert-danger d-none" role="alert"></div>
+
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-semibold">Username or Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control" id="username"
+                                    placeholder="Enter username or email" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-key"></i></span>
+                                <input type="password" class="form-control" id="password" placeholder="Enter password"
+                                    required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-ns-primary w-100 py-2 fw-bold" id="loginSubmitBtn">
+                            <span>Login</span>
+                        </button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="small text-muted mb-0">Don't have an account? <a href="/register/"
+                                class="text-primary fw-bold text-decoration-none">Register here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const alertEl = document.getElementById('loginAlert');
+        const btn = document.getElementById('loginSubmitBtn');
+
+        alertEl.classList.add('d-none');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>Logging in...`;
+
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        try {
+            // Obtain JWT token
+            const tokenRes = await apiFetch('/accounts/login/', {
+                method: 'POST',
+                body: JSON.stringify({ username, password })
+            });
+
+            setTokens(tokenRes.access, tokenRes.refresh);
+
+            // Fetch user details
+            const userRes = await apiFetch('/accounts/me/');
+            setUser(userRes);
+
+            showToast(`Welcome back, ${userRes.first_name || userRes.username}!`, 'success');
+
+            // Redirect based on role
+            setTimeout(() => {
+                if (userRes.role === 'CITIZEN') {
+                    window.location.href = '/dashboard/citizen/';
+                } else if (userRes.role === 'MUNICIPALITY_OFFICER') {
+                    window.location.href = '/dashboard/officer/';
+                } else if (userRes.role === 'MATERIAL_SUPPLIER') {
+                    window.location.href = '/dashboard/supplier/';
+                } else if (userRes.role === 'ADMIN') {
+                    window.location.href = '/dashboard/admin/';
+                } else {
+                    window.location.href = '/';
+                }
+            }, 600);
+        } catch (err) {
+            alertEl.textContent = err.message || 'Login failed. Please check your credentials.';
+            alertEl.classList.remove('d-none');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<span>Login</span>`;
+        }
+    });
+</script>
+{% endblock %}

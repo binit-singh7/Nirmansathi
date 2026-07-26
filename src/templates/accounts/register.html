@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card card-ns shadow-lg p-4">
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="rounded-circle bg-warning bg-opacity-20 text-warning d-inline-flex p-3 mb-2">
+                            <i class="bi bi-person-plus-fill fs-2"></i>
+                        </div>
+                        <h3 class="fw-bold text-navy">Create Account</h3>
+                        <p class="text-muted small">Register for NirmanSathi E-Governance & Marketplace</p>
+                    </div>
+
+                    <div id="registerAlert" class="alert alert-danger d-none" role="alert"></div>
+
+                    <form id="registerForm">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="username" class="form-label fw-semibold">Username *</label>
+                                <input type="text" class="form-control" id="username" placeholder="Choose username"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fullName" class="form-label fw-semibold">Full Name</label>
+                                <input type="text" class="form-control" id="fullName"
+                                    placeholder="e.g. Ram Bahadur Shrestha">
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-semibold">Email Address *</label>
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phoneNumber" class="form-label fw-semibold">Phone Number</label>
+                                <input type="tel" class="form-control" id="phoneNumber" placeholder="98XXXXXXXX">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role" class="form-label fw-semibold">Account Role *</label>
+                            <select class="form-select" id="role" required>
+                                <option value="CITIZEN" selected>Citizen / Landowner (Apply Permits & Buy Materials)
+                                </option>
+                                <option value="MATERIAL_SUPPLIER">Material Supplier (Sell Construction Supplies)
+                                </option>
+                                <option value="MUNICIPALITY_OFFICER">Municipality Officer (Review Permits)</option>
+                            </select>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="password" class="form-label fw-semibold">Password *</label>
+                                <input type="password" class="form-control" id="password" placeholder="Min 6 characters"
+                                    minlength="6" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confirmPassword" class="form-label fw-semibold">Confirm Password *</label>
+                                <input type="password" class="form-control" id="confirmPassword"
+                                    placeholder="Re-enter password" minlength="6" required>
+                            </div>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                            <label class="form-check-label small text-muted" for="termsCheck">
+                                I agree to NirmanSathi Terms of Service and E-Governance Guidelines.
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100 py-2 fw-bold" id="registerSubmitBtn">
+                            <span>Create Account</span>
+                        </button>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <p class="small text-muted mb-0">Already registered? <a href="/login/"
+                                class="text-primary fw-bold text-decoration-none">Log in here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const alertEl = document.getElementById('registerAlert');
+        const btn = document.getElementById('registerSubmitBtn');
+
+        alertEl.classList.add('d-none');
+
+        const username = document.getElementById('username').value.trim();
+        const full_name = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone_number = document.getElementById('phoneNumber').value.trim();
+        const role = document.getElementById('role').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            alertEl.textContent = 'Passwords do not match.';
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>Creating Account...`;
+
+        try {
+            const res = await apiFetch('/accounts/register/', {
+                method: 'POST',
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password,
+                    role,
+                    phone_number,
+                    full_name
+                })
+            });
+
+            if (res.tokens) {
+                setTokens(res.tokens.access, res.tokens.refresh);
+                setUser(res.user);
+            }
+
+            showToast('Registration successful! Redirecting to dashboard...', 'success');
+
+            setTimeout(() => {
+                if (role === 'CITIZEN') window.location.href = '/dashboard/citizen/';
+                else if (role === 'MUNICIPALITY_OFFICER') window.location.href = '/dashboard/officer/';
+                else if (role === 'MATERIAL_SUPPLIER') window.location.href = '/dashboard/supplier/';
+                else window.location.href = '/dashboard/admin/';
+            }, 1000);
+        } catch (err) {
+            alertEl.textContent = err.message || 'Registration failed. Please try again.';
+            alertEl.classList.remove('d-none');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<span>Create Account</span>`;
+        }
+    });
+</script>
+{% endblock %}

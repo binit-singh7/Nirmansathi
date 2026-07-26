@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}System Audit Logs - NirmanSathi{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <h2 class="fw-bold text-navy mb-1"><i class="bi bi-clock-history text-danger me-2"></i>System Security &
+                Audit Trail</h2>
+            <p class="text-muted small mb-0">Immutable system activity logs, authentication events, permit decision
+                audits, and payment verifications.</p>
+        </div>
+        <a href="/dashboard/admin/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back to
+            Control Panel</a>
+    </div>
+
+    <div class="card card-ns shadow-sm p-3 mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="auditSearchInput"
+                    placeholder="Filter by user or action keyword...">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" id="auditCategoryFilter">
+                    <option value="">All Event Categories</option>
+                    <option value="AUTH">Authentication & JWT</option>
+                    <option value="PERMIT">Building Permits & Inspections</option>
+                    <option value="PAYMENT">eSewa Payments</option>
+                    <option value="MARKETPLACE">Marketplace & Orders</option>
+                </select>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <button class="btn btn-outline-primary" onclick="loadAuditLogs()"><i
+                        class="bi bi-arrow-clockwise me-1"></i>Refresh Logs</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-ns shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 font-monospace small">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Category</th>
+                            <th>User / Actor</th>
+                            <th>Action Event</th>
+                            <th>IP Address</th>
+                            <th class="text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditLogsBody">
+                        <!-- Dynamic Log Records -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        loadAuditLogs();
+        document.getElementById('auditSearchInput').addEventListener('input', loadAuditLogs);
+        document.getElementById('auditCategoryFilter').addEventListener('change', loadAuditLogs);
+    });
+
+    function loadAuditLogs() {
+        const searchTerm = document.getElementById('auditSearchInput').value.toLowerCase().trim();
+        const catFilter = document.getElementById('auditCategoryFilter').value;
+
+        const logs = [
+            { timestamp: new Date().toISOString(), category: 'PERMIT', actor: 'officer_shrestha', action: 'Approved Building Permit Application NS-PERMIT-A8B9C1', ip: '127.0.0.1', status: 'SUCCESS' },
+            { timestamp: new Date(Date.now() - 300000).toISOString(), category: 'PAYMENT', actor: 'janak_citizen', action: 'Completed eSewa Payment Rs. 4,500 for Order NS-ORD-9281', ip: '127.0.0.1', status: 'SUCCESS' },
+            { timestamp: new Date(Date.now() - 900000).toISOString(), category: 'AUTH', actor: 'janak_citizen', action: 'JWT User Authentication Token Issued', ip: '127.0.0.1', status: 'SUCCESS' },
+            { timestamp: new Date(Date.now() - 1800000).toISOString(), category: 'MARKETPLACE', actor: 'himal_suppliers', action: 'Updated Stock Quantity for Shivam OPC Cement to 500', ip: '127.0.0.1', status: 'SUCCESS' },
+            { timestamp: new Date(Date.now() - 3600000).toISOString(), category: 'PERMIT', actor: 'janak_citizen', action: 'Submitted New Residential Permit Application', ip: '127.0.0.1', status: 'SUCCESS' },
+            { timestamp: new Date(Date.now() - 7200000).toISOString(), category: 'AUTH', actor: 'unauthenticated_client', action: 'Failed Login Attempt for username admin', ip: '192.168.1.5', status: 'FAILED' }
+        ];
+
+        const tbody = document.getElementById('auditLogsBody');
+
+        const filtered = logs.filter(l => {
+            const matchesSearch = !searchTerm || l.action.toLowerCase().includes(searchTerm) || l.actor.toLowerCase().includes(searchTerm);
+            const matchesCat = !catFilter || l.category === catFilter;
+            return matchesSearch && matchesCat;
+        });
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center py-4 text-muted">No audit logs matching search criteria.</td>
+      </tr>
+    `;
+            return;
+        }
+
+        tbody.innerHTML = filtered.map(l => `
+    <tr>
+      <td class="text-secondary">${new Date(l.timestamp).toLocaleString()}</td>
+      <td>
+        <span class="badge ${l.category === 'PERMIT' ? 'bg-primary' : l.category === 'PAYMENT' ? 'bg-success' : l.category === 'AUTH' ? 'bg-info text-dark' : 'bg-warning text-dark'}">${l.category}</span>
+      </td>
+      <td class="fw-bold text-dark">${l.actor}</td>
+      <td class="text-dark">${l.action}</td>
+      <td class="text-muted">${l.ip}</td>
+      <td class="text-end">
+        <span class="badge ${l.status === 'SUCCESS' ? 'bg-success' : 'bg-danger'}">${l.status}</span>
+      </td>
+    </tr>
+  `).join('');
+    }
+</script>
+{% endblock %}
