@@ -63,11 +63,25 @@
         const btn = document.getElementById('loginSubmitBtn');
 
         alertEl.classList.add('d-none');
-        btn.disabled = true;
-        btn.innerHTML = `<span class="loading-spinner me-2"></span>Logging in...`;
 
         const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
+
+        // Client-side validation
+        if (!username) {
+            alertEl.textContent = 'Please enter your username or email.';
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
+        if (!password) {
+            alertEl.textContent = 'Please enter your password.';
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>Logging in...`;
 
         try {
             // Obtain JWT token

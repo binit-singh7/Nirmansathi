@@ -58,3 +58,32 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"Profile of {self.user.username}"
+
+
+class AuditLog(models.Model):
+    class Category(models.TextChoices):
+        AUTH = 'AUTH', 'Authentication & JWT'
+        PERMIT = 'PERMIT', 'Building Permits & Inspections'
+        PAYMENT = 'PAYMENT', 'eSewa Payments'
+        MARKETPLACE = 'MARKETPLACE', 'Marketplace & Orders'
+        ADMIN = 'ADMIN', 'System Administration'
+
+    class Status(models.TextChoices):
+        SUCCESS = 'SUCCESS', 'Success'
+        FAILED = 'FAILED', 'Failed'
+
+    timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
+    category = models.CharField(max_length=30, choices=Category.choices, default=Category.AUTH)
+    actor = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='audit_logs')
+    actor_username = models.CharField(max_length=150, blank=True, help_text="Stored username in case user is deleted or unauthenticated")
+    action = models.TextField()
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.SUCCESS)
+    metadata = models.JSONField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"[{self.timestamp}] {self.category} - {self.actor_username}: {self.action} ({self.status})"
+

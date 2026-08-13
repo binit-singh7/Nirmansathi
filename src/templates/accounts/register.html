@@ -110,10 +110,45 @@
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
+        // Client-side validation
+        if (!username || username.length < 3) {
+            alertEl.textContent = 'Username must be at least 3 characters long.';
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
+        if (!email || !isValidEmail(email)) {
+            alertEl.textContent = 'Please enter a valid email address.';
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
+        if (phone_number && !isValidPhone(phone_number)) {
+            alertEl.textContent = 'Please enter a valid phone number (10 digits).';
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
+        if (!password || password.length < 6) {
+            alertEl.textContent = 'Password must be at least 6 characters long.';
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
         if (password !== confirmPassword) {
             alertEl.textContent = 'Passwords do not match.';
             alertEl.classList.remove('d-none');
             return;
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^[0-9]{10}$/;
+            return phoneRegex.test(phone);
         }
 
         btn.disabled = true;
@@ -132,19 +167,11 @@
                 })
             });
 
-            if (res.tokens) {
-                setTokens(res.tokens.access, res.tokens.refresh);
-                setUser(res.user);
-            }
-
-            showToast('Registration successful! Redirecting to dashboard...', 'success');
+            showToast('Registration successful! Redirecting to login page...', 'success');
 
             setTimeout(() => {
-                if (role === 'CITIZEN') window.location.href = '/dashboard/citizen/';
-                else if (role === 'MUNICIPALITY_OFFICER') window.location.href = '/dashboard/officer/';
-                else if (role === 'MATERIAL_SUPPLIER') window.location.href = '/dashboard/supplier/';
-                else window.location.href = '/dashboard/admin/';
-            }, 1000);
+                window.location.href = '/login/';
+            }, 1500);
         } catch (err) {
             alertEl.textContent = err.message || 'Registration failed. Please try again.';
             alertEl.classList.remove('d-none');

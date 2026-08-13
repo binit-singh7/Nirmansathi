@@ -151,15 +151,15 @@
             const stShipped = document.getElementById('stepShipped');
             const stDelivered = document.getElementById('stepDelivered');
 
-            if (order.status === 'CONFIRMED' || order.status === 'SHIPPED' || order.status === 'DELIVERED') {
+            if (order.status === 'CONFIRMED' || order.status === 'SHIPPED' || order.status === 'COMPLETED') {
                 stConfirmed.className = 'p-3 rounded bg-success bg-opacity-20 border border-success';
                 stConfirmed.querySelector('i').className = 'bi bi-check2-circle fs-2 text-success';
             }
-            if (order.status === 'SHIPPED' || order.status === 'DELIVERED') {
+            if (order.status === 'SHIPPED' || order.status === 'COMPLETED') {
                 stShipped.className = 'p-3 rounded bg-info bg-opacity-20 border border-info';
                 stShipped.querySelector('i').className = 'bi bi-truck fs-2 text-info';
             }
-            if (order.status === 'DELIVERED') {
+            if (order.status === 'COMPLETED') {
                 stDelivered.className = 'p-3 rounded bg-success text-white border border-success';
                 stDelivered.querySelector('i').className = 'bi bi-house-check fs-2 text-white';
             }

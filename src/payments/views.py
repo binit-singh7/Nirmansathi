@@ -7,6 +7,8 @@ from django.db import transaction
 from marketplace.models import Order
 from .models import PaymentTransaction
 from .serializers import PaymentTransactionSerializer, SimulatePaymentSerializer
+from accounts.utils import log_audit
+from accounts.models import AuditLog
 
 class SimulateEsewaPaymentView(APIView):
     """
@@ -66,6 +68,16 @@ class SimulateEsewaPaymentView(APIView):
                 order.payment_status = Order.PaymentStatus.PAID
                 order.status = Order.OrderStatus.CONFIRMED
                 order.save()
+
+            ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
+            log_audit(
+                category=AuditLog.Category.PAYMENT,
+                action=f"Completed eSewa Payment Rs. {order.total_amount} for Order {order.order_reference}" if tx_status == PaymentTransaction.Status.SUCCESS else f"Failed eSewa Payment attempt for Order {order.order_reference}",
+                user=request.user,
+                ip_address=ip,
+                status=AuditLog.Status.SUCCESS if tx_status == PaymentTransaction.Status.SUCCESS else AuditLog.Status.FAILED,
+                metadata={"transaction_code": tx_code, "amount": str(order.total_amount)}
+            )
 
         return Response({
             'status': tx_status,

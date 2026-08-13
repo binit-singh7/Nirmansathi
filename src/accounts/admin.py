@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, UserProfile
+from .models import CustomUser, UserProfile, AuditLog
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
@@ -25,3 +25,12 @@ class CustomUserAdmin(UserAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'full_name', 'company_name', 'created_at')
     search_fields = ('user__username', 'full_name', 'company_name', 'citizenship_number')
+
+
+@admin.register(AuditLog)
+class AuditLogAdmin(admin.ModelAdmin):
+    list_display = ('timestamp', 'category', 'actor_username', 'action', 'ip_address', 'status')
+    list_filter = ('category', 'status', 'timestamp')
+    search_fields = ('actor_username', 'action', 'ip_address')
+    readonly_fields = ('timestamp', 'category', 'actor', 'actor_username', 'action', 'ip_address', 'status', 'metadata')
+

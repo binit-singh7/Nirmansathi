@@ -64,7 +64,7 @@
 
             tbody.innerHTML = orders.map(o => {
                 const payBadge = o.payment_status === 'PAID' ? 'bg-success' : 'bg-danger';
-                const statusBadge = o.status === 'DELIVERED' ? 'badge-approved' :
+                const statusBadge = o.status === 'COMPLETED' ? 'badge-approved' :
                     o.status === 'SHIPPED' ? 'badge-review' :
                         o.status === 'CONFIRMED' ? 'badge-pending' : 'badge-pending';
                 const dateStr = new Date(o.created_at).toLocaleDateString();

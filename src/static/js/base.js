@@ -57,7 +57,7 @@ async function apiFetch(endpoint, options = {}) {
 
   try {
     const response = await fetch(`${API_BASE}${endpoint}`, options);
-    
+
     // Handle 401 Unauthorized
     if (response.status === 401 && !endpoint.includes('/accounts/login/')) {
       clearSession();
@@ -108,7 +108,7 @@ function showToast(message, type = 'success', duration = 3500) {
   if (!container) return;
 
   const bgClass = type === 'success' ? 'bg-success' : type === 'danger' || type === 'error' ? 'bg-danger' : type === 'warning' ? 'bg-warning text-dark' : 'bg-primary';
-  
+
   const toastEl = document.createElement('div');
   toastEl.className = `toast align-items-center text-white ${bgClass} border-0 show shadow`;
   toastEl.setAttribute('role', 'alert');
@@ -142,12 +142,12 @@ function updateNavbarAuthUI() {
 
   if (user && getToken()) {
     const roleBadge = user.role === 'CITIZEN' ? 'Citizen' :
-                      user.role === 'MUNICIPALITY_OFFICER' ? 'Municipality Officer' :
-                      user.role === 'MATERIAL_SUPPLIER' ? 'Supplier' : 'Admin';
+      user.role === 'MUNICIPALITY_OFFICER' ? 'Municipality Officer' :
+        user.role === 'MATERIAL_SUPPLIER' ? 'Supplier' : 'Admin';
 
     const dashboardUrl = user.role === 'CITIZEN' ? '/dashboard/citizen/' :
-                         user.role === 'MUNICIPALITY_OFFICER' ? '/dashboard/officer/' :
-                         user.role === 'MATERIAL_SUPPLIER' ? '/dashboard/supplier/' : '/dashboard/admin/';
+      user.role === 'MUNICIPALITY_OFFICER' ? '/dashboard/officer/' :
+        user.role === 'MATERIAL_SUPPLIER' ? '/dashboard/supplier/' : '/dashboard/admin/';
 
     // Populate navbar role-specific quick links
     if (userRoleNav) {
@@ -169,8 +169,8 @@ function updateNavbarAuthUI() {
         `;
       } else if (user.role === 'ADMIN') {
         userRoleNav.innerHTML = `
-          <li class="nav-item"><a class="nav-link" href="/admin-portal/users/"><i class="bi bi-people me-1"></i>Users</a></li>
-          <li class="nav-item"><a class="nav-link" href="/admin-portal/locations/"><i class="bi bi-geo-alt me-1"></i>Locations</a></li>
+          <li class="nav-item"><a class="nav-link" href="/dashboard/admin/"><i class="bi bi-people me-1"></i>Users & Roles</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/"><i class="bi bi-gear me-1"></i>Django Admin</a></li>
         `;
       }
     }
@@ -191,25 +191,55 @@ function updateNavbarAuthUI() {
     `;
 
     document.getElementById('logoutBtn')?.addEventListener('click', () => {
+      const confirmLogout = window.confirm('Are you sure you want to log out?');
+      if (!confirmLogout) return;
+
       clearSession();
       showToast('Logged out successfully', 'info');
       setTimeout(() => {
-        window.location.href = '/';
+        window.location.href = '/login/';
       }, 500);
     });
   } else {
     if (userRoleNav) {
       userRoleNav.innerHTML = `
-        <li class="nav-item"><a class="nav-link" href="/marketplace/"><i class="bi bi-cart3 me-1"></i>Marketplace</a></li>
-      `;
-    }
-    authNav.innerHTML = `
-      <a href="/login/" class="btn btn-outline-light me-2"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
-      <a href="/register/" class="btn btn-warning fw-semibold"><i class="bi bi-person-plus me-1"></i>Register</a>
+      <li class="nav-item">
+        <a class="nav-link" href="/permits/apply/">
+          <i class="bi bi-file-earmark-plus me-1"></i>Apply Permit
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/marketplace/">
+          <i class="bi bi-cart3 me-1"></i>Marketplace
+        </a>
+      </li>
     `;
+    }
+
+    authNav.innerHTML = `
+    <a href="/login/" class="btn btn-outline-light me-2">
+      <i class="bi bi-box-arrow-in-right me-1"></i>Login
+    </a>
+    <a href="/register/" class="btn btn-warning fw-semibold">
+      <i class="bi bi-person-plus me-1"></i>Register
+    </a>
+  `;
   }
 
   updateCartBadge();
+
+  // Ensure global marketplace/apply-permit links are not visible to supplier users
+  if (user && user.role === 'MATERIAL_SUPPLIER') {
+    try {
+      document.querySelectorAll('a[href="/marketplace/"], a[href="/permits/apply/"]').forEach(el => {
+        // hide instead of remove to preserve DOM structure for other scripts
+        el.classList.add('d-none');
+      });
+    } catch (e) {
+      // ignore
+    }
+  }
 }
 
 // Cart Badge Count update

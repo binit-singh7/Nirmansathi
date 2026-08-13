@@ -97,13 +97,16 @@
 
             let grandTotal = 0;
             listEl.innerHTML = items.map(item => {
-                const sub = item.quantity * parseFloat(item.unit_price || item.product_price);
+                const product = item.product_detail || {};
+                const unitPrice = parseFloat(product.price || 0);
+                const quantity = item.quantity || 0;
+                const sub = parseFloat(item.subtotal) || (unitPrice * quantity);
                 grandTotal += sub;
                 return `
         <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom small">
           <div>
-            <span class="fw-bold text-dark d-block">${item.product_name}</span>
-            <span class="text-muted">Qty: ${item.quantity} x Rs. ${parseFloat(item.unit_price || item.product_price).toLocaleString('en-IN')}</span>
+            <span class="fw-bold text-dark d-block">${product.name || 'Item'}</span>
+            <span class="text-muted">Qty: ${quantity} x Rs. ${unitPrice.toLocaleString('en-IN')}</span>
           </div>
           <span class="fw-bold text-primary">Rs. ${sub.toLocaleString('en-IN')}</span>
         </div>

@@ -37,9 +37,9 @@
 
                     <div class="mb-3">
                         <label for="productDescription" class="form-label fw-semibold">Material Specifications &
-                            Description</label>
+                            Description *</label>
                         <textarea class="form-control" id="productDescription" rows="3"
-                            placeholder="Enter grade, compliance standards (NS/IS), setting time, or quality details..."></textarea>
+                            placeholder="Enter grade, compliance standards (NS/IS), setting time, or quality details..." required></textarea>
                     </div>
 
                     <div class="row g-3 mb-3">
@@ -127,7 +127,7 @@
             document.getElementById('productPrice').value = product.price;
             document.getElementById('productStock').value = product.available_stock;
             document.getElementById('productUnit').value = product.unit || 'Bag';
-            document.getElementById('isAvailable').checked = product.is_available;
+            document.getElementById('isAvailable').checked = product.is_active;
         } catch (err) {
             showToast(err.message || 'Failed to load product listing', 'danger');
         }
@@ -149,7 +149,7 @@
         fd.append('price', document.getElementById('productPrice').value);
         fd.append('available_stock', document.getElementById('productStock').value);
         fd.append('unit', document.getElementById('productUnit').value.trim());
-        fd.append('is_available', document.getElementById('isAvailable').checked);
+        fd.append('is_active', document.getElementById('isAvailable').checked);
 
         const imageFile = document.getElementById('productImage').files[0];
         if (imageFile) {

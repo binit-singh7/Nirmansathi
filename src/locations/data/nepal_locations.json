@@ -1,0 +1,274 @@
+[
+  {
+    "name": "Koshi Province",
+    "code": 1,
+    "districts": [
+      {
+        "name": "Morang",
+        "municipalities": [
+          {
+            "name": "Biratnagar Metropolitan City",
+            "type": "METROPOLITAN",
+            "total_wards": 19
+          },
+          {
+            "name": "Belbari Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 11
+          },
+          {
+            "name": "Sundarharaicha Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 12
+          }
+        ]
+      },
+      {
+        "name": "Sunsari",
+        "municipalities": [
+          {
+            "name": "Dharan Sub-Metropolitan City",
+            "type": "SUB_METROPOLITAN",
+            "total_wards": 20
+          },
+          {
+            "name": "Itahari Sub-Metropolitan City",
+            "type": "SUB_METROPOLITAN",
+            "total_wards": 20
+          }
+        ]
+      },
+      {
+        "name": "Jhapa",
+        "municipalities": [
+          {
+            "name": "Birtamod Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 10
+          },
+          {
+            "name": "Damak Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Madhesh Province",
+    "code": 2,
+    "districts": [
+      {
+        "name": "Dhanusha",
+        "municipalities": [
+          {
+            "name": "Janakpurdham Sub-Metropolitan City",
+            "type": "SUB_METROPOLITAN",
+            "total_wards": 25
+          }
+        ]
+      },
+      {
+        "name": "Parsa",
+        "municipalities": [
+          {
+            "name": "Birgunj Metropolitan City",
+            "type": "METROPOLITAN",
+            "total_wards": 32
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Bagmati Province",
+    "code": 3,
+    "districts": [
+      {
+        "name": "Kathmandu",
+        "municipalities": [
+          {
+            "name": "Kathmandu Metropolitan City",
+            "type": "METROPOLITAN",
+            "total_wards": 32
+          },
+          {
+            "name": "Budhanilkantha Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 13
+          },
+          {
+            "name": "Tokha Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 11
+          },
+          {
+            "name": "Kageshwari Manohara Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 9
+          },
+          {
+            "name": "Chandragiri Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 15
+          },
+          {
+            "name": "Kirtipur Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 10
+          }
+        ]
+      },
+      {
+        "name": "Lalitpur",
+        "municipalities": [
+          {
+            "name": "Lalitpur Metropolitan City",
+            "type": "METROPOLITAN",
+            "total_wards": 29
+          },
+          {
+            "name": "Mahalaxmi Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 10
+          },
+          {
+            "name": "Godawari Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 14
+          }
+        ]
+      },
+      {
+        "name": "Bhaktapur",
+        "municipalities": [
+          {
+            "name": "Bhaktapur Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 10
+          },
+          {
+            "name": "Madhyapur Thimi Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 9
+          },
+          {
+            "name": "Suryabinayak Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 10
+          }
+        ]
+      },
+      {
+        "name": "Chitwan",
+        "municipalities": [
+          {
+            "name": "Bharatpur Metropolitan City",
+            "type": "METROPOLITAN",
+            "total_wards": 29
+          },
+          {
+            "name": "Ratnanagar Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Gandaki Province",
+    "code": 4,
+    "districts": [
+      {
+        "name": "Kaski",
+        "municipalities": [
+          {
+            "name": "Pokhara Metropolitan City",
+            "type": "METROPOLITAN",
+            "total_wards": 33
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Lumbini Province",
+    "code": 5,
+    "districts": [
+      {
+        "name": "Rupandehi",
+        "municipalities": [
+          {
+            "name": "Butwal Sub-Metropolitan City",
+            "type": "SUB_METROPOLITAN",
+            "total_wards": 19
+          },
+          {
+            "name": "Siddharthanagar Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 13
+          },
+          {
+            "name": "Tilottama Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 17
+          }
+        ]
+      },
+      {
+        "name": "Dang",
+        "municipalities": [
+          {
+            "name": "Ghorahi Sub-Metropolitan City",
+            "type": "SUB_METROPOLITAN",
+            "total_wards": 19
+          },
+          {
+            "name": "Tulsipur Sub-Metropolitan City",
+            "type": "SUB_METROPOLITAN",
+            "total_wards": 19
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Karnali Province",
+    "code": 6,
+    "districts": [
+      {
+        "name": "Surkhet",
+        "municipalities": [
+          {
+            "name": "Birendranagar Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 16
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Sudurpashchim Province",
+    "code": 7,
+    "districts": [
+      {
+        "name": "Kailali",
+        "municipalities": [
+          {
+            "name": "Dhangadhi Sub-Metropolitan City",
+            "type": "SUB_METROPOLITAN",
+            "total_wards": 19
+          },
+          {
+            "name": "Tikapur Municipality",
+            "type": "MUNICIPALITY",
+            "total_wards": 9
+          }
+        ]
+      }
+    ]
+  }
+]

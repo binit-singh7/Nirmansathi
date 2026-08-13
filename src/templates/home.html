@@ -10,7 +10,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-7">
                     <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3"><i
-                            class="bi bi-shield-check me-1"></i>Official Government E-Portal</span>
+                            class="bi bi-shield-check me-1"></i>DIGITAL CONSTRUCTION PLATFORM</span>
                     <h1 class="display-4 fw-extrabold text-white mb-3">Residential Building Permits & Material
                         Marketplace</h1>
                     <p class="lead text-light mb-4 opacity-90">NirmanSathi simplifies municipal building permits
@@ -24,11 +24,13 @@
                     </div>
                 </div>
                 <div class="col-lg-5 mt-4 mt-lg-0 text-center">
-                    <div class="card card-ns p-4 text-dark shadow-lg">
-                        <h4 class="fw-bold text-navy mb-3"><i class="bi bi-door-open me-2 text-warning"></i>Portal
+                    <div class="card card-ns p-4 text-dark shadow-lg" id="homePortalCard">
+                        <h4 class="fw-bold text-navy mb-3" id="homePortalHeader"><i
+                                class="bi bi-door-open me-2 text-warning"></i>Portal
                             Access</h4>
-                        <p class="text-muted small mb-4">Select your role to access your dedicated dashboard</p>
-                        <div class="d-grid gap-2">
+                        <p class="text-muted small mb-4" id="homePortalText">Select your role to access your dedicated
+                            dashboard</p>
+                        <div class="d-grid gap-2" id="homePortalButtons">
                             <a href="/login/"
                                 class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
                                 <span><i class="bi bi-person me-2"></i>Citizen / Landowner</span>
@@ -109,7 +111,7 @@
                     <div class="rounded-circle bg-danger bg-opacity-10 text-danger d-inline-flex p-3 mb-3 fs-3">
                         <i class="bi bi-wallet2"></i>
                     </div>
-                    <h5 class="fw-bold">4. eSewa Payment</h5>
+                    <h5 class="fw-bold">4. Simulated Payment</h5>
                     <p class="text-muted small">Seamless simulated digital payments via eSewa with real-time receipt
                         generation.</p>
                 </div>
@@ -117,4 +119,75 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof getUser !== 'function') return;
+        const user = getUser();
+        if (!user) return;
+
+        const portalHeader = document.getElementById('homePortalHeader');
+        const portalText = document.getElementById('homePortalText');
+        const portalButtons = document.getElementById('homePortalButtons');
+        if (!portalHeader || !portalText || !portalButtons) return;
+
+        portalHeader.innerHTML = '<i class="bi bi-person-circle me-2 text-warning"></i>Welcome back';
+        portalText.textContent = 'Continue to your dashboard or marketplace based on your role.';
+
+        let buttonHtml = '';
+        switch (user.role) {
+            case 'CITIZEN':
+                buttonHtml = `
+                    <a href="/dashboard/citizen/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
+                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Citizen Dashboard</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="/marketplace/" class="btn btn-outline-dark text-start d-flex justify-content-between align-items-center py-2 px-3">
+                        <span><i class="bi bi-cart3 me-2"></i>Visit Marketplace</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                `;
+                break;
+            case 'MUNICIPALITY_OFFICER':
+                buttonHtml = `
+                    <a href="/dashboard/officer/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
+                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Officer Dashboard</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                `;
+                break;
+            case 'MATERIAL_SUPPLIER':
+                buttonHtml = `
+                    <a href="/dashboard/supplier/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
+                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Supplier Dashboard</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a href="/marketplace/" class="btn btn-outline-dark text-start d-flex justify-content-between align-items-center py-2 px-3">
+                        <span><i class="bi bi-cart3 me-2"></i>Visit Marketplace</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                `;
+                break;
+            case 'ADMIN':
+                buttonHtml = `
+                    <a href="/dashboard/admin/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
+                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Admin Dashboard</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                `;
+                break;
+            default:
+                buttonHtml = `
+                    <a href="/marketplace/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
+                        <span><i class="bi bi-cart3 me-2"></i>Visit Marketplace</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                `;
+        }
+
+        portalButtons.innerHTML = buttonHtml;
+    });
+</script>
 {% endblock %}

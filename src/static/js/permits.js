@@ -10,7 +10,17 @@ async function initLocationCascades(provinceSelectId, districtSelectId, municipa
 
     if (!provinceSelect || !districtSelect || !municipalitySelect || !wardSelect) return;
 
-    // Load Provinces
+    const resetSelect = (select, placeholder) => {
+        select.innerHTML = `<option value="">${placeholder}</option>`;
+        select.disabled = true;
+    };
+
+    const setOptions = (select, items, formatter, placeholder) => {
+        const options = items.map(formatter).join('');
+        select.innerHTML = `<option value="">${placeholder}</option>${options}`;
+        select.disabled = items.length === 0;
+    };
+
     try {
         const provinces = await apiFetch('/locations/provinces/');
         provinceSelect.innerHTML = `<option value="">-- Select Province --</option>` +
@@ -19,60 +29,48 @@ async function initLocationCascades(provinceSelectId, districtSelectId, municipa
         showToast('Failed to load provinces', 'danger');
     }
 
-    // Province Change -> Load Districts
     provinceSelect.addEventListener('change', async () => {
         const provId = provinceSelect.value;
-        districtSelect.innerHTML = '<option value="">-- Select District --</option>';
-        municipalitySelect.innerHTML = '<option value="">-- Select Municipality --</option>';
-        wardSelect.innerHTML = '<option value="">-- Select Ward --</option>';
-        districtSelect.disabled = true;
-        municipalitySelect.disabled = true;
-        wardSelect.disabled = true;
+        resetSelect(districtSelect, '-- Select District --');
+        resetSelect(municipalitySelect, '-- Select Municipality --');
+        resetSelect(wardSelect, '-- Select Ward --');
 
         if (!provId) return;
 
         try {
             const districts = await apiFetch(`/locations/districts/?province=${provId}`);
-            districtSelect.innerHTML = `<option value="">-- Select District --</option>` +
-                districts.map(d => `<option value="${d.id}">${d.name}</option>`).join('');
+            setOptions(districtSelect, districts, (d) => `<option value="${d.id}">${d.name}</option>`, '-- Select District --');
             districtSelect.disabled = false;
         } catch (err) {
             showToast('Failed to load districts', 'danger');
         }
     });
 
-    // District Change -> Load Municipalities
     districtSelect.addEventListener('change', async () => {
         const distId = districtSelect.value;
-        municipalitySelect.innerHTML = '<option value="">-- Select Municipality --</option>';
-        wardSelect.innerHTML = '<option value="">-- Select Ward --</option>';
-        municipalitySelect.disabled = true;
-        wardSelect.disabled = true;
+        resetSelect(municipalitySelect, '-- Select Municipality --');
+        resetSelect(wardSelect, '-- Select Ward --');
 
         if (!distId) return;
 
         try {
             const municipalities = await apiFetch(`/locations/municipalities/?district=${distId}`);
-            municipalitySelect.innerHTML = `<option value="">-- Select Municipality --</option>` +
-                municipalities.map(m => `<option value="${m.id}">${m.name} (${m.municipality_type_display || m.municipality_type})</option>`).join('');
+            setOptions(municipalitySelect, municipalities, (m) => `<option value="${m.id}">${m.name} (${m.type_display || m.type || 'Municipality'})</option>`, '-- Select Municipality --');
             municipalitySelect.disabled = false;
         } catch (err) {
             showToast('Failed to load municipalities', 'danger');
         }
     });
 
-    // Municipality Change -> Load Wards
     municipalitySelect.addEventListener('change', async () => {
         const muniId = municipalitySelect.value;
-        wardSelect.innerHTML = '<option value="">-- Select Ward --</option>';
-        wardSelect.disabled = true;
+        resetSelect(wardSelect, '-- Select Ward --');
 
         if (!muniId) return;
 
         try {
             const wards = await apiFetch(`/locations/wards/?municipality=${muniId}`);
-            wardSelect.innerHTML = `<option value="">-- Select Ward --</option>` +
-                wards.map(w => `<option value="${w.id}">Ward No. ${w.ward_number}</option>`).join('');
+            setOptions(wardSelect, wards, (w) => `<option value="${w.id}">Ward No. ${w.ward_number}</option>`, '-- Select Ward --');
             wardSelect.disabled = false;
         } catch (err) {
             showToast('Failed to load wards', 'danger');

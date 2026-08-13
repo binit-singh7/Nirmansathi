@@ -68,6 +68,13 @@
 <script src="/static/js/cart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
+        const user = getUser();
+        if (user && user.role === 'MATERIAL_SUPPLIER') {
+            // Redirect suppliers to product management instead of showing cart
+            showToast('Suppliers do not use the marketplace cart. Redirecting to Manage Products.', 'info');
+            setTimeout(() => { window.location.href = '/marketplace/products/manage/'; }, 900);
+            return;
+        }
         await renderCart();
     });
 
@@ -100,22 +107,46 @@
             let grandTotal = 0;
 
             tbody.innerHTML = items.map(item => {
-                const subtotal = item.quantity * parseFloat(item.unit_price || item.product_price);
+                // API returns product data nested under product_detail
+                const p = item.product_detail || {};
+                const unitPrice = parseFloat(p.price || 0);
+                const qty = item.quantity || 1;
+                const subtotal = parseFloat(item.subtotal) || (unitPrice * qty);
                 grandTotal += subtotal;
+
+                const imgHtml = p.image
+                    ? `<img src="${p.image}" alt="${p.name}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;" class="me-2">`
+                    : `<span class="me-2 d-inline-flex align-items-center justify-content-center bg-light rounded" style="width:48px;height:48px;"><i class="bi bi-box-seam text-secondary"></i></span>`;
 
                 return `
         <tr>
           <td>
-            <span class="fw-bold d-block text-dark">${item.product_name}</span>
-            <small class="text-muted">Supplier: ${item.supplier_name || 'Verified Supplier'}</small>
+            <div class="d-flex align-items-center">
+              ${imgHtml}
+              <div>
+                <a href="/marketplace/products/${p.id || '#'}/" class="fw-bold d-block text-dark text-decoration-none">${p.name || '—'}</a>
+                <small class="text-muted"><i class="bi bi-shop me-1"></i>${p.supplier_name || 'Verified Supplier'}</small>
+              </div>
+            </div>
           </td>
-          <td>Rs. ${parseFloat(item.unit_price || item.product_price).toLocaleString('en-IN')}</td>
+          <td class="fw-semibold">Rs. ${unitPrice.toLocaleString('en-IN')}<small class="text-muted d-block">/ ${p.unit || 'unit'}</small></td>
           <td>
-            <span class="fw-bold px-2">${item.quantity}</span>
+            <div class="input-group input-group-sm" style="width:120px;">
+              <button class="btn btn-outline-secondary" type="button" onclick="changeQty(${item.id}, ${qty - 1}, ${p.available_stock || 9999})">
+                <i class="bi bi-dash"></i>
+              </button>
+              <input type="number" class="form-control text-center fw-bold" value="${qty}"
+                min="1" max="${p.available_stock || 9999}"
+                onchange="changeQty(${item.id}, this.value, ${p.available_stock || 9999})"
+                style="max-width:44px;">
+              <button class="btn btn-outline-secondary" type="button" onclick="changeQty(${item.id}, ${qty + 1}, ${p.available_stock || 9999})">
+                <i class="bi bi-plus"></i>
+              </button>
+            </div>
           </td>
           <td class="fw-bold text-primary">Rs. ${subtotal.toLocaleString('en-IN')}</td>
           <td class="text-end">
-            <button class="btn btn-sm btn-outline-danger" onclick="handleRemove(${item.id})">
+            <button class="btn btn-sm btn-outline-danger" onclick="handleRemove(${item.id})" title="Remove item">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -134,6 +165,20 @@
     async function handleRemove(itemId) {
         await removeFromCart(itemId);
         await renderCart();
+    }
+
+    async function changeQty(itemId, newQty, maxStock) {
+        const qty = Math.max(1, Math.min(parseInt(newQty) || 1, maxStock));
+        if (qty < 1) return;
+        try {
+            await apiFetch(`/marketplace/cart/update-item/${itemId}/`, {
+                method: 'PATCH',
+                body: JSON.stringify({ quantity: qty })
+            });
+            await renderCart();
+        } catch (err) {
+            showToast(err.message || 'Failed to update quantity.', 'danger');
+        }
     }
 </script>
 {% endblock %}

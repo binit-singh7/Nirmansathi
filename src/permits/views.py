@@ -10,6 +10,8 @@ from .serializers import (
     PermitDecisionSerializer
 )
 from .permissions import IsPermitParticipant
+from accounts.utils import log_audit
+from accounts.models import AuditLog
 
 class PermitApplicationViewSet(viewsets.ModelViewSet):
     serializer_class = PermitApplicationSerializer
@@ -37,7 +39,15 @@ class PermitApplicationViewSet(viewsets.ModelViewSet):
         return PermitApplication.objects.none()
 
     def perform_create(self, serializer):
-        serializer.save(applicant=self.request.user, status=PermitApplication.Status.PENDING)
+        app = serializer.save(applicant=self.request.user, status=PermitApplication.Status.PENDING)
+        ip = self.request.META.get('REMOTE_ADDR', '127.0.0.1')
+        log_audit(
+            category=AuditLog.Category.PERMIT,
+            action=f"Submitted new building permit application '{app.reference_number}'.",
+            user=self.request.user,
+            ip_address=ip,
+            status=AuditLog.Status.SUCCESS
+        )
 
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def review(self, request, pk=None):
@@ -74,17 +84,25 @@ class PermitApplicationViewSet(viewsets.ModelViewSet):
                 application.status = PermitApplication.Status.APPROVED
             elif decision_choice == PermitDecision.DecisionChoice.REJECTED:
                 application.status = PermitApplication.Status.REJECTED
-            else:
+            elif decision_choice == PermitDecision.DecisionChoice.UNDER_REVIEW:
                 application.status = PermitApplication.Status.UNDER_REVIEW
+            application.save(update_fields=['status'])
 
-            application.remarks = remarks
-            application.save()
+            ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
+            log_audit(
+                category=AuditLog.Category.PERMIT,
+                action=f"Decision '{decision_choice}' recorded for permit application '{application.reference_number}'.",
+                user=user,
+                ip_address=ip,
+                status=AuditLog.Status.SUCCESS
+            )
 
         return Response({
             'message': f'Application status updated to {application.get_status_display()}.',
             'application': PermitApplicationSerializer(application).data,
             'decision': PermitDecisionSerializer(decision).data
         }, status=status.HTTP_200_OK)
+
 
 
 class ApplicationDocumentViewSet(viewsets.ModelViewSet):

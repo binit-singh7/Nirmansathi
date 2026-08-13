@@ -1,0 +1,381 @@
+/**
+ * NirmanSathi - Nepal Government Official Navbar Styles
+ * Lightweight, standalone stylesheet dedicated strictly to the top navigation header.
+ */
+
+/* ==========================================================================
+   1. COLOR VARIABLES & THEME TOKENS
+   ========================================================================== */
+:root {
+  --gov-navy: #003D82;         /* Official Nepal Gov Navy Blue */
+  --gov-navy-dark: #002B5C;    /* Darker Navy for hover/depth */
+  --gov-navy-light: #0B4F9C;   /* Accent Navy */
+  --gov-crimson: #C8102E;      /* Official Crimson Red (Nepal Flag) */
+  --gov-crimson-hover: #A00823;/* Crimson Hover */
+  --gov-gold: #F59E0B;         /* Emblem Gold Accent */
+  --gov-gold-light: #FBBF24;   /* Light Gold Accent */
+  --gov-white: #FFFFFF;        /* Pure White */
+  --gov-gray-100: #F3F4F6;    /* Light Gray */
+  --gov-gray-200: #E5E7EB;    /* Border Gray */
+  --gov-gray-700: #374151;    /* Dark Gray Text */
+  --gov-shadow-nav: 0 4px 12px rgba(0, 43, 92, 0.25);
+  --gov-shadow-dropdown: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --gov-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   2. NAVBAR CONTAINER & BRANDING
+   ========================================================================== */
+.navbar-ns {
+  background-color: var(--gov-navy) !important;
+  background: linear-gradient(180deg, var(--gov-navy) 0%, var(--gov-navy-dark) 100%) !important;
+  border-bottom: 3px solid var(--gov-gold);
+  box-shadow: var(--gov-shadow-nav);
+  padding: 0.5rem 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+  transition: var(--gov-transition);
+}
+
+/* Top Mini Announcement / Gov Header Bar (Optional extension) */
+.gov-top-bar {
+  background-color: var(--gov-navy-dark);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.75rem;
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.gov-top-bar a {
+  color: var(--gov-gold);
+  text-decoration: none;
+}
+
+.gov-top-bar a:hover {
+  text-decoration: underline;
+}
+
+/* Brand Link Container */
+.navbar-ns .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.2rem 0;
+  text-decoration: none;
+  color: var(--gov-white) !important;
+}
+
+/* Emblem Image Styling */
+.navbar-emblem {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-emblem {
+  transform: scale(1.05);
+}
+
+/* Brand Typography & Tagline */
+.navbar-brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.15;
+}
+
+.navbar-title {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--gov-white);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.navbar-title .highlight-gold {
+  color: var(--gov-gold);
+}
+
+.navbar-subtitle {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--gov-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+  opacity: 0.95;
+}
+
+/* ==========================================================================
+   3. NAVIGATION MENU & LINKS
+   ========================================================================== */
+.navbar-ns .navbar-nav {
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.navbar-ns .nav-item {
+  position: relative;
+}
+
+.navbar-ns .nav-link {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 6px;
+  transition: var(--gov-transition);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.navbar-ns .nav-link i {
+  font-size: 1.05rem;
+  color: var(--gov-gold-light);
+  transition: var(--gov-transition);
+}
+
+/* Hover State */
+.navbar-ns .nav-link:hover,
+.navbar-ns .nav-link:focus-visible {
+  color: var(--gov-white) !important;
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.navbar-ns .nav-link:hover i {
+  color: var(--gov-gold);
+  transform: translateY(-1px);
+}
+
+/* Active State */
+.navbar-ns .nav-link.active,
+.navbar-ns .nav-item.active .nav-link {
+  color: var(--gov-white) !important;
+  background-color: var(--gov-crimson) !important;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(200, 16, 46, 0.4);
+  position: relative;
+}
+
+.navbar-ns .nav-link.active::after,
+.navbar-ns .nav-item.active .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  right: 15%;
+  height: 3px;
+  background-color: var(--gov-gold);
+  border-radius: 2px 2px 0 0;
+}
+
+/* ==========================================================================
+   4. BUTTONS & AUTH SECTION
+   ========================================================================== */
+.navbar-ns .btn-crimson {
+  background-color: var(--gov-crimson);
+  color: var(--gov-white) !important;
+  border: 1px solid var(--gov-crimson);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: var(--gov-transition);
+}
+
+.navbar-ns .btn-crimson:hover {
+  background-color: var(--gov-crimson-hover);
+  border-color: var(--gov-crimson-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(200, 16, 46, 0.3);
+}
+
+.navbar-ns .btn-outline-light {
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  color: var(--gov-white) !important;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: var(--gov-transition);
+}
+
+.navbar-ns .btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--gov-white);
+  color: var(--gov-white) !important;
+}
+
+.navbar-ns .btn-warning {
+  background-color: var(--gov-gold) !important;
+  border-color: var(--gov-gold) !important;
+  color: #000000 !important;
+  font-weight: 700;
+  padding: 0.45rem 1.1rem;
+  border-radius: 6px;
+  transition: var(--gov-transition);
+}
+
+.navbar-ns .btn-warning:hover {
+  background-color: var(--gov-gold-light) !important;
+  border-color: var(--gov-gold-light) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+
+/* User Menu & Role Badge */
+.navbar-ns .dropdown-toggle {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--gov-white) !important;
+  border-radius: 8px;
+  padding: 0.4rem 0.85rem;
+  transition: var(--gov-transition);
+}
+
+.navbar-ns .dropdown-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+  border-color: var(--gov-gold);
+}
+
+.navbar-ns .dropdown-menu {
+  background-color: var(--gov-white);
+  border: 1px solid var(--gov-gray-200);
+  border-top: 3px solid var(--gov-navy);
+  border-radius: 8px;
+  box-shadow: var(--gov-shadow-dropdown);
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+}
+
+.navbar-ns .dropdown-item {
+  color: var(--gov-gray-700);
+  font-weight: 500;
+  padding: 0.55rem 1.25rem;
+  transition: var(--gov-transition);
+  display: flex;
+  align-items: center;
+}
+
+.navbar-ns .dropdown-item:hover {
+  background-color: var(--gov-gray-100);
+  color: var(--gov-navy);
+}
+
+.navbar-ns .dropdown-item.text-danger:hover {
+  background-color: #FEE2E2;
+  color: var(--gov-crimson);
+}
+
+/* Dynamic Role Badge */
+.navbar-ns .badge-role {
+  background-color: var(--gov-gold);
+  color: #000000;
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Cart Badge Styling */
+.navbar-cart-badge {
+  background-color: var(--gov-crimson) !important;
+  color: var(--gov-white) !important;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.45rem;
+  border-radius: 50rem;
+}
+
+/* ==========================================================================
+   5. ACCESSIBILITY & FOCUS STATES
+   ========================================================================== */
+.navbar-ns button:focus-visible,
+.navbar-ns a:focus-visible {
+  outline: 3px solid var(--gov-gold) !important;
+  outline-offset: 2px !important;
+}
+
+.navbar-toggler {
+  border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  transition: var(--gov-transition);
+}
+
+.navbar-toggler:hover,
+.navbar-toggler:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--gov-gold) !important;
+  outline: none;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE BREAKPOINTS (Mobile & Tablet)
+   ========================================================================== */
+@media (max-width: 991.98px) {
+  .navbar-ns {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .navbar-title {
+    font-size: 1.1rem;
+  }
+
+  .navbar-subtitle {
+    font-size: 0.62rem;
+  }
+
+  .navbar-emblem {
+    width: 36px;
+    height: 36px;
+  }
+
+  .navbar-collapse {
+    background-color: var(--gov-navy-dark);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .navbar-ns .navbar-nav {
+    align-items: stretch;
+    margin-bottom: 1rem !important;
+  }
+
+  .navbar-ns .nav-link {
+    padding: 0.65rem 1rem !important;
+  }
+
+  .navbar-ns .nav-link.active::after {
+    display: none;
+  }
+
+  #navbarAuthNav {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+  }
+
+  #navbarAuthNav .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}

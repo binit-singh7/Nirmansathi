@@ -19,6 +19,8 @@ from .serializers import (
     OrderSerializer
 )
 from .permissions import IsSupplierOrReadOnly
+from accounts.utils import log_audit
+from accounts.models import AuditLog
 
 class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductCategory.objects.all()
@@ -45,7 +47,16 @@ class ProductViewSet(viewsets.ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        serializer.save(supplier=self.request.user)
+        prod = serializer.save(supplier=self.request.user)
+        ip = self.request.META.get('REMOTE_ADDR', '127.0.0.1')
+        log_audit(
+            category=AuditLog.Category.MARKETPLACE,
+            action=f"Added new product '{prod.name}' with price Rs. {prod.price} to marketplace.",
+            user=self.request.user,
+            ip_address=ip,
+            status=AuditLog.Status.SUCCESS
+        )
+
 
 
 class ShoppingCartViewSet(viewsets.ViewSet):
@@ -98,6 +109,32 @@ class ShoppingCartViewSet(viewsets.ViewSet):
             return Response(ShoppingCartSerializer(cart).data, status=status.HTTP_200_OK)
         except CartItem.DoesNotExist:
             return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
+
+    @action(detail=False, methods=['patch'], url_path=r'update-item/(?P<item_id>\d+)')
+    def update_item(self, request, item_id=None):
+        cart, _ = ShoppingCart.objects.get_or_create(user=request.user)
+        try:
+            item = CartItem.objects.get(id=item_id, cart=cart)
+        except CartItem.DoesNotExist:
+            return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            quantity = int(request.data.get('quantity', item.quantity))
+        except (TypeError, ValueError):
+            return Response({"error": "Quantity must be a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if quantity < 1:
+            return Response({"error": "Quantity must be at least 1."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if quantity > item.product.available_stock:
+            return Response(
+                {"error": f"Only {item.product.available_stock} units available in stock."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        item.quantity = quantity
+        item.save()
+        return Response(ShoppingCartSerializer(cart).data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='checkout')
     def checkout(self, request):
@@ -153,10 +190,20 @@ class ShoppingCartViewSet(viewsets.ViewSet):
             # Clear cart
             cart_items.delete()
 
+            ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
+            log_audit(
+                category=AuditLog.Category.MARKETPLACE,
+                action=f"Placed new order {order.order_reference} for Rs. {order.total_amount}.",
+                user=request.user,
+                ip_address=ip,
+                status=AuditLog.Status.SUCCESS
+            )
+
         return Response({
             'message': 'Order placed successfully.',
             'order': OrderSerializer(order).data
         }, status=status.HTTP_201_CREATED)
+
 
 
 class OrderViewSet(viewsets.ReadOnlyModelViewSet):
