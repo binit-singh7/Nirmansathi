@@ -1,15 +1,15 @@
 import os
 import sys
+from pathlib import Path
 
-# Get the absolute path to the src directory
-SRC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Make Django apps and config importable
-if SRC_DIR not in sys.path:
-    sys.path.insert(0, SRC_DIR)
+# Add the 'src' directory to sys.path so Python can locate 'config'
+BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 from django.core.wsgi import get_wsgi_application
 
-application = get_wsgi_application()
+app = get_wsgi_application()
+application = app
