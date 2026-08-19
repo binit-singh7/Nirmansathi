@@ -19,8 +19,6 @@ from .serializers import (
     OrderSerializer
 )
 from .permissions import IsSupplierOrReadOnly
-from accounts.utils import log_audit
-from accounts.models import AuditLog
 
 class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductCategory.objects.all()
@@ -47,16 +45,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        prod = serializer.save(supplier=self.request.user)
-        ip = self.request.META.get('REMOTE_ADDR', '127.0.0.1')
-        log_audit(
-            category=AuditLog.Category.MARKETPLACE,
-            action=f"Added new product '{prod.name}' with price Rs. {prod.price} to marketplace.",
-            user=self.request.user,
-            ip_address=ip,
-            status=AuditLog.Status.SUCCESS
-        )
-
+        serializer.save(supplier=self.request.user)
 
 
 class ShoppingCartViewSet(viewsets.ViewSet):
@@ -109,32 +98,6 @@ class ShoppingCartViewSet(viewsets.ViewSet):
             return Response(ShoppingCartSerializer(cart).data, status=status.HTTP_200_OK)
         except CartItem.DoesNotExist:
             return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
-
-    @action(detail=False, methods=['patch'], url_path=r'update-item/(?P<item_id>\d+)')
-    def update_item(self, request, item_id=None):
-        cart, _ = ShoppingCart.objects.get_or_create(user=request.user)
-        try:
-            item = CartItem.objects.get(id=item_id, cart=cart)
-        except CartItem.DoesNotExist:
-            return Response({"error": "Item not found in cart."}, status=status.HTTP_404_NOT_FOUND)
-
-        try:
-            quantity = int(request.data.get('quantity', item.quantity))
-        except (TypeError, ValueError):
-            return Response({"error": "Quantity must be a valid integer."}, status=status.HTTP_400_BAD_REQUEST)
-
-        if quantity < 1:
-            return Response({"error": "Quantity must be at least 1."}, status=status.HTTP_400_BAD_REQUEST)
-
-        if quantity > item.product.available_stock:
-            return Response(
-                {"error": f"Only {item.product.available_stock} units available in stock."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        item.quantity = quantity
-        item.save()
-        return Response(ShoppingCartSerializer(cart).data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'], url_path='checkout')
     def checkout(self, request):
@@ -190,25 +153,16 @@ class ShoppingCartViewSet(viewsets.ViewSet):
             # Clear cart
             cart_items.delete()
 
-            ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
-            log_audit(
-                category=AuditLog.Category.MARKETPLACE,
-                action=f"Placed new order {order.order_reference} for Rs. {order.total_amount}.",
-                user=request.user,
-                ip_address=ip,
-                status=AuditLog.Status.SUCCESS
-            )
-
         return Response({
             'message': 'Order placed successfully.',
             'order': OrderSerializer(order).data
         }, status=status.HTTP_201_CREATED)
 
 
-
-class OrderViewSet(viewsets.ReadOnlyModelViewSet):
+class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ['get', 'patch', 'head', 'options']  # Disable POST/PUT/DELETE on this viewset
 
     def get_queryset(self):
         user = self.request.user
@@ -219,9 +173,33 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
             return Order.objects.filter(items__supplier=user).distinct()
         return Order.objects.filter(buyer=user)
 
+    def partial_update(self, request, *args, **kwargs):
+        """Allow suppliers and admins to update the order status only."""
+        user = request.user
+        if not (user.is_staff or getattr(user, 'role', None) == 'ADMIN' or user.is_material_supplier):
+            return Response(
+                {"error": "Only suppliers or admins can update order status."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+        # Restrict updatable fields to status only
+        allowed_fields = {'status'}
+        data = {k: v for k, v in request.data.items() if k in allowed_fields}
+        if not data:
+            return Response({"error": "No valid fields to update. Only 'status' is allowed."},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if 'status' in data and data['status'] not in Order.OrderStatus.values:
+            return Response({"error": "Invalid status value."}, status=status.HTTP_400_BAD_REQUEST)
+
+        kwargs['partial'] = True
+        return super().partial_update(request, *args, **kwargs)
+
     @action(detail=True, methods=['post'], url_path='update-status')
     def update_status(self, request, pk=None):
+        """Legacy POST endpoint kept for compatibility."""
         order = self.get_object()
+        user = request.user
+        if not (user.is_staff or getattr(user, 'role', None) == 'ADMIN' or user.is_material_supplier):
+            return Response({"error": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
         new_status = request.data.get('status')
         if new_status not in Order.OrderStatus.values:
             return Response({"error": "Invalid status value."}, status=status.HTTP_400_BAD_REQUEST)

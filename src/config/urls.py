@@ -12,6 +12,9 @@ admin.site.index_title = "NirmanSathi System Administration"
 urlpatterns = [
     # Home Page
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    
+    # Language switcher (POST target for the set_language form)
+    path('i18n/', include('django.conf.urls.i18n')),
 
     # Direct Web Page Routes (HTML Templates)
     path('login/', TemplateView.as_view(template_name='accounts/login.html'), name='login'),

@@ -80,6 +80,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'items', 'created_at', 'updated_at'
         ]
         read_only_fields = [
-            'id', 'order_reference', 'buyer', 'status', 'payment_status',
+            'id', 'order_reference', 'buyer', 'payment_status',
             'total_amount', 'created_at', 'updated_at'
         ]

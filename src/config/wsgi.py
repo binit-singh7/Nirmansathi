@@ -1,21 +1,15 @@
-"""
-WSGI config for config project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/6.0/howto/deployment/wsgi/
-"""
-
 import os
 import sys
 
-# Add the src directory to Python's path
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, BASE_DIR)
+# Get the absolute path to the src directory
+SRC_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-from django.core.wsgi import get_wsgi_application
+# Make Django apps and config importable
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
+
+from django.core.wsgi import get_wsgi_application
 
 application = get_wsgi_application()

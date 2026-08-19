@@ -212,11 +212,11 @@
         <td><span class="badge ${o.payment_status === 'PAID' ? 'bg-success' : 'bg-danger'}">${o.payment_status}</span></td>
         <td><span class="badge bg-info text-dark">${o.status_display || o.status}</span></td>
         <td class="text-end">
-          <select class="form-select form-select-sm" onchange="updateOrderStatus(${o.id}, this.value)">
+          <select class="form-select form-select-sm" onchange="updateOrderStatus(${o.id}, this.value, this)">
             <option value="PENDING" ${o.status === 'PENDING' ? 'selected' : ''}>Pending</option>
             <option value="CONFIRMED" ${o.status === 'CONFIRMED' ? 'selected' : ''}>Confirm</option>
             <option value="SHIPPED" ${o.status === 'SHIPPED' ? 'selected' : ''}>Ship Material</option>
-            <option value="COMPLETED" ${o.status === 'COMPLETED' ? 'selected' : ''}>Delivered</option>
+            <option value="DELIVERED" ${o.status === 'DELIVERED' ? 'selected' : ''}>Delivered</option>
           </select>
         </td>
       </tr>
@@ -237,50 +237,18 @@
         }
     }
 
-    async function updateOrderStatus(orderId, statusVal) {
+    async function updateOrderStatus(orderId, statusVal, selectEl) {
+        selectEl.disabled = true;
         try {
-            const token = getToken();
-            const headers = { 'Content-Type': 'application/json' };
-            if (token) headers['Authorization'] = `Bearer ${token}`;
-
-            const response = await fetch(`${API_BASE}/marketplace/orders/${orderId}/update-status/`, {
-                method: 'POST',
-                headers,
+            await apiFetch(`/marketplace/orders/${orderId}/`, {
+                method: 'PATCH',
                 body: JSON.stringify({ status: statusVal })
             });
-
-            const data = await response.json().catch(() => ({}));
-
-            if (response.status === 200) {
-                showToast(`Order status updated to ${statusVal}`, 'success');
-                await loadSupplierOrders();
-                return;
-            }
-
-            if (response.status === 400) {
-                const msg = parseErrorMessage(data) || 'Invalid status.';
-                showToast(msg, 'danger');
-                return;
-            }
-
-            if (response.status === 401 || response.status === 403) {
-                showToast('Authentication/permission error. Please log in with proper supplier account.', 'danger');
-                if (response.status === 401) {
-                    clearSession();
-                    setTimeout(() => { window.location.href = '/login/'; }, 1200);
-                }
-                return;
-            }
-
-            if (response.status === 404) {
-                showToast('Order not found or not accessible.', 'danger');
-                return;
-            }
-
-            // 500 or other unexpected statuses
-            showToast('Failed to update order status. Please try again later.', 'danger');
+            showToast(`Order status updated to ${statusVal}`, 'success');
+            await loadSupplierOrders();
         } catch (err) {
             showToast(err.message || 'Failed to update order status.', 'danger');
+            selectEl.disabled = false;
         }
     }
 </script>

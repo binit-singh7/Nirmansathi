@@ -116,10 +116,10 @@ Current progress includes:
 - ✅ Technology Stack Selection
 - ✅ Project Proposal
 - ✅ Feasibility Study
-- ⏳ Software Requirement Specification (SRS)
-- ⏳ UML Design
-- ⏳ Database Design
-- ⏳ Development
+- ✅ Software Requirement Specification (SRS)
+- ✅ UML Design
+- ✅ Database Design
+- ✅ Development
 
 ---
 
