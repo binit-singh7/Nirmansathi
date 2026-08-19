@@ -2,7 +2,7 @@ import os
 import sys
 from pathlib import Path
 
-# Force the 'src' directory onto Python's search path
+# Add the 'src' directory to Python's sys.path
 SRC_DIR = Path(__file__).resolve().parent.parent
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
