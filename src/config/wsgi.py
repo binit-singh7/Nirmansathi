@@ -2,14 +2,14 @@ import os
 import sys
 from pathlib import Path
 
-# Add the 'src' directory to sys.path so Python can locate 'config'
-BASE_DIR = Path(__file__).resolve().parent.parent
-if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
+# Force the 'src' directory onto Python's search path
+SRC_DIR = Path(__file__).resolve().parent.parent
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 from django.core.wsgi import get_wsgi_application
 
-app = get_wsgi_application()
-application = app
+application = get_wsgi_application()
+app = application
