@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-i2tqikors#b&1w#2k-nv(k*p&l4s015&$vr&)!_ykg5vxz6k)t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','.ngrok-free.app','localhost','127.0.0.1']
 
 
 # Application definition
@@ -142,6 +142,9 @@ LANGUAGES = [
 LOCALE_PATHS = [
     BASE_DIR / 'locale',   # -> src/locale/
 ]
+LANGUAGE_COOKIE_NAME = 'django_language'
+LANGUAGE_COOKIE_AGE = 31536000
+
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
@@ -174,3 +177,8 @@ SIMPLE_JWT = {
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://1907-103-180-241-10.ngrok-free.app",
+]

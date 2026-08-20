@@ -1,54 +1,54 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Order Details - NirmanSathi Marketplace{% endblock %}
+{% block title %}{% trans "Order Details - NirmanSathi Marketplace" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <span class="badge bg-secondary mb-1" id="orderRefBadge">Ref: Loading...</span>
-            <h2 class="fw-bold text-navy mb-0">Order Status & Tracking</h2>
+            <span class="badge bg-secondary mb-1" id="orderRefBadge">Ref: {% trans "Loading..." %}</span>
+            <h2 class="fw-bold text-navy mb-0">{% trans "Order Status & Tracking" %}</h2>
         </div>
-        <a href="/marketplace/orders/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back to
-            Orders</a>
+        <a href="/marketplace/orders/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>{% trans "Back to Orders" %}</a>
     </div>
 
     <div id="orderLoading" class="text-center py-5">
-        <span class="loading-spinner fs-3 me-2"></span>Loading order details...
+        <span class="loading-spinner fs-3 me-2"></span>{% trans "Loading order details..." %}
     </div>
 
     <div id="orderContainer" class="d-none">
         <!-- Fulfillment Timeline Card -->
         <div class="card card-ns shadow-sm p-4 mb-4">
-            <h5 class="fw-bold text-navy mb-3">Delivery Status Timeline</h5>
+            <h5 class="fw-bold text-navy mb-3">{% trans "Delivery Status Timeline" %}</h5>
 
             <div class="row text-center my-2" id="orderTimeline">
                 <div class="col-md-3 mb-2 mb-md-0">
                     <div class="p-3 rounded bg-light border" id="stepPlaced">
                         <i class="bi bi-bag-check fs-2 text-success"></i>
-                        <h6 class="fw-bold mt-2 mb-0">1. Order Placed</h6>
+                        <h6 class="fw-bold mt-2 mb-0">{% trans "1. Order Placed" %}</h6>
                         <small class="text-muted" id="orderDate"></small>
                     </div>
                 </div>
                 <div class="col-md-3 mb-2 mb-md-0">
                     <div class="p-3 rounded bg-light border" id="stepConfirmed">
                         <i class="bi bi-check2-circle fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">2. Confirmed</h6>
-                        <small class="text-muted">Supplier Verification</small>
+                        <h6 class="fw-bold mt-2 mb-0">{% trans "2. Confirmed" %}</h6>
+                        <small class="text-muted">{% trans "Supplier Verification" %}</small>
                     </div>
                 </div>
                 <div class="col-md-3 mb-2 mb-md-0">
                     <div class="p-3 rounded bg-light border" id="stepShipped">
                         <i class="bi bi-truck fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">3. Shipped</h6>
-                        <small class="text-muted">In Transit</small>
+                        <h6 class="fw-bold mt-2 mb-0">{% trans "3. Shipped" %}</h6>
+                        <small class="text-muted">{% trans "In Transit" %}</small>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="p-3 rounded bg-light border" id="stepDelivered">
                         <i class="bi bi-house-check fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">4. Delivered</h6>
-                        <small class="text-muted">Completed</small>
+                        <h6 class="fw-bold mt-2 mb-0">{% trans "4. Delivered" %}</h6>
+                        <small class="text-muted">{% trans "Completed" %}</small>
                     </div>
                 </div>
             </div>
@@ -58,10 +58,9 @@
                 role="alert">
                 <div>
                     <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
-                    <strong>Payment Pending:</strong> This order has not been paid yet via eSewa.
+                    <strong>{% trans "Payment Pending:" %}</strong> {% trans "This order has not been paid yet via eSewa." %}
                 </div>
-                <a id="payNowBtn" href="#" class="btn btn-sm btn-success fw-bold"><i class="bi bi-wallet2 me-1"></i>Pay
-                    Now via eSewa</a>
+                <a id="payNowBtn" href="#" class="btn btn-sm btn-success fw-bold"><i class="bi bi-wallet2 me-1"></i>{% trans "Pay Now via eSewa" %}</a>
             </div>
         </div>
 
@@ -69,15 +68,15 @@
         <div class="row g-4">
             <div class="col-lg-8">
                 <div class="card card-ns shadow-sm p-4">
-                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Items Purchased</h5>
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">{% trans "Items Purchased" %}</h5>
                     <div class="table-responsive">
                         <table class="table align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Unit Price</th>
-                                    <th>Quantity</th>
-                                    <th class="text-end">Subtotal</th>
+                                    <th>{% trans "Product" %}</th>
+                                    <th>{% trans "Unit Price" %}</th>
+                                    <th>{% trans "Quantity" %}</th>
+                                    <th class="text-end">{% trans "Subtotal" %}</th>
                                 </tr>
                             </thead>
                             <tbody id="orderItemsBody">
@@ -90,26 +89,26 @@
 
             <div class="col-lg-4">
                 <div class="card card-ns shadow-sm p-4 mb-4">
-                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Shipping Details</h5>
-                    <p class="mb-2"><strong>Address:</strong> <span id="shippingAddr"></span></p>
-                    <p class="mb-2"><strong>Phone:</strong> <span id="contactPhone"></span></p>
-                    <p class="mb-0"><strong>Payment Status:</strong> <span class="badge" id="paymentStatusBadge"></span>
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">{% trans "Shipping Details" %}</h5>
+                    <p class="mb-2"><strong>{% trans "Address:" %}</strong> <span id="shippingAddr"></span></p>
+                    <p class="mb-2"><strong>{% trans "Phone:" %}</strong> <span id="contactPhone"></span></p>
+                    <p class="mb-0"><strong>{% trans "Payment Status:" %}</strong> <span class="badge" id="paymentStatusBadge"></span>
                     </p>
                 </div>
 
                 <div class="card card-ns shadow-sm p-4">
-                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">Order Summary</h5>
+                    <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom">{% trans "Order Summary" %}</h5>
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Items Total:</span>
+                        <span class="text-muted">{% trans "Items Total:" %}</span>
                         <span class="fw-bold" id="itemsTotal">Rs. 0</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
-                        <span class="text-muted">Delivery:</span>
-                        <span class="text-success fw-bold">FREE</span>
+                        <span class="text-muted">{% trans "Delivery:" %}</span>
+                        <span class="text-success fw-bold">{% trans "FREE" %}</span>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between">
-                        <span class="fw-bold fs-5">Grand Total:</span>
+                        <span class="fw-bold fs-5">{% trans "Grand Total:" %}</span>
                         <span class="fw-bold text-primary fs-4" id="orderGrandTotal">Rs. 0</span>
                     </div>
                 </div>
@@ -137,7 +136,7 @@
 
             // Payment Status Badge
             const payBadge = document.getElementById('paymentStatusBadge');
-            payBadge.textContent = order.payment_status;
+            payBadge.textContent = order.payment_status_display || order.payment_status;
             payBadge.className = `badge ${order.payment_status === 'PAID' ? 'bg-success' : 'bg-danger'}`;
 
             if (order.payment_status === 'UNPAID') {
@@ -176,7 +175,7 @@
         <tr>
           <td>
             <span class="fw-bold text-dark d-block">${item.product_name}</span>
-            <small class="text-muted">Supplier: ${item.supplier_name || 'Verified Supplier'}</small>
+            <small class="text-muted">${_t('supplier', 'Supplier')}: ${item.supplier_name || "{% trans 'Verified Supplier' %}"}</small>
           </td>
           <td>Rs. ${parseFloat(item.unit_price).toLocaleString('en-IN')}</td>
           <td>${item.quantity}</td>
@@ -188,7 +187,7 @@
             document.getElementById('itemsTotal').textContent = `Rs. ${total.toLocaleString('en-IN')}`;
             document.getElementById('orderGrandTotal').textContent = `Rs. ${parseFloat(order.total_amount).toLocaleString('en-IN')}`;
         } catch (err) {
-            document.getElementById('orderLoading').innerHTML = `<p class="text-danger py-4">${err.message || 'Failed to load order details.'}</p>`;
+            document.getElementById('orderLoading').innerHTML = `<p class="text-danger py-4">${err.message || "{% trans 'Failed to load order details.' %}"}</p>`;
         }
     });
 </script>

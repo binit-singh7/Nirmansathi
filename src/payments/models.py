@@ -1,15 +1,16 @@
 import uuid
 from django.db import models
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 
 def generate_transaction_code():
     return f"ESEWA-SIM-{uuid.uuid4().hex[:10].upper()}"
 
 class PaymentTransaction(models.Model):
     class Status(models.TextChoices):
-        SUCCESS = 'SUCCESS', 'Success'
-        FAILED = 'FAILED', 'Failed'
-        PENDING = 'PENDING', 'Pending'
+        SUCCESS = 'SUCCESS', _('Success')
+        FAILED = 'FAILED', _('Failed')
+        PENDING = 'PENDING', _('Pending')
 
     order = models.ForeignKey(
         'marketplace.Order',

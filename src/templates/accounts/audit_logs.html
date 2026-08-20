@@ -1,19 +1,17 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}System Audit Logs - NirmanSathi{% endblock %}
+{% block title %}{% trans "System Audit Logs - NirmanSathi" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
         <div>
-            <h2 class="fw-bold text-navy mb-1"><i class="bi bi-clock-history text-danger me-2"></i>System Security &
-                Audit Trail</h2>
-            <p class="text-muted small mb-0">Real-time system activity logs, authentication events, permit decision
-                audits, and payment verifications.</p>
+            <h2 class="fw-bold text-navy mb-1"><i class="bi bi-clock-history text-danger me-2"></i>{% trans "System Security & Audit Trail" %}</h2>
+            <p class="text-muted small mb-0">{% trans "Real-time system activity logs, authentication events, permit decision audits, and payment verifications." %}</p>
         </div>
         <div class="d-flex gap-2">
-            <a href="/dashboard/admin/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Back to
-                Control Panel</a>
+            <a href="/dashboard/admin/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>{% trans "Back to Control Panel" %}</a>
         </div>
     </div>
 
@@ -21,25 +19,25 @@
         <div class="row g-3 align-items-center">
             <div class="col-md-4">
                 <input type="text" class="form-control" id="auditSearchInput"
-                    placeholder="Filter by user, action keyword, or IP...">
+                    placeholder="{% trans 'Filter by user, action keyword, or IP...' %}">
             </div>
             <div class="col-md-4">
                 <select class="form-select" id="auditCategoryFilter">
-                    <option value="">All Event Categories</option>
-                    <option value="AUTH">Authentication & JWT</option>
-                    <option value="PERMIT">Building Permits & Inspections</option>
-                    <option value="PAYMENT">eSewa Payments</option>
-                    <option value="MARKETPLACE">Marketplace & Orders</option>
-                    <option value="ADMIN">System Administration</option>
+                    <option value="">{% trans "All Event Categories" %}</option>
+                    <option value="AUTH">{% trans "Authentication & JWT" %}</option>
+                    <option value="PERMIT">{% trans "Building Permits & Inspections" %}</option>
+                    <option value="PAYMENT">{% trans "eSewa Payments" %}</option>
+                    <option value="MARKETPLACE">{% trans "Marketplace & Orders" %}</option>
+                    <option value="ADMIN">{% trans "System Administration" %}</option>
                 </select>
             </div>
             <div class="col-md-4 text-md-end d-flex justify-content-md-end gap-2 align-items-center">
                 <div class="form-check form-switch text-start">
                     <input class="form-check-input" type="checkbox" id="autoRefreshToggle" checked>
-                    <label class="form-check-label small text-muted ms-1" for="autoRefreshToggle">Live Poll (5s)</label>
+                    <label class="form-check-label small text-muted ms-1" for="autoRefreshToggle">{% trans "Live Poll (5s)" %}</label>
                 </div>
                 <button class="btn btn-outline-primary btn-sm" onclick="loadAuditLogs()"><i
-                        class="bi bi-arrow-clockwise me-1"></i>Refresh Logs</button>
+                        class="bi bi-arrow-clockwise me-1"></i>{% trans "Refresh Logs" %}</button>
             </div>
         </div>
     </div>
@@ -50,18 +48,18 @@
                 <table class="table table-hover align-middle mb-0 font-monospace small">
                     <thead class="table-dark">
                         <tr>
-                            <th>Timestamp</th>
-                            <th>Category</th>
-                            <th>User / Actor</th>
-                            <th>Action Event</th>
-                            <th>IP Address</th>
-                            <th class="text-end">Status</th>
+                            <th>{% trans "Timestamp" %}</th>
+                            <th>{% trans "Category" %}</th>
+                            <th>{% trans "User / Actor" %}</th>
+                            <th>{% trans "Action Event" %}</th>
+                            <th>{% trans "IP Address" %}</th>
+                            <th class="text-end">{% trans "Status" %}</th>
                         </tr>
                     </thead>
                     <tbody id="auditLogsBody">
                         <tr>
                             <td colspan="6" class="text-center py-4 text-muted">
-                                <span class="loading-spinner me-2"></span>Loading audit trail from database...
+                                <span class="loading-spinner me-2"></span>{% trans "Loading audit trail from database..." %}
                             </td>
                         </tr>
                     </tbody>
@@ -136,7 +134,7 @@
                 <tr>
                     <td colspan="6" class="text-center py-4 text-danger">
                         <i class="bi bi-exclamation-triangle me-2"></i>
-                        Failed to fetch audit logs. Ensure you are logged in as an Administrator.
+                        {% trans "Failed to fetch audit logs. Ensure you are logged in as an Administrator." %}
                     </td>
                 </tr>
             `;
@@ -150,7 +148,7 @@
             tbody.innerHTML = `
                 <tr>
                     <td colspan="6" class="text-center py-4 text-muted">
-                        <i class="bi bi-search me-2"></i>No real-time audit logs found matching criteria.
+                        <i class="bi bi-search me-2"></i>{% trans "No real-time audit logs found matching criteria." %}
                     </td>
                 </tr>
             `;
@@ -166,7 +164,7 @@
             const statusBadgeClass = l.status === 'SUCCESS' ? 'bg-success' : 'bg-danger';
 
             const timeStr = l.timestamp ? new Date(l.timestamp).toLocaleString() : '—';
-            const actorStr = l.actor_username || 'unauthenticated';
+            const actorStr = l.actor_username || '{% trans "unauthenticated" %}';
 
             return `
             <tr>

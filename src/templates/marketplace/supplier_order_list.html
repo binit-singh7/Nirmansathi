@@ -1,24 +1,25 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Supplier Orders - NirmanSathi Marketplace{% endblock %}
+{% block title %}{% trans "Supplier Orders - NirmanSathi Marketplace" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold text-navy mb-1">
-                <i class="bi bi-truck text-warning me-2"></i>Supplier Orders
+                <i class="bi bi-truck text-warning me-2"></i>{% trans "Supplier Orders" %}
             </h2>
             <p class="text-muted small mb-0">
-                View and manage all customer orders placed for your products.
+                {% trans "View and manage all customer orders placed for your products." %}
             </p>
         </div>
         <div class="d-flex gap-2">
             <a href="/marketplace/supplier/products/" class="btn btn-outline-secondary fw-semibold">
-                <i class="bi bi-box-seam me-1"></i>Manage Products
+                <i class="bi bi-box-seam me-1"></i>{% trans "Manage Products" %}
             </a>
             <a href="/dashboard/supplier/" class="btn btn-warning fw-bold">
-                <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                <i class="bi bi-speedometer2 me-1"></i>{% trans "Dashboard" %}
             </a>
         </div>
     </div>
@@ -28,25 +29,25 @@
         <div class="col-6 col-md-3">
             <div class="card card-ns text-center py-3 border-start border-4 border-primary">
                 <div class="fs-2 fw-bold text-navy" id="statTotal">—</div>
-                <div class="small text-muted">Total Orders</div>
+                <div class="small text-muted">{% trans "Total Orders" %}</div>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="card card-ns text-center py-3 border-start border-4 border-warning">
                 <div class="fs-2 fw-bold text-warning" id="statPending">—</div>
-                <div class="small text-muted">Pending</div>
+                <div class="small text-muted">{% trans "Pending" %}</div>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="card card-ns text-center py-3 border-start border-4 border-info">
                 <div class="fs-2 fw-bold text-info" id="statShipped">—</div>
-                <div class="small text-muted">Shipped</div>
+                <div class="small text-muted">{% trans "Shipped" %}</div>
             </div>
         </div>
         <div class="col-6 col-md-3">
             <div class="card card-ns text-center py-3 border-start border-4 border-success">
                 <div class="fs-2 fw-bold text-success" id="statDelivered">—</div>
-                <div class="small text-muted">Delivered</div>
+                <div class="small text-muted">{% trans "Delivered" %}</div>
             </div>
         </div>
     </div>
@@ -55,23 +56,23 @@
     <div class="card card-ns mb-3 p-3">
         <div class="row g-2 align-items-end">
             <div class="col-md-4">
-                <label class="form-label fw-semibold small text-navy">Filter by Status</label>
+                <label class="form-label fw-semibold small text-navy">{% trans "Filter by Status" %}</label>
                 <select class="form-select form-select-sm" id="statusFilter">
-                    <option value="">All Statuses</option>
-                    <option value="PENDING">Pending</option>
-                    <option value="CONFIRMED">Confirmed</option>
-                    <option value="SHIPPED">Shipped</option>
-                    <option value="COMPLETED">Delivered</option>
-                    <option value="CANCELLED">Cancelled</option>
+                    <option value="">{% trans "All Statuses" %}</option>
+                    <option value="PENDING">{% trans "Pending" %}</option>
+                    <option value="CONFIRMED">{% trans "Confirmed" %}</option>
+                    <option value="SHIPPED">{% trans "Shipped" %}</option>
+                    <option value="COMPLETED">{% trans "Delivered" %}</option>
+                    <option value="CANCELLED">{% trans "Cancelled" %}</option>
                 </select>
             </div>
             <div class="col-md-4">
-                <label class="form-label fw-semibold small text-navy">Search Order / Reference</label>
-                <input type="text" class="form-control form-control-sm" id="orderSearch" placeholder="Search by reference...">
+                <label class="form-label fw-semibold small text-navy">{% trans "Search Order / Reference" %}</label>
+                <input type="text" class="form-control form-control-sm" id="orderSearch" placeholder="{% trans 'Search by reference...' %}">
             </div>
             <div class="col-md-4 d-flex align-items-end">
                 <button class="btn btn-sm btn-navy w-100" onclick="filterOrders()">
-                    <i class="bi bi-funnel me-1"></i>Apply Filter
+                    <i class="bi bi-funnel me-1"></i>{% trans "Apply Filter" %}
                 </button>
             </div>
         </div>
@@ -84,20 +85,20 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead style="background-color: var(--color-navy, #003D82); color: white;">
                         <tr>
-                            <th class="py-3 px-3">Order Ref</th>
-                            <th class="py-3">Date</th>
-                            <th class="py-3">Customer</th>
-                            <th class="py-3">Products</th>
-                            <th class="py-3">Amount</th>
-                            <th class="py-3">Payment</th>
-                            <th class="py-3">Status</th>
-                            <th class="py-3 text-end px-3">Action</th>
+                            <th class="py-3 px-3">{% trans "Order Ref" %}</th>
+                            <th class="py-3">{% trans "Date" %}</th>
+                            <th class="py-3">{% trans "Customer" %}</th>
+                            <th class="py-3">{% trans "Products" %}</th>
+                            <th class="py-3">{% trans "Amount" %}</th>
+                            <th class="py-3">{% trans "Payment" %}</th>
+                            <th class="py-3">{% trans "Status" %}</th>
+                            <th class="py-3 text-end px-3">{% trans "Action" %}</th>
                         </tr>
                     </thead>
                     <tbody id="supplierOrdersBody">
                         <tr>
                             <td colspan="8" class="text-center py-4 text-muted">
-                                <span class="loading-spinner me-2"></span>Loading supplier orders...
+                                <span class="loading-spinner me-2"></span>{% trans "Loading supplier orders..." %}
                             </td>
                         </tr>
                     </tbody>
@@ -109,10 +110,10 @@
     <!-- Empty / Error State Placeholder -->
     <div id="supplierOrdersEmpty" class="d-none text-center py-5">
         <i class="bi bi-clipboard-x fs-1 text-muted d-block mb-3"></i>
-        <h5 class="text-muted">No orders found</h5>
-        <p class="text-muted small mb-3">No customer orders have been placed for your products yet.</p>
+        <h5 class="text-muted">{% trans "No orders found" %}</h5>
+        <p class="text-muted small mb-3">{% trans "No customer orders have been placed for your products yet." %}</p>
         <a href="/marketplace/supplier/products/" class="btn btn-warning fw-bold">
-            <i class="bi bi-box-seam me-1"></i>Manage Your Products
+            <i class="bi bi-box-seam me-1"></i>{% trans "Manage Your Products" %}
         </a>
     </div>
 </div>
@@ -123,11 +124,11 @@
     let allOrders = [];
 
     const statusBadgeMap = {
-        'PENDING':   { cls: 'bg-warning text-dark', label: 'Pending' },
-        'CONFIRMED': { cls: 'bg-primary',           label: 'Confirmed' },
-        'SHIPPED':   { cls: 'bg-info text-dark',    label: 'Shipped' },
-        'COMPLETED': { cls: 'bg-success',           label: 'Delivered' },
-        'CANCELLED': { cls: 'bg-danger',            label: 'Cancelled' },
+        'PENDING':   { cls: 'bg-warning text-dark', label: _t('status_pending', 'Pending') },
+        'CONFIRMED': { cls: 'bg-primary',           label: _t('status_confirmed', 'Confirmed') },
+        'SHIPPED':   { cls: 'bg-info text-dark',    label: _t('status_shipped', 'Shipped') },
+        'COMPLETED': { cls: 'bg-success',           label: _t('status_delivered', 'Delivered') },
+        'CANCELLED': { cls: 'bg-danger',            label: _t('status_cancelled', 'Cancelled') },
     };
 
     const payBadgeMap = {
@@ -150,11 +151,11 @@
         tbody.closest('.card').classList.remove('d-none');
 
         tbody.innerHTML = orders.map(o => {
-            const status = statusBadgeMap[o.status] || { cls: 'bg-secondary', label: o.status };
+            const status = statusBadgeMap[o.status] || { cls: 'bg-secondary', label: o.status_display || o.status };
             const payBadge = payBadgeMap[o.payment_status] || 'bg-secondary';
-            const dateStr = new Date(o.created_at).toLocaleDateString('en-NP', { year: 'numeric', month: 'short', day: 'numeric' });
+            const dateStr = new Date(o.created_at).toLocaleDateString();
             const itemCount = o.items ? o.items.length : (o.item_count || '—');
-            const customer = o.customer_name || o.user || '—';
+            const customer = o.customer_name || o.buyer_name || o.user || '—';
 
             return `
             <tr>
@@ -168,13 +169,13 @@
                         ${customer}
                     </span>
                 </td>
-                <td class="small">${itemCount} item${itemCount !== 1 ? 's' : ''}</td>
+                <td class="small">${itemCount} ${_t('units', 'items')}</td>
                 <td class="fw-bold">Rs. ${parseFloat(o.total_amount || 0).toLocaleString('en-IN')}</td>
-                <td><span class="badge ${payBadge}">${o.payment_status || '—'}</span></td>
+                <td><span class="badge ${payBadge}">${o.payment_status_display || o.payment_status || '—'}</span></td>
                 <td><span class="badge ${status.cls}">${status.label}</span></td>
                 <td class="text-end px-3">
                     <a href="/marketplace/orders/${o.id}/" class="btn btn-sm btn-outline-primary fw-semibold">
-                        <i class="bi bi-eye me-1"></i>View
+                        <i class="bi bi-eye me-1"></i>${_t('view', 'View')}
                     </a>
                 </td>
             </tr>`;
@@ -203,7 +204,6 @@
     document.addEventListener('DOMContentLoaded', async () => {
         const tbody = document.getElementById('supplierOrdersBody');
         try {
-            // Supplier sees orders related to their products via the orders API
             const orders = await apiFetch('/marketplace/orders/');
             allOrders = Array.isArray(orders) ? orders : (orders.results || []);
             updateStats(allOrders);
@@ -212,7 +212,7 @@
             tbody.innerHTML = `
             <tr>
                 <td colspan="8" class="text-center text-danger py-4">
-                    <i class="bi bi-exclamation-triangle me-2"></i>${err.message || 'Failed to load orders. Please login as a supplier.'}
+                    <i class="bi bi-exclamation-triangle me-2"></i>${err.message || "{% trans 'Failed to load orders. Please login as a supplier.' %}"}
                 </td>
             </tr>`;
         }

@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}My Permit Applications - NirmanSathi{% endblock %}
+{% block title %}{% trans "My Permit Applications - NirmanSathi" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold text-navy mb-1"><i class="bi bi-journal-text text-primary me-2"></i>My Building Permits
-            </h2>
-            <p class="text-muted small mb-0">Track all your submitted residential building permit applications and
-                review municipal status updates.</p>
+            <h2 class="fw-bold text-navy mb-1"><i class="bi bi-journal-text text-primary me-2"></i>{% trans "My Building Permits" %}</h2>
+            <p class="text-muted small mb-0">{% trans "Track all your submitted residential building permit applications and review municipal status updates." %}</p>
         </div>
-        <a href="/permits/apply/" class="btn btn-warning fw-bold"><i class="bi bi-plus-lg me-1"></i>New Application</a>
+        <a href="/permits/apply/" class="btn btn-warning fw-bold"><i class="bi bi-plus-lg me-1"></i>{% trans "New Application" %}</a>
     </div>
 
     <div class="card card-ns shadow-sm">
@@ -20,19 +19,19 @@
                 <table class="table table-hover align-middle mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th>Reference No.</th>
-                            <th>Application Type</th>
-                            <th>Municipality & Ward</th>
-                            <th>Built-Up Area</th>
-                            <th>Status</th>
-                            <th>Date Submitted</th>
-                            <th class="text-end">Actions</th>
+                            <th>{% trans "Reference No." %}</th>
+                            <th>{% trans "Application Type" %}</th>
+                            <th>{% trans "Municipality & Ward" %}</th>
+                            <th>{% trans "Built-Up Area" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Date Submitted" %}</th>
+                            <th class="text-end">{% trans "Actions" %}</th>
                         </tr>
                     </thead>
                     <tbody id="permitsListBody">
                         <tr>
                             <td colspan="7" class="text-center py-4 text-muted">
-                                <span class="loading-spinner me-2"></span>Loading permit applications...
+                                <span class="loading-spinner me-2"></span>{% trans "Loading permit applications..." %}
                             </td>
                         </tr>
                     </tbody>
@@ -54,9 +53,9 @@
         <tr>
           <td colspan="7" class="text-center py-5 text-muted">
             <i class="bi bi-inbox fs-1 d-block mb-3 text-secondary"></i>
-            <h5>No permit applications found</h5>
-            <p class="small mb-3">You haven't submitted any building permit applications yet.</p>
-            <a href="/permits/apply/" class="btn btn-warning btn-sm fw-bold">Apply for Permit</a>
+            <h5>{% trans "No permit applications found" %}</h5>
+            <p class="small mb-3">{% trans "You haven't submitted any building permit applications yet." %}</p>
+            <a href="/permits/apply/" class="btn btn-warning btn-sm fw-bold">{% trans "Apply for Permit" %}</a>
           </td>
         </tr>
       `;
@@ -72,12 +71,12 @@
         <tr>
           <td class="fw-bold text-primary">${p.reference_number}</td>
           <td>${p.application_type_display || p.application_type}</td>
-          <td>${p.municipality_name || 'N/A'}, Ward ${p.ward_number || ''}</td>
-          <td>${p.total_built_up_area_sqft} sq ft (${p.storeys_count} storeys)</td>
+          <td>${p.municipality_name || 'N/A'}, ${_t('ward_no', 'Ward')} ${p.ward_number || ''}</td>
+          <td>${p.total_built_up_area_sqft} sq ft (${p.storeys_count} {% trans "storeys" %})</td>
           <td><span class="badge ${badgeClass}">${p.status_display || p.status}</span></td>
           <td class="small text-muted">${dateStr}</td>
           <td class="text-end">
-            <a href="/permits/${p.id}/" class="btn btn-sm btn-outline-primary fw-semibold"><i class="bi bi-eye me-1"></i>View Details</a>
+            <a href="/permits/${p.id}/" class="btn btn-sm btn-outline-primary fw-semibold"><i class="bi bi-eye me-1"></i>${_t('view_details', '{% trans "View Details" %}')}</a>
           </td>
         </tr>
       `;
@@ -85,7 +84,7 @@
         } catch (err) {
             tbody.innerHTML = `
       <tr>
-        <td colspan="7" class="text-center text-danger py-4">${err.message || 'Failed to load permit list.'}</td>
+        <td colspan="7" class="text-center text-danger py-4">${err.message || "{% trans 'Failed to load permit list.' %}"}</td>
       </tr>
     `;
         }

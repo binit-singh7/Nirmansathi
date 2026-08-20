@@ -24,6 +24,51 @@ body {
   flex-direction: column;
 }
 
+html[lang="ne"] body,
+body.lang-ne,
+body.lang-ne h1,
+body.lang-ne h2,
+body.lang-ne h3,
+body.lang-ne h4,
+body.lang-ne h5,
+body.lang-ne h6,
+body.lang-ne button,
+body.lang-ne input,
+body.lang-ne select,
+body.lang-ne textarea {
+  font-family: 'Noto Sans Devanagari', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Language Switcher Styling */
+#siteLanguageForm .dropdown-toggle {
+  border-color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+#siteLanguageForm .dropdown-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-color: #ffffff;
+}
+
+#siteLanguageForm .dropdown-menu {
+  min-width: 170px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+#siteLanguageForm .dropdown-item {
+  font-size: 0.88rem;
+  border-radius: 4px;
+  margin: 2px 4px;
+  width: calc(100% - 8px);
+}
+
+#siteLanguageForm .dropdown-item.active {
+  background-color: #0f3460;
+  color: #ffffff;
+}
+
 main {
   flex: 1;
 }
@@ -42,6 +87,8 @@ main {
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
 .navbar-ns .nav-link {
@@ -56,6 +103,7 @@ main {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.12);
 }
+
 
 /* Glassmorphism Cards */
 .card-ns {

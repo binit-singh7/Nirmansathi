@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Material Supplier Portal - NirmanSathi{% endblock %}
+{% block title %}{% trans "Material Supplier Portal - NirmanSathi" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -9,14 +10,13 @@
         style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #ffffff !important;">
         <div class="row align-items-center">
             <div class="col-md-8">
-                <span class="badge bg-dark mb-2"><i class="bi bi-shop me-1"></i>Verified Supplier Portal</span>
-                <h2 class="fw-bold mb-1" id="supplierNameText">Supplier Dashboard</h2>
-                <p class="mb-0 text-white opacity-90">Manage construction material inventory and fulfill incoming
-                    citizen orders.</p>
+                <span class="badge bg-dark mb-2"><i class="bi bi-shop me-1"></i>{% trans "Verified Supplier Portal" %}</span>
+                <h2 class="fw-bold mb-1" id="supplierNameText">{% trans "Supplier Dashboard" %}</h2>
+                <p class="mb-0 text-white opacity-90">{% trans "Manage construction material inventory and fulfill incoming citizen orders." %}</p>
             </div>
             <div class="col-md-4 text-md-end mt-3 mt-md-0">
                 <a href="/marketplace/products/manage/" class="btn btn-dark fw-bold px-4"><i
-                        class="bi bi-plus-circle me-1"></i>Add New Product</a>
+                        class="bi bi-plus-circle me-1"></i>{% trans "Add New Product" %}</a>
             </div>
         </div>
     </div>
@@ -25,19 +25,19 @@
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-4">
             <div class="card card-ns p-3 text-center">
-                <h6 class="text-muted small text-uppercase fw-bold">Active Products</h6>
+                <h6 class="text-muted small text-uppercase fw-bold">{% trans "Active Products" %}</h6>
                 <h2 class="fw-bold text-navy mb-0" id="supStatProducts">0</h2>
             </div>
         </div>
         <div class="col-6 col-md-4">
             <div class="card card-ns p-3 text-center border-info">
-                <h6 class="text-muted small text-uppercase fw-bold">Orders Received</h6>
+                <h6 class="text-muted small text-uppercase fw-bold">{% trans "Orders Received" %}</h6>
                 <h2 class="fw-bold text-info mb-0" id="supStatOrders">0</h2>
             </div>
         </div>
         <div class="col-12 col-md-4">
             <div class="card card-ns p-3 text-center border-warning">
-                <h6 class="text-muted small text-uppercase fw-bold">Low Stock Warning</h6>
+                <h6 class="text-muted small text-uppercase fw-bold">{% trans "Low Stock Warning" %}</h6>
                 <h2 class="fw-bold text-warning mb-0" id="supStatLowStock">0</h2>
             </div>
         </div>
@@ -48,13 +48,13 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link active fw-bold" id="inventory-tab" data-bs-toggle="tab" data-bs-target="#inventory"
                 type="button" role="tab">
-                <i class="bi bi-box-seam me-2"></i>My Material Inventory
+                <i class="bi bi-box-seam me-2"></i>{% trans "My Material Inventory" %}
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link fw-bold" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button"
                 role="tab">
-                <i class="bi bi-truck me-2"></i>Incoming Citizen Orders
+                <i class="bi bi-truck me-2"></i>{% trans "Incoming Citizen Orders" %}
             </button>
         </li>
     </ul>
@@ -68,18 +68,18 @@
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Category</th>
-                                    <th>Unit Price</th>
-                                    <th>Stock Level</th>
-                                    <th>Status</th>
-                                    <th class="text-end">Actions</th>
+                                    <th>{% trans "Product" %}</th>
+                                    <th>{% trans "Category" %}</th>
+                                    <th>{% trans "Unit Price" %}</th>
+                                    <th>{% trans "Stock Level" %}</th>
+                                    <th>{% trans "Status" %}</th>
+                                    <th class="text-end">{% trans "Actions" %}</th>
                                 </tr>
                             </thead>
                             <tbody id="supplierInventoryBody">
                                 <tr>
                                     <td colspan="6" class="text-center py-4 text-muted">
-                                        <span class="loading-spinner me-2"></span>Loading inventory...
+                                        <span class="loading-spinner me-2"></span>{% trans "Loading inventory..." %}
                                     </td>
                                 </tr>
                             </tbody>
@@ -97,19 +97,19 @@
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Order Ref</th>
-                                    <th>Customer</th>
-                                    <th>Shipping Address</th>
-                                    <th>Total Amount</th>
-                                    <th>Payment</th>
-                                    <th>Fulfillment Status</th>
-                                    <th class="text-end">Update</th>
+                                    <th>{% trans "Order Ref" %}</th>
+                                    <th>{% trans "Customer" %}</th>
+                                    <th>{% trans "Shipping Address" %}</th>
+                                    <th>{% trans "Total Amount" %}</th>
+                                    <th>{% trans "Payment" %}</th>
+                                    <th>{% trans "Fulfillment Status" %}</th>
+                                    <th class="text-end">{% trans "Update" %}</th>
                                 </tr>
                             </thead>
                             <tbody id="supplierOrdersBody">
                                 <tr>
                                     <td colspan="7" class="text-center py-4 text-muted">
-                                        <span class="loading-spinner me-2"></span>Loading incoming orders...
+                                        <span class="loading-spinner me-2"></span>{% trans "Loading incoming orders..." %}
                                     </td>
                                 </tr>
                             </tbody>
@@ -142,7 +142,7 @@
             // Filter for current supplier
             const user = getUser();
             const myProducts = products.filter(p => !user || p.supplier === user.id || p.supplier_name === user.username);
-            const listToRender = myProducts.length > 0 ? myProducts : products; // Fallback to all if demo user
+            const listToRender = myProducts.length > 0 ? myProducts : products;
 
             document.getElementById('supStatProducts').textContent = listToRender.length;
             const lowStock = listToRender.filter(p => p.available_stock < 50).length;
@@ -153,7 +153,7 @@
         <tr>
           <td colspan="6" class="text-center py-5 text-muted">
             <i class="bi bi-box-seam fs-1 text-secondary d-block mb-2"></i>
-            No products listed yet. <a href="/marketplace/products/manage/" class="fw-bold">Add your first material</a>.
+            {% trans "No products listed yet." %} <a href="/marketplace/products/manage/" class="fw-bold">{% trans "Add your first material" %}</a>.
           </td>
         </tr>
       `;
@@ -164,18 +164,18 @@
       <tr>
         <td>
           <span class="fw-bold d-block text-dark">${p.name}</span>
-          <small class="text-muted">${p.unit ? `Unit: ${p.unit}` : ''}</small>
+          <small class="text-muted">${p.unit ? `${_t('unit', 'Unit')}: ${p.unit}` : ''}</small>
         </td>
-        <td><span class="badge bg-secondary">${p.category_name || 'Material'}</span></td>
+        <td><span class="badge bg-secondary">${p.category_name || '{% trans "Material" %}'}</span></td>
         <td class="fw-bold text-primary">Rs. ${parseFloat(p.price).toLocaleString('en-IN')}</td>
         <td>
           <span class="fw-bold ${p.available_stock < 50 ? 'text-danger' : 'text-success'}">${p.available_stock}</span>
         </td>
         <td>
-          <span class="badge ${p.is_available ? 'bg-success' : 'bg-danger'}">${p.is_available ? 'In Stock' : 'Out of Stock'}</span>
+          <span class="badge ${p.is_available ? 'bg-success' : 'bg-danger'}">${p.is_available ? _t('in_stock', 'In Stock') : _t('out_of_stock', 'Out of Stock')}</span>
         </td>
         <td class="text-end">
-          <a href="/marketplace/products/manage/?id=${p.id}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> Edit</a>
+          <a href="/marketplace/products/manage/?id=${p.id}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> ${_t('edit', 'Edit')}</a>
           <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.id})"><i class="bi bi-trash"></i></button>
         </td>
       </tr>
@@ -196,7 +196,7 @@
         <tr>
           <td colspan="7" class="text-center py-5 text-muted">
             <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
-            No incoming customer orders.
+            {% trans "No incoming customer orders." %}
           </td>
         </tr>
       `;
@@ -206,17 +206,17 @@
             tbody.innerHTML = orders.map(o => `
       <tr>
         <td class="fw-bold text-primary">${o.order_reference}</td>
-        <td>${o.buyer_name || 'Customer'}</td>
+        <td>${o.buyer_name || '{% trans "Customer" %}'}</td>
         <td class="small">${o.shipping_address}</td>
         <td class="fw-bold">Rs. ${parseFloat(o.total_amount).toLocaleString('en-IN')}</td>
-        <td><span class="badge ${o.payment_status === 'PAID' ? 'bg-success' : 'bg-danger'}">${o.payment_status}</span></td>
+        <td><span class="badge ${o.payment_status === 'PAID' ? 'bg-success' : 'bg-danger'}">${o.payment_status_display || o.payment_status}</span></td>
         <td><span class="badge bg-info text-dark">${o.status_display || o.status}</span></td>
         <td class="text-end">
           <select class="form-select form-select-sm" onchange="updateOrderStatus(${o.id}, this.value, this)">
-            <option value="PENDING" ${o.status === 'PENDING' ? 'selected' : ''}>Pending</option>
-            <option value="CONFIRMED" ${o.status === 'CONFIRMED' ? 'selected' : ''}>Confirm</option>
-            <option value="SHIPPED" ${o.status === 'SHIPPED' ? 'selected' : ''}>Ship Material</option>
-            <option value="DELIVERED" ${o.status === 'DELIVERED' ? 'selected' : ''}>Delivered</option>
+            <option value="PENDING" ${o.status === 'PENDING' ? 'selected' : ''}>${_t('status_pending', 'Pending')}</option>
+            <option value="CONFIRMED" ${o.status === 'CONFIRMED' ? 'selected' : ''}>${_t('status_confirmed', 'Confirm')}</option>
+            <option value="SHIPPED" ${o.status === 'SHIPPED' ? 'selected' : ''}>${_t('status_shipped', 'Ship Material')}</option>
+            <option value="DELIVERED" ${o.status === 'DELIVERED' || o.status === 'COMPLETED' ? 'selected' : ''}>${_t('status_delivered', 'Delivered')}</option>
           </select>
         </td>
       </tr>
@@ -227,13 +227,13 @@
     }
 
     async function deleteProduct(productId) {
-        if (!confirm('Are you sure you want to delete this construction material listing?')) return;
+        if (!confirm("{% trans 'Are you sure you want to delete this construction material listing?' %}")) return;
         try {
             await apiFetch(`/marketplace/products/${productId}/`, { method: 'DELETE' });
-            showToast('Product deleted from inventory.', 'info');
+            showToast("{% trans 'Product deleted from inventory.' %}", 'info');
             await loadInventory();
         } catch (err) {
-            showToast(err.message || 'Failed to delete product.', 'danger');
+            showToast(err.message || "{% trans 'Failed to delete product.' %}", 'danger');
         }
     }
 
@@ -244,10 +244,10 @@
                 method: 'PATCH',
                 body: JSON.stringify({ status: statusVal })
             });
-            showToast(`Order status updated to ${statusVal}`, 'success');
+            showToast("{% trans 'Order status updated successfully' %}", 'success');
             await loadSupplierOrders();
         } catch (err) {
-            showToast(err.message || 'Failed to update order status.', 'danger');
+            showToast(err.message || "{% trans 'Failed to update order status.' %}", 'danger');
             selectEl.disabled = false;
         }
     }

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}NirmanSathi - Residential Building Permit E-Governance & Marketplace{% endblock %}
+{% block title %}{% trans "NirmanSathi - Residential Building Permit E-Governance & Marketplace" %}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -10,40 +11,36 @@
             <div class="row align-items-center">
                 <div class="col-lg-7">
                     <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-3"><i
-                            class="bi bi-shield-check me-1"></i>DIGITAL CONSTRUCTION PLATFORM</span>
-                    <h1 class="display-4 fw-extrabold text-white mb-3">Residential Building Permits & Material
-                        Marketplace</h1>
-                    <p class="lead text-light mb-4 opacity-90">NirmanSathi simplifies municipal building permits
-                        approval and provides a verified marketplace for quality construction materials across Nepal.
+                            class="bi bi-shield-check me-1"></i>{% trans "DIGITAL CONSTRUCTION PLATFORM" %}</span>
+                    <h1 class="display-4 fw-extrabold text-white mb-3">{% trans "Residential Building Permits & Material Marketplace" %}</h1>
+                    <p class="lead text-light mb-4 opacity-90">{% trans "NirmanSathi simplifies municipal building permits approval and provides a verified marketplace for quality construction materials across Nepal." %}
                     </p>
                     <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
                         <a href="/permits/apply/" class="btn btn-warning btn-lg fw-bold px-4"><i
-                                class="bi bi-file-earmark-plus me-2"></i>Apply for Building Permit</a>
+                                class="bi bi-file-earmark-plus me-2"></i>{% trans "Apply for Building Permit" %}</a>
                         <a href="/marketplace/" class="btn btn-outline-light btn-lg fw-semibold px-4"><i
-                                class="bi bi-shop me-2"></i>Explore Marketplace</a>
+                                class="bi bi-shop me-2"></i>{% trans "Explore Marketplace" %}</a>
                     </div>
                 </div>
                 <div class="col-lg-5 mt-4 mt-lg-0 text-center">
                     <div class="card card-ns p-4 text-dark shadow-lg" id="homePortalCard">
                         <h4 class="fw-bold text-navy mb-3" id="homePortalHeader"><i
-                                class="bi bi-door-open me-2 text-warning"></i>Portal
-                            Access</h4>
-                        <p class="text-muted small mb-4" id="homePortalText">Select your role to access your dedicated
-                            dashboard</p>
+                                class="bi bi-door-open me-2 text-warning"></i>{% trans "Portal Access" %}</h4>
+                        <p class="text-muted small mb-4" id="homePortalText">{% trans "Select your role to access your dedicated dashboard" %}</p>
                         <div class="d-grid gap-2" id="homePortalButtons">
                             <a href="/login/"
                                 class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
-                                <span><i class="bi bi-person me-2"></i>Citizen / Landowner</span>
+                                <span><i class="bi bi-person me-2"></i>{% trans "Citizen / Landowner" %}</span>
                                 <i class="bi bi-arrow-right"></i>
                             </a>
                             <a href="/login/"
                                 class="btn btn-outline-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
-                                <span><i class="bi bi-building-check me-2"></i>Municipality Officer</span>
+                                <span><i class="bi bi-building-check me-2"></i>{% trans "Municipality Officer" %}</span>
                                 <i class="bi bi-arrow-right"></i>
                             </a>
                             <a href="/login/"
                                 class="btn btn-outline-dark text-start d-flex justify-content-between align-items-center py-2 px-3">
-                                <span><i class="bi bi-truck me-2"></i>Material Supplier</span>
+                                <span><i class="bi bi-truck me-2"></i>{% trans "Material Supplier" %}</span>
                                 <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>
@@ -57,8 +54,8 @@
 <!-- Features & Core Services -->
 <div class="container mb-5">
     <div class="text-center mb-5">
-        <h2 class="fw-bold text-navy">Integrated E-Governance & Marketplace</h2>
-        <p class="text-muted">Streamlining Nepal's residential construction ecosystem</p>
+        <h2 class="fw-bold text-navy">{% trans "Integrated E-Governance & Marketplace" %}</h2>
+        <p class="text-muted">{% trans "Streamlining Nepal's residential construction ecosystem" %}</p>
     </div>
 
     <div class="row g-4">
@@ -69,9 +66,8 @@
                     <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex p-3 mb-3 fs-3">
                         <i class="bi bi-journal-text"></i>
                     </div>
-                    <h5 class="fw-bold">1. Submit Permit</h5>
-                    <p class="text-muted small">Submit building blueprints, ownership certificates, and structural
-                        details online with location cascades.</p>
+                    <h5 class="fw-bold">{% trans "1. Submit Permit" %}</h5>
+                    <p class="text-muted small">{% trans "Submit building blueprints, ownership certificates, and structural details online with location cascades." %}</p>
                 </div>
             </div>
         </div>
@@ -83,9 +79,8 @@
                     <div class="rounded-circle bg-success bg-opacity-10 text-success d-inline-flex p-3 mb-3 fs-3">
                         <i class="bi bi-shield-check"></i>
                     </div>
-                    <h5 class="fw-bold">2. Officer Verification</h5>
-                    <p class="text-muted small">Municipal officers inspect, review blueprints, add official remarks, and
-                        grant building approval.</p>
+                    <h5 class="fw-bold">{% trans "2. Officer Verification" %}</h5>
+                    <p class="text-muted small">{% trans "Municipal officers inspect, review blueprints, add official remarks, and grant building approval." %}</p>
                 </div>
             </div>
         </div>
@@ -97,9 +92,8 @@
                     <div class="rounded-circle bg-warning bg-opacity-10 text-warning d-inline-flex p-3 mb-3 fs-3">
                         <i class="bi bi-cart3"></i>
                     </div>
-                    <h5 class="fw-bold">3. Order Materials</h5>
-                    <p class="text-muted small">Browse verified cement, rod, bricks, and sand from local suppliers with
-                        live stock tracking.</p>
+                    <h5 class="fw-bold">{% trans "3. Order Materials" %}</h5>
+                    <p class="text-muted small">{% trans "Browse verified cement, rod, bricks, and sand from local suppliers with live stock tracking." %}</p>
                 </div>
             </div>
         </div>
@@ -111,9 +105,8 @@
                     <div class="rounded-circle bg-danger bg-opacity-10 text-danger d-inline-flex p-3 mb-3 fs-3">
                         <i class="bi bi-wallet2"></i>
                     </div>
-                    <h5 class="fw-bold">4. Simulated Payment</h5>
-                    <p class="text-muted small">Seamless simulated digital payments via eSewa with real-time receipt
-                        generation.</p>
+                    <h5 class="fw-bold">{% trans "4. Simulated Payment" %}</h5>
+                    <p class="text-muted small">{% trans "Seamless simulated digital payments via eSewa with real-time receipt generation." %}</p>
                 </div>
             </div>
         </div>
@@ -133,19 +126,19 @@
         const portalButtons = document.getElementById('homePortalButtons');
         if (!portalHeader || !portalText || !portalButtons) return;
 
-        portalHeader.innerHTML = '<i class="bi bi-person-circle me-2 text-warning"></i>Welcome back';
-        portalText.textContent = 'Continue to your dashboard or marketplace based on your role.';
+        portalHeader.innerHTML = `<i class="bi bi-person-circle me-2 text-warning"></i>${_t('welcome_back', 'Welcome back')}`;
+        portalText.textContent = "{% trans 'Continue to your dashboard or marketplace based on your role.' %}";
 
         let buttonHtml = '';
         switch (user.role) {
             case 'CITIZEN':
                 buttonHtml = `
                     <a href="/dashboard/citizen/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Citizen Dashboard</span>
+                        <span><i class="bi bi-speedometer2 me-2"></i>{% trans 'Go to Citizen Dashboard' %}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                     <a href="/marketplace/" class="btn btn-outline-dark text-start d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-cart3 me-2"></i>Visit Marketplace</span>
+                        <span><i class="bi bi-cart3 me-2"></i>${_t('marketplace', 'Visit Marketplace')}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 `;
@@ -153,7 +146,7 @@
             case 'MUNICIPALITY_OFFICER':
                 buttonHtml = `
                     <a href="/dashboard/officer/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Officer Dashboard</span>
+                        <span><i class="bi bi-speedometer2 me-2"></i>{% trans 'Go to Officer Dashboard' %}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 `;
@@ -161,11 +154,11 @@
             case 'MATERIAL_SUPPLIER':
                 buttonHtml = `
                     <a href="/dashboard/supplier/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Supplier Dashboard</span>
+                        <span><i class="bi bi-speedometer2 me-2"></i>{% trans 'Go to Supplier Dashboard' %}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                     <a href="/marketplace/" class="btn btn-outline-dark text-start d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-cart3 me-2"></i>Visit Marketplace</span>
+                        <span><i class="bi bi-cart3 me-2"></i>${_t('marketplace', 'Visit Marketplace')}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 `;
@@ -173,7 +166,7 @@
             case 'ADMIN':
                 buttonHtml = `
                     <a href="/dashboard/admin/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-speedometer2 me-2"></i>Go to Admin Dashboard</span>
+                        <span><i class="bi bi-speedometer2 me-2"></i>{% trans 'Go to Admin Dashboard' %}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 `;
@@ -181,7 +174,7 @@
             default:
                 buttonHtml = `
                     <a href="/marketplace/" class="btn btn-ns-primary text-start d-flex justify-content-between align-items-center py-2 px-3">
-                        <span><i class="bi bi-cart3 me-2"></i>Visit Marketplace</span>
+                        <span><i class="bi bi-cart3 me-2"></i>${_t('marketplace', 'Visit Marketplace')}</span>
                         <i class="bi bi-arrow-right"></i>
                     </a>
                 `;

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Product Details - NirmanSathi Marketplace{% endblock %}
+{% block title %}{% trans "Product Details - NirmanSathi Marketplace" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -47,15 +48,15 @@
   <!-- Breadcrumb -->
   <nav aria-label="breadcrumb" class="breadcrumb-nav mb-3">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
-      <li class="breadcrumb-item"><a href="/marketplace/" class="text-decoration-none">Marketplace</a></li>
-      <li class="breadcrumb-item active" id="breadcrumbProduct">Product Details</li>
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none">{% trans "Home" %}</a></li>
+      <li class="breadcrumb-item"><a href="/marketplace/" class="text-decoration-none">{% trans "Marketplace" %}</a></li>
+      <li class="breadcrumb-item active" id="breadcrumbProduct">{% trans "Product Details" %}</li>
     </ol>
   </nav>
 
   <!-- Loading -->
   <div id="productLoading" class="text-center py-5">
-    <span class="loading-spinner fs-3 me-2"></span>Loading product details...
+    <span class="loading-spinner fs-3 me-2"></span>{% trans "Loading product details..." %}
   </div>
 
   <!-- Product Content -->
@@ -88,7 +89,7 @@
           <h2 class="fw-bold text-dark mb-1" id="productName">—</h2>
           <p class="text-muted mb-2">
             <i class="bi bi-building me-1"></i>
-            Supplied by <span class="fw-semibold text-navy" id="productSupplier">—</span>
+            {% trans "Supplied by" %} <span class="fw-semibold text-navy" id="productSupplier">—</span>
           </p>
 
           <!-- Price -->
@@ -103,15 +104,15 @@
           <!-- Specs -->
           <div class="mb-4" id="productSpecs">
             <div class="spec-row d-flex justify-content-between">
-              <span class="text-muted">Available Stock</span>
+              <span class="text-muted">{% trans "Available Stock" %}</span>
               <span class="fw-semibold" id="specStock">—</span>
             </div>
             <div class="spec-row d-flex justify-content-between">
-              <span class="text-muted">Unit</span>
+              <span class="text-muted">{% trans "Unit" %}</span>
               <span class="fw-semibold" id="specUnit">—</span>
             </div>
             <div class="spec-row d-flex justify-content-between">
-              <span class="text-muted">Category</span>
+              <span class="text-muted">{% trans "Category" %}</span>
               <span class="fw-semibold" id="specCategory">—</span>
             </div>
           </div>
@@ -119,7 +120,7 @@
           <!-- Quantity + Cart -->
           <div class="mt-auto" id="addToCartSection">
             <label class="form-label fw-semibold mb-2">
-              <i class="bi bi-hash me-1"></i>Select Quantity
+              <i class="bi bi-hash me-1"></i>{% trans "Select Quantity" %}
             </label>
             <div class="d-flex align-items-center gap-3 mb-3">
               <div class="input-group qty-control">
@@ -137,7 +138,7 @@
 
             <div class="d-flex gap-3">
               <button class="btn btn-warning btn-lg fw-bold flex-grow-1 py-2" id="addCartBtn" onclick="addProductToCart()">
-                <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                <i class="bi bi-cart-plus me-2"></i>{% trans "Add to Cart" %}
               </button>
               <a href="/marketplace/cart/" class="btn btn-outline-primary btn-lg px-3">
                 <i class="bi bi-cart3"></i>
@@ -147,7 +148,7 @@
             <div class="mt-2 text-end">
               <small class="text-muted">
                 <i class="bi bi-shield-check text-success me-1"></i>
-                Verified Nepalese Supplier &bull; Official E-Governance Platform
+                {% trans "Verified Nepalese Supplier" %} &bull; {% trans "Official E-Governance Platform" %}
               </small>
             </div>
           </div>
@@ -156,10 +157,10 @@
           <div class="mt-auto d-none" id="outOfStockSection">
             <div class="alert alert-danger d-flex align-items-center">
               <i class="bi bi-exclamation-triangle-fill me-2"></i>
-              This product is currently out of stock.
+              {% trans "This product is currently out of stock." %}
             </div>
             <a href="/marketplace/" class="btn btn-outline-primary w-100">
-              <i class="bi bi-arrow-left me-1"></i> Browse Other Products
+              <i class="bi bi-arrow-left me-1"></i> {% trans "Browse Other Products" %}
             </a>
           </div>
 
@@ -170,11 +171,11 @@
     <!-- Related Products Section -->
     <div class="mt-2 mb-4">
       <h4 class="fw-bold text-dark mb-3">
-        <i class="bi bi-grid me-2 text-warning"></i>More from This Category
+        <i class="bi bi-grid me-2 text-warning"></i>{% trans "More from This Category" %}
       </h4>
       <div class="row g-3" id="relatedProductsGrid">
         <div class="col-12 text-center py-3 text-muted" id="relatedLoading">
-          <span class="loading-spinner me-2"></span> Loading related products...
+          <span class="loading-spinner me-2"></span> {% trans "Loading related products..." %}
         </div>
       </div>
     </div>
@@ -184,9 +185,9 @@
   <!-- Error State -->
   <div class="d-none text-center py-5" id="productError">
     <i class="bi bi-exclamation-circle fs-1 text-danger d-block mb-3"></i>
-    <h5>Product not found</h5>
-    <p class="text-muted">This product may have been removed or is no longer available.</p>
-    <a href="/marketplace/" class="btn btn-primary">Back to Marketplace</a>
+    <h5>{% trans "Product not found" %}</h5>
+    <p class="text-muted">{% trans "This product may have been removed or is no longer available." %}</p>
+    <a href="/marketplace/" class="btn btn-primary">{% trans "Back to Marketplace" %}</a>
   </div>
 
 </div>
@@ -228,38 +229,38 @@
 
     // Info
     document.getElementById('productName').textContent = p.name;
-    document.getElementById('productCategory').textContent = p.category_name || 'Material';
-    document.getElementById('productSupplier').textContent = p.supplier_name || 'Verified Supplier';
-    document.getElementById('productDescription').textContent = p.description || 'No description provided.';
+    document.getElementById('productCategory').textContent = p.category_name || '{% trans "Material" %}';
+    document.getElementById('productSupplier').textContent = p.supplier_name || "{% trans 'Verified Supplier' %}";
+    document.getElementById('productDescription').textContent = p.description || "{% trans 'No description provided.' %}";
     document.getElementById('productPrice').textContent = `Rs. ${parseFloat(p.price).toLocaleString('en-IN')}`;
-    document.getElementById('productUnit').textContent = `/ ${p.unit || 'unit'}`;
+    document.getElementById('productUnit').textContent = `/ ${p.unit || _t('unit', 'unit')}`;
 
     // Specs
-    document.getElementById('specStock').textContent = `${p.available_stock} ${p.unit || 'units'}`;
-    document.getElementById('specUnit').textContent = p.unit || 'unit';
+    document.getElementById('specStock').textContent = `${p.available_stock} ${p.unit || _t('units', 'units')}`;
+    document.getElementById('specUnit').textContent = p.unit || _t('unit', 'unit');
     document.getElementById('specCategory').textContent = p.category_name || '—';
 
     // Stock badge & section
     const stockBadge = document.getElementById('productStockBadge');
     if (p.available_stock > 0) {
-      stockBadge.textContent = `In Stock (${p.available_stock} ${p.unit || 'units'})`;
+      stockBadge.textContent = `${_t('in_stock', 'In Stock')} (${p.available_stock} ${p.unit || _t('units', 'units')})`;
       stockBadge.className = 'stock-badge bg-success text-white';
-      document.getElementById('stockHint').textContent = `Max: ${p.available_stock} ${p.unit || 'units'}`;
+      document.getElementById('stockHint').textContent = `Max: ${p.available_stock} ${p.unit || _t('units', 'units')}`;
       document.getElementById('productQty').max = p.available_stock;
     } else {
-      stockBadge.textContent = 'Out of Stock';
+      stockBadge.textContent = _t('out_of_stock', 'Out of Stock');
       stockBadge.className = 'stock-badge bg-danger text-white';
       document.getElementById('addToCartSection').classList.add('d-none');
       document.getElementById('outOfStockSection').classList.remove('d-none');
     }
-    // Hide purchase UI for suppliers (they should manage products instead)
+    // Hide purchase UI for suppliers
     const user = getUser();
     if (user && user.role === 'MATERIAL_SUPPLIER') {
       document.getElementById('addToCartSection').classList.add('d-none');
       document.getElementById('outOfStockSection').classList.remove('d-none');
       document.getElementById('outOfStockSection').innerHTML = `
-        <div class="alert alert-info">Suppliers manage products here. Use Manage Products to edit listings.</div>
-        <a href="/marketplace/products/manage/?id=${p.id}" class="btn btn-warning w-100">Manage Product</a>
+        <div class="alert alert-info">{% trans "Suppliers manage products here. Use Manage Products to edit listings." %}</div>
+        <a href="/marketplace/products/manage/?id=${p.id}" class="btn btn-warning w-100">{% trans "Manage Product" %}</a>
       `;
     }
   }
@@ -291,10 +292,10 @@
     const qty = parseInt(document.getElementById('productQty').value) || 1;
     const btn = document.getElementById('addCartBtn');
     btn.disabled = true;
-    btn.innerHTML = `<span class="loading-spinner me-2"></span>Adding...`;
+    btn.innerHTML = `<span class="loading-spinner me-2"></span>${_t('saving', 'Adding...')}`;
     await addToCart(currentProduct.id, qty);
     btn.disabled = false;
-    btn.innerHTML = `<i class="bi bi-cart-plus me-2"></i>Add to Cart`;
+    btn.innerHTML = `<i class="bi bi-cart-plus me-2"></i>{% trans "Add to Cart" %}`;
   }
 
   async function loadRelatedProducts(categoryId) {
@@ -304,7 +305,7 @@
       const related = products.filter(p => String(p.id) !== String(productId)).slice(0, 4);
 
       if (related.length === 0) {
-        grid.innerHTML = `<div class="col-12 text-muted small">No other products in this category.</div>`;
+        grid.innerHTML = `<div class="col-12 text-muted small">{% trans "No other products in this category." %}</div>`;
         return;
       }
 

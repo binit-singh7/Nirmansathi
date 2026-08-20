@@ -2,6 +2,7 @@ import uuid
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 def generate_order_reference():
     return f"ORD-{uuid.uuid4().hex[:8].upper()}"
@@ -32,9 +33,9 @@ class Product(models.Model):
         related_name='products'
     )
     name = models.CharField(max_length=200)
-    price = models.DecimalField(max_digits=10, decimal_places=2, help_text="Price in NPR per unit")
-    available_stock = models.PositiveIntegerField(default=0, help_text="Available stock count")
-    unit = models.CharField(max_length=30, default='Bag', help_text="e.g. Bag, Ton, Piece, Cu.Ft")
+    price = models.DecimalField(max_digits=10, decimal_places=2, help_text=_("Price in NPR per unit"))
+    available_stock = models.PositiveIntegerField(default=0, help_text=_("Available stock count"))
+    unit = models.CharField(max_length=30, default='Bag', help_text=_("e.g. Bag, Ton, Piece, Cu.Ft"))
     description = models.TextField()
     image = models.ImageField(upload_to='products/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
@@ -99,16 +100,16 @@ class CartItem(models.Model):
 
 class Order(models.Model):
     class OrderStatus(models.TextChoices):
-        PENDING = 'PENDING', 'Pending'
-        CONFIRMED = 'CONFIRMED', 'Confirmed'
-        SHIPPED = 'SHIPPED', 'Shipped'
-        COMPLETED = 'COMPLETED', 'Completed'
-        CANCELLED = 'CANCELLED', 'Cancelled'
+        PENDING = 'PENDING', _('Pending')
+        CONFIRMED = 'CONFIRMED', _('Confirmed')
+        SHIPPED = 'SHIPPED', _('Shipped')
+        COMPLETED = 'COMPLETED', _('Completed')
+        CANCELLED = 'CANCELLED', _('Cancelled')
 
     class PaymentStatus(models.TextChoices):
-        UNPAID = 'UNPAID', 'Unpaid'
-        PAID = 'PAID', 'Paid'
-        REFUNDED = 'REFUNDED', 'Refunded'
+        UNPAID = 'UNPAID', _('Unpaid')
+        PAID = 'PAID', _('Paid')
+        REFUNDED = 'REFUNDED', _('Refunded')
 
     order_reference = models.CharField(
         max_length=50,
@@ -142,6 +143,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.order_reference} - {self.buyer.username} (NPR {self.total_amount})"
+
 
 
 class OrderItem(models.Model):

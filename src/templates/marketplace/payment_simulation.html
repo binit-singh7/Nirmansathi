@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}eSewa Payment Portal (Simulated) - NirmanSathi{% endblock %}
+{% block title %}{% trans "eSewa Payment Portal (Simulated) - NirmanSathi" %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -44,28 +45,27 @@
                         <i class="bi bi-wallet2 fs-2"></i>
                         <h3 class="fw-extrabold mb-0">eSewa</h3>
                     </div>
-                    <p class="mb-0 small opacity-90">Simulated Digital Wallet Gateway (FR-10)</p>
+                    <p class="mb-0 small opacity-90">{% trans "Simulated Digital Wallet Gateway" %}</p>
                 </div>
 
                 <div class="card-body p-4">
                     <div id="paymentLoading" class="text-center py-4">
-                        <span class="loading-spinner fs-3 text-success me-2"></span>Connecting to simulated eSewa
-                        server...
+                        <span class="loading-spinner fs-3 text-success me-2"></span>{% trans "Connecting to simulated eSewa server..." %}
                     </div>
 
                     <div id="paymentContent" class="d-none">
                         <!-- Order Details Box -->
                         <div class="bg-light p-3 rounded mb-4 border">
                             <div class="d-flex justify-content-between mb-1">
-                                <span class="text-muted small">Merchant:</span>
+                                <span class="text-muted small">{% trans "Merchant:" %}</span>
                                 <span class="fw-bold text-dark small">NirmanSathi Marketplace</span>
                             </div>
                             <div class="d-flex justify-content-between mb-1">
-                                <span class="text-muted small">Order Reference:</span>
+                                <span class="text-muted small">{% trans "Order Reference:" %}</span>
                                 <span class="fw-bold text-primary small" id="esewaOrderRef">Ref: ...</span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <span class="text-muted small">Amount Payable:</span>
+                                <span class="text-muted small">{% trans "Amount Payable:" %}</span>
                                 <span class="fw-bold text-success fs-5" id="esewaAmount">Rs. 0</span>
                             </div>
                         </div>
@@ -74,14 +74,12 @@
 
                         <form id="esewaSimForm">
                             <div class="mb-3">
-                                <label for="esewaId" class="form-label fw-semibold small">eSewa ID / Mobile
-                                    Number</label>
+                                <label for="esewaId" class="form-label fw-semibold small">{% trans "eSewa ID / Mobile Number" %}</label>
                                 <input type="text" class="form-control" id="esewaId" value="9841000000" required>
                             </div>
 
                             <div class="mb-4">
-                                <label for="esewaMpin" class="form-label fw-semibold small">eSewa MPIN /
-                                    Password</label>
+                                <label for="esewaMpin" class="form-label fw-semibold small">{% trans "eSewa MPIN / Password" %}</label>
                                 <input type="password" class="form-control" id="esewaMpin" value="1234" required>
                             </div>
 
@@ -89,15 +87,14 @@
                             <div class="form-check mb-4 p-2 bg-light rounded border">
                                 <input class="form-check-input ms-1 me-2" type="checkbox" id="simulateFailure">
                                 <label class="form-check-label text-danger small fw-semibold" for="simulateFailure">
-                                    Simulate Payment Failure (Test Error Handling)
+                                    {% trans "Simulate Payment Failure (Test Error Handling)" %}
                                 </label>
                             </div>
 
                             <button type="submit" class="btn btn-esewa w-100 mb-2" id="paySubmitBtn">
-                                Confirm & Pay Now
+                                {% trans "Confirm & Pay Now" %}
                             </button>
-                            <a href="/marketplace/cart/" class="btn btn-outline-secondary btn-sm w-100">Cancel & Return
-                                to Cart</a>
+                            <a href="/marketplace/cart/" class="btn btn-outline-secondary btn-sm w-100">{% trans "Cancel & Return to Cart" %}</a>
                         </form>
                     </div>
                 </div>
@@ -116,7 +113,7 @@
         currentOrderId = urlParams.get('order_id');
 
         if (!currentOrderId) {
-            showToast('Invalid payment request. No order ID provided.', 'danger');
+            showToast("{% trans 'Invalid payment request. No order ID provided.' %}", 'danger');
             setTimeout(() => { window.location.href = '/marketplace/'; }, 1200);
             return;
         }
@@ -129,7 +126,7 @@
             document.getElementById('esewaOrderRef').textContent = order.order_reference;
             document.getElementById('esewaAmount').textContent = `Rs. ${parseFloat(order.total_amount).toLocaleString('en-IN')}`;
         } catch (err) {
-            document.getElementById('paymentLoading').innerHTML = `<p class="text-danger py-4">${err.message || 'Order not found.'}</p>`;
+            document.getElementById('paymentLoading').innerHTML = `<p class="text-danger py-4">${err.message || "{% trans 'Order not found.' %}"}</p>`;
         }
     });
 
@@ -140,7 +137,7 @@
 
         alertEl.classList.add('d-none');
         btn.disabled = true;
-        btn.innerHTML = `<span class="loading-spinner me-2"></span>Processing eSewa Payment...`;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>${_t('processing', '{% trans "Processing eSewa Payment..." %}')}`;
 
         const simulate_failure = document.getElementById('simulateFailure').checked;
 
@@ -154,16 +151,16 @@
                 })
             });
 
-            showToast(`Payment Successful! Transaction: ${res.transaction.transaction_code}`, 'success');
+            showToast(`{% trans "Payment Successful!" %} Transaction: ${res.transaction.transaction_code}`, 'success');
 
             setTimeout(() => {
                 window.location.href = `/marketplace/orders/${currentOrderId}/`;
             }, 1200);
         } catch (err) {
-            alertEl.textContent = err.message || 'Payment simulation failed.';
+            alertEl.textContent = err.message || "{% trans 'Payment simulation failed.' %}";
             alertEl.classList.remove('d-none');
             btn.disabled = false;
-            btn.innerHTML = `Confirm & Pay Now`;
+            btn.innerHTML = `{% trans "Confirm & Pay Now" %}`;
         }
     });
 </script>

@@ -1,15 +1,16 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}NirmanSathi - Building Permit & Construction Marketplace{% endblock %}</title>
+  <title>{% block title %}{% trans "NirmanSathi - Building Permit & Construction Marketplace" %}{% endblock %}</title>
 
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Inter & Noto Sans Devanagari for Nepali Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
   <!-- Bootstrap 5 CSS -->
@@ -23,19 +24,19 @@
   {% block extra_css %}{% endblock %}
 </head>
 
-<body>
+<body class="{% if LANGUAGE_CODE == 'ne' %}lang-ne{% else %}lang-en{% endif %}">
   <!-- Header / Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-ns" aria-label="Main Navigation">
-    <div class="container-fluid px-lg-4">
-      <a class="navbar-brand" href="/" aria-label="NirmanSathi Official Nepal E-Governance Portal">
-        <img src="/static/images/nepal_emblem.svg" alt="Nepal Emblem" class="navbar-emblem">
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-ns" aria-label="{% trans 'Main Navigation' %}">
+    <div class="container px-3">
+      <a class="navbar-brand" href="/" aria-label="{% trans 'NirmanSathi Official Nepal E-Governance Portal' %}">
+        <img src="/static/images/nepal_emblem.svg" alt="{% trans 'Nepal Emblem' %}" class="navbar-emblem">
         <div class="navbar-brand-text">
           <span class="navbar-title">Nirman<span class="highlight-gold">Sathi</span></span>
-          <span class="navbar-subtitle">नेपाल सरकार | Government of Nepal</span>
+          <span class="navbar-subtitle">{% trans "Government of Nepal" %} | {% trans "Digital Construction Platform" %}</span>
         </div>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMainContent"
-        aria-controls="navbarMainContent" aria-expanded="false" aria-label="Toggle navigation">
+        aria-controls="navbarMainContent" aria-expanded="false" aria-label="{% trans 'Toggle navigation' %}">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -43,8 +44,37 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarRoleNav">
           <!-- Dynamic Role Navigation Items via base.js -->
         </ul>
-        <div class="d-flex align-items-center gap-3" id="navbarAuthNav">
+        <div class="d-flex align-items-center gap-2 flex-shrink-0" id="navbarRightSection">
+          <!-- Language Switcher Form & Dropdown -->
+          <form action="{% url 'set_language' %}" method="post" id="siteLanguageForm" class="d-inline-flex m-0">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path|default:'/' }}">
+            <input name="language" type="hidden" id="siteLanguageInput" value="{{ LANGUAGE_CODE }}">
+            <div class="dropdown">
+              <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-1 py-1 px-2"
+                      type="button" id="langDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'Change Language' %}">
+                <i class="bi bi-translate text-warning"></i>
+                <span class="fw-semibold" style="font-size:0.82rem;">{% if LANGUAGE_CODE == 'ne' %}नेपाली{% else %}EN{% endif %}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-1" aria-labelledby="langDropdownBtn">
+                <li>
+                  <button type="button" class="dropdown-item d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE == 'en' %}active fw-bold{% endif %}" onclick="changeSiteLanguage('en')">
+                    <span>🇬🇧 English</span>
+                    {% if LANGUAGE_CODE == 'en' %}<i class="bi bi-check2 text-primary ms-2"></i>{% endif %}
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="dropdown-item d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE == 'ne' %}active fw-bold{% endif %}" onclick="changeSiteLanguage('ne')">
+                    <span>🇳🇵 नेपाली</span>
+                    {% if LANGUAGE_CODE == 'ne' %}<i class="bi bi-check2 text-primary ms-2"></i>{% endif %}
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </form>
+
           <!-- Dynamic Auth Navigation via base.js -->
+          <div id="navbarAuthNav"></div>
         </div>
       </div>
     </div>
@@ -64,30 +94,109 @@
       <div class="row gy-3">
         <div class="col-md-6">
           <h5 class="fw-bold text-warning"><i class="bi bi-building-gear me-2"></i>NirmanSathi</h5>
-          <p class="small text-secondary mb-0">Nepal Residential Building Permit E-Governance & Construction Material
-            Marketplace. Streamlining urban construction and governance.</p>
+          <p class="small text-secondary mb-0">{% trans "Nepal Residential Building Permit E-Governance & Construction Material Marketplace. Streamlining urban construction and governance." %}</p>
         </div>
         <div class="col-md-3">
-          <h6>Quick Links</h6>
+          <h6>{% trans "Quick Links" %}</h6>
           <ul class="list-unstyled small mb-0">
-            <li><a href="/" class="text-secondary text-decoration-none">Home</a></li>
-            <li><a href="/marketplace/" class="text-secondary text-decoration-none">Marketplace</a></li>
-            <li><a href="/login/" class="text-secondary text-decoration-none">Login</a></li>
+            <li><a href="/" class="text-secondary text-decoration-none">{% trans "Home" %}</a></li>
+            <li><a href="/marketplace/" class="text-secondary text-decoration-none">{% trans "Marketplace" %}</a></li>
+            <li><a href="/login/" class="text-secondary text-decoration-none">{% trans "Login" %}</a></li>
           </ul>
         </div>
         <div class="col-md-3">
-          <h6>E-Governance Portal</h6>
-          <p class="small text-secondary mb-1"><i class="bi bi-geo-alt me-1"></i>Ministry of Urban Development, Nepal
-          </p>
-          <p class="small text-secondary"><i class="bi bi-shield-check me-1"></i>Official CSIT E-Governance Project</p>
+          <h6>{% trans "E-Governance Portal" %}</h6>
+          <p class="small text-secondary mb-1"><i class="bi bi-geo-alt me-1"></i>{% trans "Ministry of Urban Development, Nepal" %}</p>
+          <p class="small text-secondary"><i class="bi bi-shield-check me-1"></i>{% trans "Official CSIT E-Governance Project" %}</p>
         </div>
       </div>
       <hr class="border-secondary my-3">
       <div class="text-center small text-secondary">
-        &copy; {% now "Y" %} NirmanSathi E-Governance Platform. All rights reserved.
+        &copy; {% now "Y" %} {% trans "NirmanSathi E-Governance Platform. All rights reserved." %}
       </div>
     </div>
   </footer>
+
+  <!-- Global Server-to-Client i18n Bridge -->
+  <script>
+    window.NIRMAN_I18N = {
+      lang: '{{ LANGUAGE_CODE|default:"en" }}',
+      t: {
+        apply_permit: "{% trans 'Apply Permit' %}",
+        my_permits: "{% trans 'My Permits' %}",
+        marketplace: "{% trans 'Marketplace' %}",
+        my_orders: "{% trans 'My Orders' %}",
+        permit_review_queue: "{% trans 'Permit Review Queue' %}",
+        manage_products: "{% trans 'Manage Products' %}",
+        supplier_orders: "{% trans 'Supplier Orders' %}",
+        users_roles: "{% trans 'Users & Roles' %}",
+        django_admin: "{% trans 'Django Admin' %}",
+        login: "{% trans 'Login' %}",
+        register: "{% trans 'Register' %}",
+        logout: "{% trans 'Logout' %}",
+        dashboard: "{% trans 'Dashboard' %}",
+        citizen: "{% trans 'Citizen' %}",
+        municipality_officer: "{% trans 'Municipality Officer' %}",
+        supplier: "{% trans 'Supplier' %}",
+        admin: "{% trans 'Admin' %}",
+        administrator: "{% trans 'Administrator' %}",
+        welcome_back: "{% trans 'Welcome back' %}",
+        logged_out_success: "{% trans 'Logged out successfully' %}",
+        session_expired: "{% trans 'Session expired. Please log in again.' %}",
+        confirm_logout: "{% trans 'Are you sure you want to log out?' %}",
+        product_added_cart: "{% trans 'Product added to cart!' %}",
+        item_removed_cart: "{% trans 'Item removed from cart.' %}",
+        login_to_add_cart: "{% trans 'Please login to add products to your cart.' %}",
+        failed_add_cart: "{% trans 'Failed to add product to cart.' %}",
+        failed_remove_cart: "{% trans 'Failed to remove item.' %}",
+        select_province: "{% trans '-- Select Province --' %}",
+        select_district: "{% trans '-- Select District --' %}",
+        select_municipality: "{% trans '-- Select Municipality --' %}",
+        select_ward: "{% trans '-- Select Ward --' %}",
+        ward_no: "{% trans 'Ward No.' %}",
+        failed_load_provinces: "{% trans 'Failed to load provinces' %}",
+        failed_load_districts: "{% trans 'Failed to load districts' %}",
+        failed_load_municipalities: "{% trans 'Failed to load municipalities' %}",
+        failed_load_wards: "{% trans 'Failed to load wards' %}",
+        in_stock: "{% trans 'In Stock' %}",
+        out_of_stock: "{% trans 'Out of Stock' %}",
+        unit: "{% trans 'unit' %}",
+        units: "{% trans 'units' %}",
+        details: "{% trans 'Details' %}",
+        add: "{% trans 'Add' %}",
+        manage: "{% trans 'Manage' %}",
+        view_details: "{% trans 'View Details' %}",
+        view: "{% trans 'View' %}",
+        edit: "{% trans 'Edit' %}",
+        delete: "{% trans 'Delete' %}",
+        loading: "{% trans 'Loading...' %}",
+        processing: "{% trans 'Processing...' %}",
+        saving: "{% trans 'Saving...' %}",
+        submitting: "{% trans 'Submitting...' %}",
+        status_pending: "{% trans 'Pending' %}",
+        status_review: "{% trans 'Under Technical Review' %}",
+        status_approved: "{% trans 'Approved' %}",
+        status_rejected: "{% trans 'Rejected' %}",
+        status_confirmed: "{% trans 'Confirmed' %}",
+        status_shipped: "{% trans 'Shipped' %}",
+        status_completed: "{% trans 'Completed' %}",
+        status_delivered: "{% trans 'Delivered' %}",
+        status_cancelled: "{% trans 'Cancelled' %}",
+        status_paid: "{% trans 'Paid' %}",
+        status_unpaid: "{% trans 'Unpaid' %}",
+        status_failed: "{% trans 'Failed' %}"
+      }
+    };
+
+    function changeSiteLanguage(langCode) {
+      const form = document.getElementById('siteLanguageForm');
+      const input = document.getElementById('siteLanguageInput');
+      if (form && input) {
+        input.value = langCode;
+        form.submit();
+      }
+    }
+  </script>
 
   <!-- Bootstrap 5 JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

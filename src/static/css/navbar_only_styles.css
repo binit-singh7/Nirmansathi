@@ -64,6 +64,9 @@
   padding: 0.2rem 0;
   text-decoration: none;
   color: var(--gov-white) !important;
+  flex-shrink: 0;          /* never squish the brand */
+  min-width: 0;            /* allow internal truncation */
+  max-width: 60%;          /* cap how wide brand can be */
 }
 
 /* Emblem Image Styling */
@@ -110,6 +113,10 @@
   letter-spacing: 0.05em;
   margin-top: 2px;
   opacity: 0.95;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 280px;
 }
 
 /* ==========================================================================
@@ -287,6 +294,14 @@
   text-transform: uppercase;
 }
 
+/* Auth nav container — default desktop flex row */
+#navbarAuthNav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* Cart Badge Styling */
 .navbar-cart-badge {
   background-color: var(--gov-crimson) !important;
@@ -325,57 +340,182 @@
 }
 
 /* ==========================================================================
-   6. RESPONSIVE BREAKPOINTS (Mobile & Tablet)
+   6. RESPONSIVE BREAKPOINTS
    ========================================================================== */
+
+/* ---- Desktop (lg+: >=992px) ---- */
+@media (min-width: 992px) {
+  #navbarRightSection {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .navbar-ns .navbar-brand {
+    max-width: 45%;
+  }
+
+  .navbar-subtitle {
+    max-width: 260px;
+  }
+
+  #siteLanguageForm .dropdown-toggle {
+    width: auto;
+  }
+}
+
+/* ---- Tablet + Mobile (< 992px) — hamburger menu open state ---- */
 @media (max-width: 991.98px) {
   .navbar-ns {
     padding: 0.5rem 0.75rem;
   }
 
+  .navbar-ns .navbar-brand {
+    max-width: 78%;
+    gap: 0.5rem;
+  }
+
   .navbar-title {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .navbar-subtitle {
-    font-size: 0.62rem;
+    font-size: 0.6rem;
+    max-width: 200px;
   }
 
   .navbar-emblem {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
   }
 
+  /* Collapsed menu panel — the drop-down drawer */
   .navbar-collapse {
     background-color: var(--gov-navy-dark);
-    padding: 1rem;
-    border-radius: 8px;
-    margin-top: 0.5rem;
+    padding: 0.75rem 1rem 1rem;
+    border-radius: 0 0 10px 10px;
+    margin-top: 0.35rem;
     border: 1px solid rgba(245, 158, 11, 0.3);
+    border-top: none;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   }
 
+  /* Role nav links — visible, full width, stacked */
   .navbar-ns .navbar-nav {
     align-items: stretch;
-    margin-bottom: 1rem !important;
+    width: 100%;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .navbar-ns .nav-item {
+    width: 100%;
   }
 
   .navbar-ns .nav-link {
     padding: 0.65rem 1rem !important;
+    width: 100%;
+    display: flex;
   }
 
   .navbar-ns .nav-link.active::after {
     display: none;
   }
 
+  /* Divider between role nav and right section */
+  #navbarRightSection {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 0.6rem;
+    margin-top: 0.25rem;
+    flex-wrap: nowrap;
+  }
+
+  /* Language form — full width */
+  #siteLanguageForm {
+    display: flex !important;
+    width: 100%;
+  }
+
+  #siteLanguageForm .dropdown {
+    width: 100%;
+  }
+
+  #siteLanguageForm .dropdown-toggle {
+    width: 100%;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Auth nav container — full width column */
   #navbarAuthNav {
+    display: flex !important;
     flex-direction: column;
     align-items: stretch !important;
-    gap: 0.5rem !important;
+    gap: 0.4rem !important;
+    width: 100%;
   }
 
   #navbarAuthNav .btn {
     width: 100%;
     text-align: center;
     justify-content: center;
+    padding: 0.55rem 1rem;
+  }
+
+  /* User dropdown in mobile — full width */
+  #navbarAuthNav .dropdown {
+    width: 100%;
+  }
+
+  #navbarAuthNav .dropdown-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ---- Small mobile (< 576px) ---- */
+@media (max-width: 575.98px) {
+  .navbar-ns {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .navbar-ns .navbar-brand {
+    gap: 0.4rem;
+    max-width: 72%;
+  }
+
+  .navbar-emblem {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navbar-title {
+    font-size: 0.95rem;
+  }
+
+  .navbar-subtitle {
+    display: none;
+  }
+}
+
+/* ---- Very small (< 380px) ---- */
+@media (max-width: 379.98px) {
+  .navbar-emblem {
+    width: 26px;
+    height: 26px;
+  }
+
+  .navbar-title {
+    font-size: 0.88rem;
+  }
+
+  .navbar-ns .navbar-brand {
+    gap: 0.3rem;
   }
 }

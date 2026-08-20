@@ -1,0 +1,1870 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: NirmanSathi 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-20 00:00+0545\n"
+"PO-Revision-Date: 2026-08-20 00:00+0545\n"
+"Last-Translator: NirmanSathi Localization Team\n"
+"Language-Team: ne <support@nirmansathi.gov.np>\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "NirmanSathi - Building Permit & Construction Marketplace"
+msgstr "निर्माणसाथी - भवन निर्माण अनुमति तथा निर्माण सामग्री बजार"
+
+msgid "Main Navigation"
+msgstr "मुख्य नेभिगेसन"
+
+msgid "NirmanSathi Official Nepal E-Governance Portal"
+msgstr "निर्माणसाथी आधिकारिक नेपाल ई-प्रशासन पोर्टल"
+
+msgid "Nepal Emblem"
+msgstr "नेपालको निशान छाप"
+
+msgid "Government of Nepal"
+msgstr "नेपाल सरकार"
+
+msgid "Digital Construction Platform"
+msgstr "डिजिटल निर्माण प्रणाली"
+
+msgid "Toggle navigation"
+msgstr "नेभिगेसन टगल गर्नुहोस्"
+
+msgid "Select Language"
+msgstr "भाषा चयन गर्नुहोस्"
+
+msgid "Change Language"
+msgstr "भाषा परिवर्तन गर्नुहोस्"
+
+msgid "Apply Permit"
+msgstr "अनुमति आवेदन"
+
+msgid "My Permits"
+msgstr "मेरो अनुमतिहरू"
+
+msgid "Marketplace"
+msgstr "निर्माण सामग्री बजार"
+
+msgid "My Orders"
+msgstr "मेरो अर्डरहरू"
+
+msgid "Permit Review Queue"
+msgstr "अनुमति पुनरावलोकन सूची"
+
+msgid "Manage Products"
+msgstr "उत्पादनहरू व्यवस्थापन गर्नुहोस्"
+
+msgid "Supplier Orders"
+msgstr "आपूर्तिकर्ता अर्डरहरू"
+
+msgid "Users & Roles"
+msgstr "प्रयोगकर्ता तथा भूमिकाहरू"
+
+msgid "Django Admin"
+msgstr "ड्याङ्गो एडमिन"
+
+msgid "Login"
+msgstr "लगइन"
+
+msgid "Register"
+msgstr "दर्ता गर्नुहोस्"
+
+msgid "Logout"
+msgstr "लगआउट"
+
+msgid "Dashboard"
+msgstr "ड्यासबोर्ड"
+
+msgid "Citizen"
+msgstr "नागरिक"
+
+msgid "Municipality Officer"
+msgstr "नगरपालिका अधिकृत"
+
+msgid "Material Supplier"
+msgstr "निर्माण सामग्री आपूर्तिकर्ता"
+
+msgid "Admin"
+msgstr "प्रशासक"
+
+msgid "Administrator"
+msgstr "प्रणाली प्रशासक"
+
+msgid "System Administrator"
+msgstr "प्रणाली प्रशासक"
+
+msgid "Welcome back"
+msgstr "पुन: स्वागत छ"
+
+msgid "Welcome back!"
+msgstr "पुन: स्वागत छ!"
+
+msgid "Welcome"
+msgstr "स्वागत छ"
+
+msgid "Logged out successfully"
+msgstr "सफलतापूर्वक लगआउट भयो"
+
+msgid "Session expired. Please log in again."
+msgstr "सत्र समाप्त भयो। कृपया पुन: लगइन गर्नुहोस्।"
+
+msgid "Are you sure you want to log out?"
+msgstr "के तपाईं लगआउट गर्न निश्चित हुनुहुन्छ?"
+
+msgid "Product added to cart!"
+msgstr "उत्पादन कार्टमा थपियो!"
+
+msgid "Item removed from cart."
+msgstr "सामग्री कार्टबाट हटाइयो।"
+
+msgid "Please login to add products to your cart."
+msgstr "कार्टमा उत्पादन थप्न कृपया लगइन गर्नुहोस्।"
+
+msgid "Failed to add product to cart."
+msgstr "कार्टमा उत्पादन थप्न असफल।"
+
+msgid "Failed to remove item."
+msgstr "सामग्री हटाउन असफल।"
+
+msgid "-- Select Province --"
+msgstr "-- प्रदेश छान्नुहोस् --"
+
+msgid "-- Select District --"
+msgstr "-- जिल्ला छान्नुहोस् --"
+
+msgid "-- Select Municipality --"
+msgstr "-- नगरपालिका छान्नुहोस् --"
+
+msgid "-- Select Ward --"
+msgstr "-- वडा छान्नुहोस् --"
+
+msgid "Ward No."
+msgstr "वडा नं."
+
+msgid "Ward"
+msgstr "वडा"
+
+msgid "Failed to load provinces"
+msgstr "प्रदेशहरू लोड गर्न असफल"
+
+msgid "Failed to load districts"
+msgstr "जिल्लाहरू लोड गर्न असफल"
+
+msgid "Failed to load municipalities"
+msgstr "नगरपालिकाहरू लोड गर्न असफल"
+
+msgid "Failed to load wards"
+msgstr "वडाहरू लोड गर्न असफल"
+
+msgid "In Stock"
+msgstr "मौज्दातमा उपलब्ध"
+
+msgid "Out of Stock"
+msgstr "मौज्दात सकिएको"
+
+msgid "unit"
+msgstr "एकाइ"
+
+msgid "units"
+msgstr "एकाइहरू"
+
+msgid "Details"
+msgstr "विवरण"
+
+msgid "Add"
+msgstr "थप्नुहोस्"
+
+msgid "Manage"
+msgstr "व्यवस्थापन"
+
+msgid "View Details"
+msgstr "विवरण हेर्नुहोस्"
+
+msgid "View"
+msgstr "हेर्नुहोस्"
+
+msgid "Edit"
+msgstr "सम्पादन गर्नुहोस्"
+
+msgid "Delete"
+msgstr "मेटाउनुहोस्"
+
+msgid "Loading..."
+msgstr "लोड हुँदैछ..."
+
+msgid "Processing..."
+msgstr "प्रक्रिया हुँदैछ..."
+
+msgid "Saving..."
+msgstr "सुरक्षित हुँदैछ..."
+
+msgid "Submitting..."
+msgstr "पेस हुँदैछ..."
+
+msgid "Pending"
+msgstr "विचाराधीन"
+
+msgid "Under Technical Review"
+msgstr "प्राविधिक पुनरावलोकनमा"
+
+msgid "Approved"
+msgstr "स्वीकृत"
+
+msgid "Rejected"
+msgstr "अस्वीकृत"
+
+msgid "Confirmed"
+msgstr "पुष्टि भएको"
+
+msgid "Shipped"
+msgstr "पठाइएको"
+
+msgid "Completed"
+msgstr "सम्पन्न"
+
+msgid "Delivered"
+msgstr "डेलिभर भएको"
+
+msgid "Cancelled"
+msgstr "रद्द भएको"
+
+msgid "Paid"
+msgstr "भुक्तानी भयो"
+
+msgid "Unpaid"
+msgstr "भुक्तानी बाँकी"
+
+msgid "Failed"
+msgstr "असफल"
+
+msgid "Success"
+msgstr "सफल"
+
+msgid "Close"
+msgstr "बन्द गर्नुहोस्"
+
+msgid ""
+"Nepal Residential Building Permit E-Governance & Construction Material "
+"Marketplace. Streamlining urban construction and governance."
+msgstr ""
+"नेपाल आवासीय भवन निर्माण अनुमति ई-प्रशासन तथा निर्माण सामग्री बजार प्रणाली। "
+"शहरी निर्माण तथा सुशासनको सरलीकरण।"
+
+msgid "Quick Links"
+msgstr "द्रुत लिङ्कहरू"
+
+msgid "Home"
+msgstr "गृहपृष्ठ"
+
+msgid "E-Governance Portal"
+msgstr "ई-प्रशासन पोर्टल"
+
+msgid "Ministry of Urban Development, Nepal"
+msgstr "शहरी विकास मन्त्रालय, नेपाल"
+
+msgid "Official CSIT E-Governance Project"
+msgstr "आधिकारिक CSIT ई-प्रशासन परियोजना"
+
+msgid "NirmanSathi E-Governance Platform. All rights reserved."
+msgstr "निर्माणसाथी ई-प्रशासन प्रणाली। सर्वाधिकार सुरक्षित।"
+
+msgid "NirmanSathi - Residential Building Permit E-Governance & Marketplace"
+msgstr "निर्माणसाथी - आवासीय भवन निर्माण अनुमति ई-प्रशासन तथा बजार"
+
+msgid "DIGITAL CONSTRUCTION PLATFORM"
+msgstr "डिजिटल निर्माण प्रणाली"
+
+msgid "Residential Building Permits & Material Marketplace"
+msgstr "आवासीय भवन निर्माण अनुमति तथा सामग्री बजार"
+
+msgid ""
+"NirmanSathi simplifies municipal building permits approval and provides a "
+"verified marketplace for quality construction materials across Nepal."
+msgstr ""
+"निर्माणसाथीले नगरपालिका भवन निर्माण अनुमति स्वीकृतिलाई सहज बनाउँछ र नेपालभर "
+"गुणस्तरीय निर्माण सामग्रीको प्रमाणित बजार प्रदान गर्दछ।"
+
+msgid "Apply for Building Permit"
+msgstr "भवन निर्माण अनुमतिका लागि आवेदन दिनुहोस्"
+
+msgid "Explore Marketplace"
+msgstr "निर्माण सामग्री बजार हेर्नुहोस्"
+
+msgid "Portal Access"
+msgstr "पोर्टल पहुँच"
+
+msgid "Select your role to access your dedicated dashboard"
+msgstr "आफ्नो समर्पित ड्यासबोर्डमा जान आफ्नो भूमिका चयन गर्नुहोस्"
+
+msgid "Citizen / Landowner"
+msgstr "नागरिक / जग्गाधनी"
+
+msgid "Integrated E-Governance & Marketplace"
+msgstr "एकीकृत ई-प्रशासन तथा बजार"
+
+msgid "Streamlining Nepal's residential construction ecosystem"
+msgstr "नेपालको आवासीय निर्माण प्रणालीलाई सुव्यवस्थित बनाउँदै"
+
+msgid "1. Submit Permit"
+msgstr "१. अनुमति आवेदन पेस गर्नुहोस्"
+
+msgid ""
+"Submit building blueprints, ownership certificates, and structural details "
+"online with location cascades."
+msgstr ""
+"भवनको नक्सा, लालपुर्जा र संरचनात्मक विवरणहरू अनलाइन स्थान छनोटसहित पेस "
+"गर्नुहोस्।"
+
+msgid "2. Officer Verification"
+msgstr "२. अधिकृत प्रमाणीकरण"
+
+msgid ""
+"Municipal officers inspect, review blueprints, add official remarks, and "
+"grant building approval."
+msgstr ""
+"नगरपालिका अधिकृतहरूले निरीक्षण, नक्सा पुनरावलोकन, आधिकारिक टिप्पणी र निर्माण"
+" स्वीकृति प्रदान गर्दछन्।"
+
+msgid "3. Order Materials"
+msgstr "३. सामग्री अर्डर गर्नुहोस्"
+
+msgid ""
+"Browse verified cement, rod, bricks, and sand from local suppliers with live"
+" stock tracking."
+msgstr ""
+"स्थानीय आपूर्तिकर्ताहरूबाट सिमेन्ट, रड, इँटा र बालुवा प्रत्यक्ष मौज्दात "
+"ट्र्याकिङसहित खरिद गर्नुहोस्।"
+
+msgid "4. Simulated Payment"
+msgstr "४. सिमुलेटेड भुक्तानी"
+
+msgid ""
+"Seamless simulated digital payments via eSewa with real-time receipt "
+"generation."
+msgstr "ईसेवा मार्फत तत्काल रसिद उत्पादनसहितको सहज सिमुलेटेड डिजिटल भुक्तानी।"
+
+msgid "Continue to your dashboard or marketplace based on your role."
+msgstr "आफ्नो भूमिका अनुसार ड्यासबोर्ड वा सामग्री बजारमा जानुहोस्।"
+
+msgid "Go to Citizen Dashboard"
+msgstr "नागरिक ड्यासबोर्डमा जानुहोस्"
+
+msgid "Go to Officer Dashboard"
+msgstr "अधिकृत ड्यासबोर्डमा जानुहोस्"
+
+msgid "Go to Supplier Dashboard"
+msgstr "आपूर्तिकर्ता ड्यासबोर्डमा जानुहोस्"
+
+msgid "Go to Admin Dashboard"
+msgstr "प्रशासक ड्यासबोर्डमा जानुहोस्"
+
+msgid "Visit Marketplace"
+msgstr "सामग्री बजारमा जानुहोस्"
+
+msgid "Login - NirmanSathi"
+msgstr "लगइन - निर्माणसाथी"
+
+msgid "Account Login"
+msgstr "खाता लगइन"
+
+msgid "Access your NirmanSathi E-Governance Dashboard"
+msgstr "आफ्नो निर्माणसाथी ई-प्रशासन ड्यासबोर्ड खोल्नुहोस्"
+
+msgid "Username or Email"
+msgstr "प्रयोगकर्ता नाम वा इमेल"
+
+msgid "Enter username or email"
+msgstr "प्रयोगकर्ता नाम वा इमेल प्रविष्ट गर्नुहोस्"
+
+msgid "Password"
+msgstr "पासवर्ड"
+
+msgid "Enter password"
+msgstr "पासवर्ड प्रविष्ट गर्नुहोस्"
+
+msgid "Don't have an account?"
+msgstr "खाता छैन?"
+
+msgid "Register here"
+msgstr "यहाँ दर्ता गर्नुहोस्"
+
+msgid "Please enter your username or email."
+msgstr "कृपया आफ्नो प्रयोगकर्ता नाम वा इमेल प्रविष्ट गर्नुहोस्।"
+
+msgid "Please enter your password."
+msgstr "कृपया आफ्नो पासवर्ड प्रविष्ट गर्नुहोस्।"
+
+msgid "Logging in..."
+msgstr "लगइन हुँदैछ..."
+
+msgid "Login failed. Please check your credentials."
+msgstr "लगइन असफल भयो। कृपया आफ्नो विवरण जाँच गर्नुहोस्।"
+
+msgid "Register - NirmanSathi"
+msgstr "दर्ता - निर्माणसाथी"
+
+msgid "Create Account"
+msgstr "नयाँ खाता सिर्जना गर्नुहोस्"
+
+msgid "Register for NirmanSathi E-Governance & Marketplace"
+msgstr "निर्माणसाथी ई-प्रशासन तथा बजारका लागि दर्ता गर्नुहोस्"
+
+msgid "Username *"
+msgstr "प्रयोगकर्ता नाम *"
+
+msgid "Choose username"
+msgstr "प्रयोगकर्ता नाम छान्नुहोस्"
+
+msgid "Full Name"
+msgstr "पूरा नाम"
+
+msgid "e.g. Ram Bahadur Shrestha"
+msgstr "जस्तै: राम बहादुर श्रेष्ठ"
+
+msgid "Email Address *"
+msgstr "इमेल ठेगाना *"
+
+msgid "Phone Number"
+msgstr "फोन नम्बर"
+
+msgid "Account Role *"
+msgstr "खाताको भूमिका *"
+
+msgid "Citizen / Landowner (Apply Permits & Buy Materials)"
+msgstr "नागरिक / जग्गाधनी (अनुमति आवेदन र सामग्री खरिद)"
+
+msgid "Material Supplier (Sell Construction Supplies)"
+msgstr "निर्माण सामग्री आपूर्तिकर्ता (सामग्री बिक्री)"
+
+msgid "Municipality Officer (Review Permits)"
+msgstr "नगरपालिका अधिकृत (अनुमति पुनरावलोकन)"
+
+msgid "Password *"
+msgstr "पासवर्ड *"
+
+msgid "Min 6 characters"
+msgstr "कम्तिमा ६ अक्षर"
+
+msgid "Confirm Password *"
+msgstr "पासवर्ड पुष्टि गर्नुहोस् *"
+
+msgid "Re-enter password"
+msgstr "पासवर्ड पुन: प्रविष्ट गर्नुहोस्"
+
+msgid "I agree to NirmanSathi Terms of Service and E-Governance Guidelines."
+msgstr "म निर्माणसाथी सेवाका सर्तहरू र ई-प्रशासन निर्देशिकाहरूसँग सहमत छु।"
+
+msgid "Already registered?"
+msgstr "पहिले नै दर्ता हुनुहुन्छ?"
+
+msgid "Log in here"
+msgstr "यहाँ लगइन गर्नुहोस्"
+
+msgid "Username must be at least 3 characters long."
+msgstr "प्रयोगकर्ता नाम कम्तिमा ३ अक्षरको हुनुपर्छ।"
+
+msgid "Please enter a valid email address."
+msgstr "कृपया मान्य इमेल ठेगाना प्रविष्ट गर्नुहोस्।"
+
+msgid "Please enter a valid phone number (10 digits)."
+msgstr "कृपया मान्य १० अङ्कको फोन नम्बर प्रविष्ट गर्नुहोस्।"
+
+msgid "Password must be at least 6 characters long."
+msgstr "पासवर्ड कम्तिमा ६ अक्षरको हुनुपर्छ।"
+
+msgid "Passwords do not match."
+msgstr "पासवर्डहरू मिलेनन्।"
+
+msgid "Creating Account..."
+msgstr "खाता सिर्जना हुँदैछ..."
+
+msgid "Registration successful! Redirecting to login page..."
+msgstr "दर्ता सफल भयो! लगइन पृष्ठमा जाँदै..."
+
+msgid "Registration failed. Please try again."
+msgstr "दर्ता असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।"
+
+msgid "System Audit Logs - NirmanSathi"
+msgstr "प्रणाली अडिट लगहरू - निर्माणसाथी"
+
+msgid "System Security & Audit Trail"
+msgstr "प्रणाली सुरक्षा तथा अडिट विवरण"
+
+msgid ""
+"Real-time system activity logs, authentication events, permit decision "
+"audits, and payment verifications."
+msgstr ""
+"वास्तविक समय प्रणाली गतिविधि लगहरू, प्रमाणीकरण घटनाहरू, अनुमति निर्णय "
+"अडिटहरू र भुक्तानी प्रमाणीकरणहरू।"
+
+msgid "Back to Control Panel"
+msgstr "नियन्त्रण कक्षमा फर्कनुहोस्"
+
+msgid "Filter by user, action keyword, or IP..."
+msgstr "प्रयोगकर्ता, कार्य शब्द वा आईपी द्वारा फिल्टर गर्नुहोस्..."
+
+msgid "All Event Categories"
+msgstr "सबै घटना वर्गहरू"
+
+msgid "Authentication & JWT"
+msgstr "प्रमाणीकरण तथा JWT"
+
+msgid "Building Permits & Inspections"
+msgstr "भवन निर्माण अनुमति तथा निरीक्षण"
+
+msgid "eSewa Payments"
+msgstr "ईसेवा भुक्तानीहरू"
+
+msgid "Marketplace & Orders"
+msgstr "निर्माण सामग्री बजार तथा अर्डरहरू"
+
+msgid "System Administration"
+msgstr "प्रणाली प्रशासन"
+
+msgid "Live Poll (5s)"
+msgstr "प्रत्यक्ष अद्यावधिक (५ सेकेन्ड)"
+
+msgid "Refresh Logs"
+msgstr "लगहरू ताजा गर्नुहोस्"
+
+msgid "Timestamp"
+msgstr "समय"
+
+msgid "Category"
+msgstr "वर्ग"
+
+msgid "User / Actor"
+msgstr "प्रयोगकर्ता / कर्ता"
+
+msgid "Action Event"
+msgstr "कार्य घटना"
+
+msgid "IP Address"
+msgstr "आईपी ठेगाना"
+
+msgid "Loading audit trail from database..."
+msgstr "डाटाबेसबाट अडिट विवरण लोड हुँदैछ..."
+
+msgid ""
+"Failed to fetch audit logs. Ensure you are logged in as an Administrator."
+msgstr ""
+"अडिट लगहरू प्राप्त गर्न असफल। तपाईं प्रशासकको रूपमा लगइन भएको सुनिश्चित "
+"गर्नुहोस्।"
+
+msgid "No real-time audit logs found matching criteria."
+msgstr "मापदण्ड मिल्ने कुनै अडिट लग फेला परेन।"
+
+msgid "unauthenticated"
+msgstr "अप्रमाणित"
+
+msgid "Citizen Dashboard - NirmanSathi"
+msgstr "नागरिक ड्यासबोर्ड - निर्माणसाथी"
+
+msgid ""
+"Manage your residential building permit applications and purchase verified "
+"construction materials directly online."
+msgstr ""
+"आफ्नो आवासीय भवन निर्माण अनुमति आवेदनहरू व्यवस्थापन गर्नुहोस् र प्रमाणित "
+"निर्माण सामग्रीहरू अनलाइन खरिद गर्नुहोस्।"
+
+msgid "New Application"
+msgstr "नयाँ आवेदन"
+
+msgid "Total Permits"
+msgstr "कुल अनुमतिहरू"
+
+msgid "Pending / Review"
+msgstr "विचाराधीन / पुनरावलोकन"
+
+msgid "Orders Placed"
+msgstr "कुल अर्डरहरू"
+
+msgid "My Permit Applications"
+msgstr "मेरो अनुमति आवेदनहरू"
+
+msgid "View All"
+msgstr "सबै हेर्नुहोस्"
+
+msgid "Ref Number"
+msgstr "सन्दर्भ नम्बर"
+
+msgid "Type"
+msgstr "प्रकार"
+
+msgid "Municipality"
+msgstr "नगरपालिका"
+
+msgid "Submitted"
+msgstr "पेस गरिएको"
+
+msgid "Action"
+msgstr "कार्य"
+
+msgid "Loading permit applications..."
+msgstr "अनुमति आवेदनहरू लोड हुँदैछ..."
+
+msgid "Construction Marketplace"
+msgstr "निर्माण सामग्री बजार"
+
+msgid ""
+"Order verified cement, rod, bricks, and sand from local suppliers with eSewa"
+" payments."
+msgstr ""
+"स्थानीय आपूर्तिकर्ताहरूबाट ईसेवा भुक्तानीसहित सिमेन्ट, रड, इँटा र बालुवा "
+"अर्डर गर्नुहोस्।"
+
+msgid "Browse Products"
+msgstr "उत्पादनहरू हेर्नुहोस्"
+
+msgid "E-Permit Process Status"
+msgstr "ई-अनुमति प्रक्रिया स्थिति"
+
+msgid "Submit Application"
+msgstr "आवेदन पेस गर्नुहोस्"
+
+msgid "Fill land details & upload blueprints"
+msgstr "जग्गा विवरण भर्नुहोस् र नक्सा अपलोड गर्नुहोस्"
+
+msgid "Municipal Review"
+msgstr "नगरपालिका पुनरावलोकन"
+
+msgid "Officer inspects documentation"
+msgstr "अधिकृतद्वारा कागजात निरीक्षण"
+
+msgid "Permit Approval"
+msgstr "अनुमति स्वीकृति"
+
+msgid "Download approved permit letter"
+msgstr "स्वीकृत अनुमति पत्र डाउनलोड गर्नुहोस्"
+
+msgid "No building permit applications found."
+msgstr "कुनै भवन निर्माण अनुमति आवेदन फेला परेन।"
+
+msgid "Apply now"
+msgstr "अहिले आवेदन दिनुहोस्"
+
+msgid "Failed to load permit applications."
+msgstr "अनुमति आवेदनहरू लोड गर्न असफल।"
+
+msgid "Municipality Officer Dashboard - NirmanSathi"
+msgstr "नगरपालिका अधिकृत ड्यासबोर्ड - निर्माणसाथी"
+
+msgid "Municipal E-Governance Inspection Portal"
+msgstr "नगरपालिका ई-प्रशासन निरीक्षण पोर्टल"
+
+msgid "Officer Dashboard"
+msgstr "अधिकृत ड्यासबोर्ड"
+
+msgid "Municipality Application Review Queue"
+msgstr "नगरपालिका आवेदन पुनरावलोकन सूची"
+
+msgid "Official Reviewer"
+msgstr "आधिकारिक पुनरावलोकनकर्ता"
+
+msgid "Total Assigned"
+msgstr "कुल तोकिएको"
+
+msgid "Pending Review"
+msgstr "पुनरावलोकन हुन बाँकी"
+
+msgid "Permit Applications Queue"
+msgstr "अनुमति आवेदन सूची"
+
+msgid "All Statuses"
+msgstr "सबै स्थितिहरू"
+
+msgid "Applicant"
+msgstr "आवेदक"
+
+msgid "Application Type"
+msgstr "आवेदन प्रकार"
+
+msgid "Ward / Tole"
+msgstr "वडा / टोल"
+
+msgid "Built-Up Area"
+msgstr "निर्माण क्षेत्रफल"
+
+msgid "Submitted Date"
+msgstr "पेस गरिएको मिति"
+
+msgid "Loading permit applications queue..."
+msgstr "अनुमति आवेदन सूची लोड हुँदैछ..."
+
+msgid "Jurisdiction:"
+msgstr "कार्यक्षेत्र:"
+
+msgid "All Municipalities"
+msgstr "सबै नगरपालिकाहरू"
+
+msgid "Failed to load officer queue."
+msgstr "अधिकृत सूची लोड गर्न असफल।"
+
+msgid "No permit applications found matching the selected filter."
+msgstr "चयन गरिएको फिल्टर मिल्ने कुनै आवेदन फेला परेन।"
+
+msgid "Review"
+msgstr "पुनरावलोकन"
+
+msgid "Material Supplier Portal - NirmanSathi"
+msgstr "निर्माण सामग्री आपूर्तिकर्ता पोर्टल - निर्माणसाथी"
+
+msgid "Verified Supplier Portal"
+msgstr "प्रमाणित आपूर्तिकर्ता पोर्टल"
+
+msgid "Supplier Dashboard"
+msgstr "आपूर्तिकर्ता ड्यासबोर्ड"
+
+msgid ""
+"Manage construction material inventory and fulfill incoming citizen orders."
+msgstr ""
+"निर्माण सामग्रीको मौज्दात व्यवस्थापन गर्नुहोस् र नागरिकका अर्डरहरू पूरा "
+"गर्नुहोस्।"
+
+msgid "Add New Product"
+msgstr "नयाँ उत्पादन थप्नुहोस्"
+
+msgid "Active Products"
+msgstr "सक्रिय उत्पादनहरू"
+
+msgid "Orders Received"
+msgstr "प्राप्त अर्डरहरू"
+
+msgid "Low Stock Warning"
+msgstr "न्यून मौज्दात चेतावनी"
+
+msgid "My Material Inventory"
+msgstr "मेरो सामग्री मौज्दात"
+
+msgid "Incoming Citizen Orders"
+msgstr "नागरिकबाट आएका अर्डरहरू"
+
+msgid "Product"
+msgstr "उत्पादन"
+
+msgid "Unit Price"
+msgstr "प्रति एकाइ मूल्य"
+
+msgid "Stock Level"
+msgstr "मौज्दात स्तर"
+
+msgid "Actions"
+msgstr "कार्यहरू"
+
+msgid "Loading inventory..."
+msgstr "मौज्दात लोड हुँदैछ..."
+
+msgid "Order Ref"
+msgstr "अर्डर सन्दर्भ"
+
+msgid "Customer"
+msgstr "ग्राहक"
+
+msgid "Shipping Address"
+msgstr "डेलिभरी ठेगाना"
+
+msgid "Total Amount"
+msgstr "कुल रकम"
+
+msgid "Payment"
+msgstr "भुक्तानी"
+
+msgid "Fulfillment Status"
+msgstr "डेलिभरी स्थिति"
+
+msgid "Update"
+msgstr "अद्यावधिक"
+
+msgid "Loading incoming orders..."
+msgstr "आएका अर्डरहरू लोड हुँदैछ..."
+
+msgid "No products listed yet."
+msgstr "अहिलेसम्म कुनै उत्पादन सूचीकृत गरिएको छैन।"
+
+msgid "Add your first material"
+msgstr "आफ्नो पहिलो सामग्री थप्नुहोस्"
+
+msgid "Material"
+msgstr "सामग्री"
+
+msgid "No incoming customer orders."
+msgstr "कुनै ग्राहक अर्डर आएको छैन।"
+
+msgid "Are you sure you want to delete this construction material listing?"
+msgstr "के तपाईं यो निर्माण सामग्री सूची मेटाउन निश्चित हुनुहुन्छ?"
+
+msgid "Product deleted from inventory."
+msgstr "उत्पादन मौज्दातबाट हटाइयो।"
+
+msgid "Failed to delete product."
+msgstr "उत्पादन मेटाउन असफल।"
+
+msgid "Order status updated successfully"
+msgstr "अर्डर स्थिति सफलतापूर्वक अद्यावधिक भयो"
+
+msgid "Failed to update order status."
+msgstr "अर्डर स्थिति अद्यावधिक गर्न असफल।"
+
+msgid "System Administrator Dashboard - NirmanSathi"
+msgstr "प्रणाली प्रशासक ड्यासबोर्ड - निर्माणसाथी"
+
+msgid "Master System Administration"
+msgstr "मुख्य प्रणाली प्रशासन"
+
+msgid "System Control Panel"
+msgstr "प्रणाली नियन्त्रण कक्ष"
+
+msgid ""
+"Manage user roles, local municipality permissions, marketplace oversight, "
+"and system security."
+msgstr ""
+"प्रयोगकर्ता भूमिकाहरू, स्थानीय नगरपालिका अनुमतिहरू, बजार सुपरिवेक्षण र "
+"प्रणाली सुरक्षा व्यवस्थापन गर्नुहोस्।"
+
+msgid "View System Audit Logs"
+msgstr "प्रणाली अडिट लगहरू हेर्नुहोस्"
+
+msgid "Total Users"
+msgstr "कुल प्रयोगकर्ताहरू"
+
+msgid "Citizens"
+msgstr "नागरिकहरू"
+
+msgid "Municipal Officers"
+msgstr "नगरपालिका अधिकृतहरू"
+
+msgid "Material Suppliers"
+msgstr "निर्माण सामग्री आपूर्तिकर्ताहरू"
+
+msgid "Platform User Directory & Role Assignment"
+msgstr "प्रणाली प्रयोगकर्ता निर्देशिका तथा भूमिका निर्धारण"
+
+msgid "Search by username or email..."
+msgstr "प्रयोगकर्ता नाम वा इमेलबाट खोज्नुहोस्..."
+
+msgid "All Roles"
+msgstr "सबै भूमिकाहरू"
+
+msgid "Username"
+msgstr "प्रयोगकर्ता नाम"
+
+msgid "Email"
+msgstr "इमेल"
+
+msgid "Current Role"
+msgstr "हालको भूमिका"
+
+msgid "Municipality / Company"
+msgstr "नगरपालिका / कम्पनी"
+
+msgid "Date Joined"
+msgstr "दर्ता मिति"
+
+msgid "Manage Role"
+msgstr "भूमिका व्यवस्थापन"
+
+msgid "Loading system users directory..."
+msgstr "प्रणाली प्रयोगकर्ता सूची लोड हुँदैछ..."
+
+msgid "Confirm Role Change"
+msgstr "भूमिका परिवर्तन पुष्टि गर्नुहोस्"
+
+msgid "You are about to change the role for:"
+msgstr "तपाईं निम्न प्रयोगकर्ताको भूमिका परिवर्तन गर्न लाग्नुभएको छ:"
+
+msgid "New Role"
+msgstr "नयाँ भूमिका"
+
+msgid "Cancel"
+msgstr "रद्द गर्नुहोस्"
+
+msgid "Confirm Change"
+msgstr "परिवर्तन पुष्टि गर्नुहोस्"
+
+msgid "Failed to load users. Make sure you are logged in as an admin."
+msgstr ""
+"प्रयोगकर्ताहरू लोड गर्न असफल। तपाईं प्रशासकको रूपमा लगइन भएको सुनिश्चित "
+"गर्नुहोस्।"
+
+msgid "No users found matching your criteria."
+msgstr "मापदण्ड मिल्ने कुनै प्रयोगकर्ता फेला परेन।"
+
+msgid "You"
+msgstr "तपाईं"
+
+msgid "Role updated successfully."
+msgstr "भूमिका सफलतापूर्वक अद्यावधिक भयो।"
+
+msgid "Failed to update role."
+msgstr "भूमिका अद्यावधिक गर्न असफल।"
+
+msgid "Apply for Residential Building Permit - NirmanSathi"
+msgstr "आवासीय भवन निर्माण अनुमतिका लागि आवेदन - निर्माणसाथी"
+
+msgid "New Building Permit Application"
+msgstr "नयाँ भवन निर्माण अनुमति आवेदन"
+
+msgid ""
+"Fill out official property specifications & upload architectural blueprints "
+"for municipal review."
+msgstr ""
+"नगरपालिका पुनरावलोकनका लागि आधिकारिक जग्गा विवरण भर्नुहोस् र भवनको नक्सा "
+"अपलोड गर्नुहोस्।"
+
+msgid "Back to Dashboard"
+msgstr "ड्यासबोर्डमा फर्कनुहोस्"
+
+msgid "1. Application Type & Location Details"
+msgstr "१. आवेदन प्रकार तथा स्थान विवरण"
+
+msgid "Application Type *"
+msgstr "आवेदन प्रकार *"
+
+msgid "New Residential Building Construction"
+msgstr "नयाँ आवासीय भवन निर्माण"
+
+msgid "Building Renovation"
+msgstr "भवन मर्मत तथा नवीकरण"
+
+msgid "Building Extension / Storey Addition"
+msgstr "भवन विस्तार / तला थप"
+
+msgid "Province *"
+msgstr "प्रदेश *"
+
+msgid "-- Loading Provinces --"
+msgstr "-- प्रदेश लोड हुँदैछ --"
+
+msgid "District *"
+msgstr "जिल्ला *"
+
+msgid "-- Select Province First --"
+msgstr "-- पहिले प्रदेश छान्नुहोस् --"
+
+msgid "Municipality / Nagarpalika *"
+msgstr "नगरपालिका / गाउँपालिका *"
+
+msgid "-- Select District First --"
+msgstr "-- पहिले जिल्ला छान्नुहोस् --"
+
+msgid "Ward Number *"
+msgstr "वडा नम्बर *"
+
+msgid "-- Select Municipality First --"
+msgstr "-- पहिले नगरपालिका छान्नुहोस् --"
+
+msgid "Tole / Street Address *"
+msgstr "टोल / सडक ठेगाना *"
+
+msgid "e.g. Buddhanagar, Ward 10"
+msgstr "जस्तै: बुद्धनगर, वडा १०"
+
+msgid "Kitta / Plot Number *"
+msgstr "कित्ता नम्बर *"
+
+msgid "e.g. Kitta No. 452"
+msgstr "जस्तै: कित्ता नं. ४५२"
+
+msgid "2. Building Specifications & Estimates"
+msgstr "२. भवनको विवरण तथा लागत अनुमान"
+
+msgid "Land Area (Sq. Ft.) *"
+msgstr "जग्गाको क्षेत्रफल (वर्ग फिट) *"
+
+msgid "e.g. 1715.00 (5 Aana)"
+msgstr "जस्तै: १७१५.०० (५ आना)"
+
+msgid "Proposed Built-Up Area (Sq. Ft.) *"
+msgstr "प्रस्तावित निर्माण क्षेत्रफल (वर्ग फिट) *"
+
+msgid "e.g. 2400.00"
+msgstr "जस्तै: २४००.००"
+
+msgid "Number of Storeys / Floors *"
+msgstr "तला संख्या *"
+
+msgid "Estimated Construction Cost (NPR) *"
+msgstr "अनुमानित निर्माण लागत (रु.) *"
+
+msgid "e.g. 4500000"
+msgstr "जस्तै: ४५०००००"
+
+msgid "3. Document Attachments"
+msgstr "३. संलग्न कागजातहरू"
+
+msgid ""
+"Attach official blueprint and land documents (PDF or image files, max 5MB "
+"each)."
+msgstr ""
+"आधिकारिक भवनको नक्सा र जग्गाका कागजातहरू संलग्न गर्नुहोस् (PDF वा फोटो फाइल,"
+" बढीमा ५MB)।"
+
+msgid "Architectural Blueprint File *"
+msgstr "भवनको नक्सा फाइल *"
+
+msgid "Structural / Cadastral blueprint drawing."
+msgstr "संरचनात्मक / नक्सा ड्रइङ।"
+
+msgid "Lalpurja (Land Ownership Certificate) *"
+msgstr "लालपुर्जा (जग्गाधनी प्रमाणपुर्जा) *"
+
+msgid "Official land ownership registration deed."
+msgstr "आधिकारिक जग्गाधनी दर्ता प्रमाणपुर्जा।"
+
+msgid "Submitting Permit Application..."
+msgstr "अनुमति आवेदन पेस हुँदैछ..."
+
+msgid "Building permit application"
+msgstr "भवन निर्माण अनुमति आवेदन"
+
+msgid "submitted successfully!"
+msgstr "सफलतापूर्वक पेस गरियो!"
+
+msgid "Failed to submit application. Please check form fields."
+msgstr "आवेदन पेस गर्न असफल। कृपया फारमका विवरणहरू जाँच गर्नुहोस्।"
+
+msgid "My Permit Applications - NirmanSathi"
+msgstr "मेरो अनुमति आवेदनहरू - निर्माणसाथी"
+
+msgid "My Building Permits"
+msgstr "मेरो भवन निर्माण अनुमतिहरू"
+
+msgid ""
+"Track all your submitted residential building permit applications and review"
+" municipal status updates."
+msgstr ""
+"आफ्ना सबै पेस गरिएका आवासीय भवन निर्माण अनुमति आवेदनहरू ट्र्याक गर्नुहोस् र "
+"नगरपालिका स्थिति विवरण हेर्नुहोस्।"
+
+msgid "Reference No."
+msgstr "सन्दर्भ नं."
+
+msgid "Municipality & Ward"
+msgstr "नगरपालिका र वडा"
+
+msgid "Date Submitted"
+msgstr "पेस गरिएको मिति"
+
+msgid "storeys"
+msgstr "तला"
+
+msgid "Failed to load permit list."
+msgstr "अनुमति सूची लोड गर्न असफल।"
+
+msgid "Permit Application Details - NirmanSathi"
+msgstr "अनुमति आवेदन विवरण - निर्माणसाथी"
+
+msgid "Building Permit Status"
+msgstr "भवन निर्माण अनुमति स्थिति"
+
+msgid "Back to Permits"
+msgstr "अनुमतिहरूमा फर्कनुहोस्"
+
+msgid "Loading application details..."
+msgstr "आवेदन विवरण लोड हुँदैछ..."
+
+msgid "Application Progress & Status Timeline"
+msgstr "आवेदन प्रगति तथा स्थिति समयरेखा"
+
+msgid "1. Submitted"
+msgstr "१. पेस गरिएको"
+
+msgid "2. Technical Review"
+msgstr "२. प्राविधिक पुनरावलोकन"
+
+msgid "Municipal Inspection"
+msgstr "नगरपालिका निरीक्षण"
+
+msgid "3. Decision"
+msgstr "३. निर्णय"
+
+msgid "4. Permit Letter"
+msgstr "४. अनुमति पत्र"
+
+msgid "Pending Approval"
+msgstr "स्वीकृति बाँकी"
+
+msgid "Officer Remarks & Feedback:"
+msgstr "अधिकृतको टिप्पणी तथा सुझाव:"
+
+msgid "Application Specifications"
+msgstr "आवेदन विवरणहरू"
+
+msgid "Application Type:"
+msgstr "आवेदन प्रकार:"
+
+msgid "Applicant:"
+msgstr "आवेदक:"
+
+msgid "Municipality:"
+msgstr "नगरपालिका:"
+
+msgid "Ward Number:"
+msgstr "वडा नम्बर:"
+
+msgid "Tole / Address:"
+msgstr "टोल / ठेगाना:"
+
+msgid "Plot / Kitta No.:"
+msgstr "कित्ता नं.:"
+
+msgid "Land Area:"
+msgstr "जग्गा क्षेत्रफल:"
+
+msgid "Built-Up Area:"
+msgstr "निर्माण क्षेत्रफल:"
+
+msgid "Storeys:"
+msgstr "तला संख्या:"
+
+msgid "Est. Cost:"
+msgstr "अनुमानित लागत:"
+
+msgid "Attached Documents"
+msgstr "संलग्न कागजातहरू"
+
+msgid "Loading attached files..."
+msgstr "संलग्न फाइलहरू लोड हुँदैछ..."
+
+msgid "Upload Additional Document"
+msgstr "थप कागजात अपलोड गर्नुहोस्"
+
+msgid "Document Title"
+msgstr "कागजात शीर्षक"
+
+msgid "e.g. Revised Structural Blueprint"
+msgstr "जस्तै: परिमार्जित संरचनात्मक नक्सा"
+
+msgid "Document Type"
+msgstr "कागजात प्रकार"
+
+msgid "Blueprint"
+msgstr "भवनको नक्सा"
+
+msgid "Citizenship Certificate"
+msgstr "नागरिकता प्रमाणपत्र"
+
+msgid "Lalpurja (Land Ownership)"
+msgstr "लालपुर्जा (जग्गा स्वामित्व)"
+
+msgid "Tax Clearance Receipt"
+msgstr "कर चुक्ता रसिद"
+
+msgid "Other Document"
+msgstr "अन्य कागजात"
+
+msgid "File"
+msgstr "फाइल"
+
+msgid "Upload Document"
+msgstr "कागजात अपलोड गर्नुहोस्"
+
+msgid "Storey(s)"
+msgstr "तला"
+
+msgid "Ready to Download"
+msgstr "डाउनलोडका लागि तयार"
+
+msgid "Application Rejected"
+msgstr "आवेदन अस्वीकृत"
+
+msgid "No documents attached yet."
+msgstr "अहिलेसम्म कुनै कागजात संलग्न गरिएको छैन।"
+
+msgid "Download"
+msgstr "डाउनलोड"
+
+msgid "Failed to load permit details."
+msgstr "अनुमति विवरण लोड गर्न असफल।"
+
+msgid "Uploading..."
+msgstr "अपलोड हुँदैछ..."
+
+msgid "Document uploaded successfully!"
+msgstr "कागजात सफलतापूर्वक अपलोड गरियो!"
+
+msgid "Failed to upload document."
+msgstr "कागजात अपलोड गर्न असफल।"
+
+msgid "Permit Inspection & Review - NirmanSathi Officer Portal"
+msgstr "अनुमति निरीक्षण तथा पुनरावलोकन - निर्माणसाथी अधिकृत पोर्टल"
+
+msgid "Officer Permit Review & Approval"
+msgstr "अधिकृत अनुमति पुनरावलोकन तथा स्वीकृति"
+
+msgid "Back to Review Queue"
+msgstr "पुनरावलोकन सूचीमा फर्कनुहोस्"
+
+msgid "Loading permit application for inspection..."
+msgstr "निरीक्षणका लागि अनुमति आवेदन लोड हुँदैछ..."
+
+msgid "Building Permit Application"
+msgstr "भवन निर्माण अनुमति आवेदन"
+
+msgid "Address & Kitta No.:"
+msgstr "ठेगाना र कित्ता नं.:"
+
+msgid "Storeys Count:"
+msgstr "तला संख्या:"
+
+msgid "Estimated Cost:"
+msgstr "अनुमानित लागत:"
+
+msgid "Current Status:"
+msgstr "हालको स्थिति:"
+
+msgid "Uploaded Blueprints & Ownership Deeds"
+msgstr "अपलोड गरिएका नक्सा तथा स्वामित्व कागजातहरू"
+
+msgid "Loading attachments..."
+msgstr "संलग्न फाइलहरू लोड हुँदैछ..."
+
+msgid "Officer Official Decision"
+msgstr "अधिकृतको आधिकारिक निर्णय"
+
+msgid "Select Decision *"
+msgstr "निर्णय चयन गर्नुहोस् *"
+
+msgid "Approve Application"
+msgstr "आवेदन स्वीकृत गर्नुहोस्"
+
+msgid "Issue building permit approval letter"
+msgstr "भवन निर्माण अनुमति स्वीकृति पत्र जारी गर्नुहोस्"
+
+msgid "Mark Under Technical Review"
+msgstr "प्राविधिक पुनरावलोकनमा राख्नुहोस्"
+
+msgid "Request technical modifications / site inspection"
+msgstr "प्राविधिक परिमार्जन / स्थलगत निरीक्षण माग गर्नुहोस्"
+
+msgid "Reject Application"
+msgstr "आवेदन अस्वीकृत गर्नुहोस्"
+
+msgid "Deny permit application due to code violation"
+msgstr "मापदण्ड नपुगेकाले अनुमति आवेदन अस्वीकृत गर्नुहोस्"
+
+msgid "Inspection Remarks & Justification *"
+msgstr "निरीक्षण टिप्पणी तथा औचित्य *"
+
+msgid ""
+"Enter detailed inspection notes, setback verification, structural compliance"
+" remarks..."
+msgstr ""
+"विस्तृत निरीक्षण टिप्पणी, सेटब्याक प्रमाणीकरण, संरचनात्मक मापदण्ड पालना "
+"टिप्पणी लेख्नुहोस्..."
+
+msgid "Submit Official Decision"
+msgstr "आधिकारिक निर्णय पेस गर्नुहोस्"
+
+msgid "Decision Log History"
+msgstr "निर्णय इतिहास लग"
+
+msgid "No past decision history recorded."
+msgstr "कुनै पुरानो निर्णय इतिहास फेला परेन।"
+
+msgid "storey(s)"
+msgstr "तला"
+
+msgid "No document attachments uploaded."
+msgstr "कुनै कागजात संलग्न गरिएको छैन।"
+
+msgid "Uploaded:"
+msgstr "अपलोड मिति:"
+
+msgid "Inspect File"
+msgstr "फाइल हेर्नुहोस्"
+
+msgid "No past decisions recorded for this permit."
+msgstr "यस अनुमतिका लागि कुनै निर्णय अभिलेख छैन।"
+
+msgid "Failed to load application."
+msgstr "आवेदन लोड गर्न असफल।"
+
+msgid "Submitting Official Decision..."
+msgstr "आधिकारिक निर्णय पेस हुँदैछ..."
+
+msgid "Please select a decision (Approve, Under Review, or Reject)."
+msgstr "कृपया निर्णय चयन गर्नुहोस् (स्वीकृत, पुनरावलोकन, वा अस्वीकृत)।"
+
+msgid "Decision recorded successfully!"
+msgstr "निर्णय सफलतापूर्वक दर्ता भयो!"
+
+msgid "Failed to submit officer decision."
+msgstr "अधिकृत निर्णय पेस गर्न असफल।"
+
+msgid "Construction Material Marketplace - NirmanSathi"
+msgstr "निर्माण सामग्री बजार - निर्माणसाथी"
+
+msgid ""
+"Purchase verified cement, steel rods, bricks, and aggregates directly from "
+"licensed Nepalese suppliers."
+msgstr ""
+"इजाजतपत्र प्राप्त नेपाली आपूर्तिकर्ताहरूबाट सिमेन्ट, स्टिल रड, इँटा र गिट्टी"
+" सिधै खरिद गर्नुहोस्।"
+
+msgid "View Cart"
+msgstr "कार्ट हेर्नुहोस्"
+
+msgid "Search products (e.g. OPC Cement, TMT Rod)..."
+msgstr "उत्पादनहरू खोज्नुहोस् (जस्तै: ओपिसी सिमेन्ट, टिएमटी रड)..."
+
+msgid "All Products"
+msgstr "सबै उत्पादनहरू"
+
+msgid "Loading construction materials..."
+msgstr "निर्माण सामग्रीहरू लोड हुँदैछ..."
+
+msgid "Failed to load products."
+msgstr "उत्पादनहरू लोड गर्न असफल।"
+
+msgid "No construction materials found"
+msgstr "कुनै निर्माण सामग्री फेला परेन"
+
+msgid "Try adjusting your search query or category filter."
+msgstr "आफ्नो खोजी शब्द वा वर्ग फिल्टर परिवर्तन गरी प्रयास गर्नुहोस्।"
+
+msgid "Stock:"
+msgstr "मौज्दात:"
+
+msgid "Product Details - NirmanSathi Marketplace"
+msgstr "उत्पादन विवरण - निर्माणसाथी बजार"
+
+msgid "Product Details"
+msgstr "उत्पादन विवरण"
+
+msgid "Loading product details..."
+msgstr "उत्पादन विवरण लोड हुँदैछ..."
+
+msgid "Supplied by"
+msgstr "आपूर्तिकर्ता"
+
+msgid "Available Stock"
+msgstr "उपलब्ध मौज्दात"
+
+msgid "Select Quantity"
+msgstr "परिमाण चयन गर्नुहोस्"
+
+msgid "Add to Cart"
+msgstr "कार्टमा थप्नुहोस्"
+
+msgid "Verified Nepalese Supplier"
+msgstr "प्रमाणित नेपाली आपूर्तिकर्ता"
+
+msgid "Official E-Governance Platform"
+msgstr "आधिकारिक ई-प्रशासन प्रणाली"
+
+msgid "This product is currently out of stock."
+msgstr "यो उत्पादन हाल मौज्दातमा उपलब्ध छैन।"
+
+msgid "Browse Other Products"
+msgstr "अन्य उत्पादनहरू हेर्नुहोस्"
+
+msgid "More from This Category"
+msgstr "यस वर्गका थप उत्पादनहरू"
+
+msgid "Loading related products..."
+msgstr "सम्बन्धित उत्पादनहरू लोड हुँदैछ..."
+
+msgid "Product not found"
+msgstr "उत्पादन फेला परेन"
+
+msgid "This product may have been removed or is no longer available."
+msgstr "यो उत्पादन हटाइएको हुन सक्छ वा उपलब्ध छैन।"
+
+msgid "Back to Marketplace"
+msgstr "सामग्री बजारमा फर्कनुहोस्"
+
+msgid "Verified Supplier"
+msgstr "प्रमाणित आपूर्तिकर्ता"
+
+msgid "No description provided."
+msgstr "कुनै विवरण प्रदान गरिएको छैन।"
+
+msgid "Suppliers manage products here. Use Manage Products to edit listings."
+msgstr ""
+"आपूर्तिकर्ताहरूले उत्पादनहरू यहाँ व्यवस्थापन गर्छन्। सूची सम्पादन गर्न "
+"उत्पादन व्यवस्थापन प्रयोग गर्नुहोस्।"
+
+msgid "Manage Product"
+msgstr "उत्पादन व्यवस्थापन गर्नुहोस्"
+
+msgid "No other products in this category."
+msgstr "यस वर्गमा अन्य उत्पादनहरू छैनन्।"
+
+msgid "Shopping Cart - NirmanSathi Marketplace"
+msgstr "सपिङ कार्ट - निर्माणसाथी बजार"
+
+msgid "My Shopping Cart"
+msgstr "मेरो सपिङ कार्ट"
+
+msgid "Continue Shopping"
+msgstr "सामग्री खरिद जारी राख्नुहोस्"
+
+msgid "Loading shopping cart..."
+msgstr "सपिङ कार्ट लोड हुँदैछ..."
+
+msgid "Price"
+msgstr "मूल्य"
+
+msgid "Quantity"
+msgstr "परिमाण"
+
+msgid "Subtotal"
+msgstr "उप-जम्मा"
+
+msgid "Order Summary"
+msgstr "अर्डर सारांश"
+
+msgid "Subtotal:"
+msgstr "उप-जम्मा:"
+
+msgid "Delivery Charges:"
+msgstr "डेलिभरी शुल्क:"
+
+msgid "FREE"
+msgstr "निःशुल्क"
+
+msgid "Total Amount:"
+msgstr "कुल रकम:"
+
+msgid "Proceed to Checkout"
+msgstr "चेकआउटमा जानुहोस्"
+
+msgid ""
+"Suppliers do not use the marketplace cart. Redirecting to Manage Products."
+msgstr ""
+"आपूर्तिकर्ताहरूले बजार कार्ट प्रयोग गर्दैनन्। उत्पादन व्यवस्थापनमा जाँदै।"
+
+msgid "Your shopping cart is empty"
+msgstr "तपाईंको सपिङ कार्ट खाली छ"
+
+msgid "Browse our marketplace for cement, steel rods, and bricks."
+msgstr "सिमेन्ट, स्टिल रड र इँटाका लागि हाम्रो सामग्री बजार हेर्नुहोस्।"
+
+msgid "Explore Materials"
+msgstr "सामग्रीहरू हेर्नुहोस्"
+
+msgid "Failed to load cart."
+msgstr "कार्ट लोड गर्न असफल।"
+
+msgid "Failed to update quantity."
+msgstr "परिमाण अद्यावधिक गर्न असफल।"
+
+msgid "Checkout - NirmanSathi Marketplace"
+msgstr "चेकआउट - निर्माणसाथी बजार"
+
+msgid "Order Checkout"
+msgstr "अर्डर चेकआउट"
+
+msgid "Back to Cart"
+msgstr "कार्टमा फर्कनुहोस्"
+
+msgid "Delivery & Contact Details"
+msgstr "डेलिभरी तथा सम्पर्क विवरण"
+
+msgid "Delivery Address / Tole *"
+msgstr "डेलिभरी ठेगाना / टोल *"
+
+msgid "e.g. House No. 42, Sanepa, Ward 2, Lalitpur"
+msgstr "जस्तै: घर नं. ४२, सानेपा, वडा २, ललितपुर"
+
+msgid "Contact Phone Number *"
+msgstr "सम्पर्क फोन नम्बर *"
+
+msgid "Payment Option"
+msgstr "भुक्तानी विकल्प"
+
+msgid "Digital Wallet (Simulated)"
+msgstr "डिजिटल वालेट (सिमुलेटेड)"
+
+msgid "Instant online wallet payment simulation"
+msgstr "तत्काल अनलाइन वालेट भुक्तानी सिमुलेसन"
+
+msgid "Instant"
+msgstr "तत्काल"
+
+msgid "Place Order & Pay via eSewa"
+msgstr "अर्डर गर्नुहोस् र ईसेवा मार्फत भुक्तानी गर्नुहोस्"
+
+msgid "Cart Breakdown"
+msgstr "कार्ट विवरण"
+
+msgid "Loading items..."
+msgstr "सामग्री लोड हुँदैछ..."
+
+msgid "Total Payable:"
+msgstr "कुल भुक्तानी गर्नुपर्ने:"
+
+msgid "Item"
+msgstr "सामग्री"
+
+msgid "Qty:"
+msgstr "परिमाण:"
+
+msgid "Failed to load checkout details"
+msgstr "चेकआउट विवरण लोड गर्न असफल"
+
+msgid "Creating Order..."
+msgstr "अर्डर सिर्जना हुँदैछ..."
+
+msgid "Order created! Redirecting to eSewa Payment Portal..."
+msgstr "अर्डर सिर्जना भयो! ईसेवा भुक्तानी पोर्टलमा जाँदै..."
+
+msgid "Checkout failed. Please try again."
+msgstr "चेकआउट असफल भयो। कृपया पुन: प्रयास गर्नुहोस्।"
+
+msgid "eSewa Payment Portal (Simulated) - NirmanSathi"
+msgstr "ईसेवा भुक्तानी पोर्टल (सिमुलेटेड) - निर्माणसाथी"
+
+msgid "Simulated Digital Wallet Gateway"
+msgstr "सिमुलेटेड डिजिटल वालेट गेटवे"
+
+msgid "Connecting to simulated eSewa server..."
+msgstr "सिमुलेटेड ईसेवा सर्भरमा जडान हुँदैछ..."
+
+msgid "Merchant:"
+msgstr "व्यापारी:"
+
+msgid "Order Reference:"
+msgstr "अर्डर सन्दर्भ:"
+
+msgid "Amount Payable:"
+msgstr "भुक्तानी गर्नुपर्ने रकम:"
+
+msgid "eSewa ID / Mobile Number"
+msgstr "ईसेवा आईडी / मोबाइल नम्बर"
+
+msgid "eSewa MPIN / Password"
+msgstr "ईसेवा MPIN / पासवर्ड"
+
+msgid "Simulate Payment Failure (Test Error Handling)"
+msgstr "भुक्तानी असफलता सिमुलेट गर्नुहोस् (त्रुटि परीक्षण)"
+
+msgid "Confirm & Pay Now"
+msgstr "पुष्टि गर्नुहोस् र भुक्तानी गर्नुहोस्"
+
+msgid "Cancel & Return to Cart"
+msgstr "रद्द गर्नुहोस् र कार्टमा फर्कनुहोस्"
+
+msgid "Invalid payment request. No order ID provided."
+msgstr "अमान्य भुक्तानी अनुरोध। कुनै अर्डर आईडी उपलब्ध छैन।"
+
+msgid "Order not found."
+msgstr "अर्डर फेला परेन।"
+
+msgid "Processing eSewa Payment..."
+msgstr "ईसेवा भुक्तानी प्रक्रिया हुँदैछ..."
+
+msgid "Payment Successful!"
+msgstr "भुक्तानी सफल भयो!"
+
+msgid "Payment simulation failed."
+msgstr "भुक्तानी सिमुलेसन असफल भयो।"
+
+msgid "My Orders - NirmanSathi Marketplace"
+msgstr "मेरो अर्डरहरू - निर्माणसाथी बजार"
+
+msgid ""
+"View all your past and active construction material orders and track "
+"delivery statuses."
+msgstr "आफ्ना सबै अर्डरहरू हेर्नुहोस् र डेलिभरी स्थिति ट्र्याक गर्नुहोस्।"
+
+msgid "Date"
+msgstr "मिति"
+
+msgid "Payment Status"
+msgstr "भुक्तानी स्थिति"
+
+msgid "Delivery Status"
+msgstr "डेलिभरी स्थिति"
+
+msgid "Loading orders..."
+msgstr "अर्डरहरू लोड हुँदैछ..."
+
+msgid "No orders found"
+msgstr "कुनै अर्डर फेला परेन"
+
+msgid "You haven't placed any construction material orders yet."
+msgstr "तपाईंले अहिलेसम्म कुनै निर्माण सामग्री अर्डर गर्नुभएको छैन।"
+
+msgid "Failed to load orders."
+msgstr "अर्डरहरू लोड गर्न असफल।"
+
+msgid "Order Details - NirmanSathi Marketplace"
+msgstr "अर्डर विवरण - निर्माणसाथी बजार"
+
+msgid "Order Status & Tracking"
+msgstr "अर्डर स्थिति तथा ट्र्याकिङ"
+
+msgid "Back to Orders"
+msgstr "अर्डरहरूमा फर्कनुहोस्"
+
+msgid "Loading order details..."
+msgstr "अर्डर विवरण लोड हुँदैछ..."
+
+msgid "Delivery Status Timeline"
+msgstr "डेलिभरी स्थिति समयरेखा"
+
+msgid "1. Order Placed"
+msgstr "१. अर्डर गरिएको"
+
+msgid "2. Confirmed"
+msgstr "२. पुष्टि भएको"
+
+msgid "Supplier Verification"
+msgstr "आपूर्तिकर्ता प्रमाणीकरण"
+
+msgid "3. Shipped"
+msgstr "३. पठाइएको (इन ट्रान्जिट)"
+
+msgid "In Transit"
+msgstr "मार्गमा"
+
+msgid "4. Delivered"
+msgstr "४. डेलिभर भएको"
+
+msgid "Payment Pending:"
+msgstr "भुक्तानी बाँकी:"
+
+msgid "This order has not been paid yet via eSewa."
+msgstr "यस अर्डरको ईसेवा मार्फत भुक्तानी हुन बाँकी छ।"
+
+msgid "Pay Now via eSewa"
+msgstr "अहिले ईसेवा मार्फत भुक्तानी गर्नुहोस्"
+
+msgid "Items Purchased"
+msgstr "खरिद गरिएका सामग्रीहरू"
+
+msgid "Shipping Details"
+msgstr "डेलिभरी विवरण"
+
+msgid "Address:"
+msgstr "ठेगाना:"
+
+msgid "Phone:"
+msgstr "फोन:"
+
+msgid "Payment Status:"
+msgstr "भुक्तानी स्थिति:"
+
+msgid "Items Total:"
+msgstr "सामग्री कुल रकम:"
+
+msgid "Delivery:"
+msgstr "डेलिभरी:"
+
+msgid "Grand Total:"
+msgstr "कुल जम्मा:"
+
+msgid "Failed to load order details."
+msgstr "अर्डर विवरण लोड गर्न असफल।"
+
+msgid "Manage Product - NirmanSathi Marketplace"
+msgstr "उत्पादन व्यवस्थापन - निर्माणसाथी बजार"
+
+msgid "Add Construction Material"
+msgstr "निर्माण सामग्री थप्नुहोस्"
+
+msgid ""
+"List your certified cement, steel, or aggregate materials on the NirmanSathi"
+" marketplace."
+msgstr ""
+"निर्माणसाथी बजारमा आफ्ना प्रमाणित सिमेन्ट, स्टिल वा अन्य सामग्रीहरू सूचीकृत "
+"गर्नुहोस्।"
+
+msgid "Back to Inventory"
+msgstr "मौज्दातमा फर्कनुहोस्"
+
+msgid "Material Category *"
+msgstr "सामग्री वर्ग *"
+
+msgid "-- Loading Categories --"
+msgstr "-- वर्ग लोड हुँदैछ --"
+
+msgid "Product Name *"
+msgstr "उत्पादन नाम *"
+
+msgid "e.g. Shivam OPC Cement (Grade 43)"
+msgstr "जस्तै: शिवम ओपिसी सिमेन्ट (ग्रेड ४३)"
+
+msgid "Material Specifications & Description *"
+msgstr "सामग्रीको विवरण तथा मापदण्ड *"
+
+msgid ""
+"Enter grade, compliance standards (NS/IS), setting time, or quality "
+"details..."
+msgstr ""
+"ग्रेड, गुणस्तर मापदण्ड (NS/IS), सेटिङ समय, वा गुणस्तर विवरण लेख्नुहोस्..."
+
+msgid "Unit Price (NPR) *"
+msgstr "प्रति एकाइ मूल्य (रु.) *"
+
+msgid "Available Stock *"
+msgstr "उपलब्ध मौज्दात *"
+
+msgid "Unit of Measure *"
+msgstr "मापन एकाइ *"
+
+msgid "e.g. Bag, Ton, Piece, Trip"
+msgstr "जस्तै: बोरा, टन, थान, ट्रिप"
+
+msgid "Product Image"
+msgstr "उत्पादन फोटो"
+
+msgid "Optional product image."
+msgstr "ऐच्छिक उत्पादन फोटो।"
+
+msgid "In Stock / Available"
+msgstr "मौज्दातमा उपलब्ध / सक्रिय"
+
+msgid "Save Material Listing"
+msgstr "सामग्री सूची सुरक्षित गर्नुहोस्"
+
+msgid "Edit Material Listing"
+msgstr "सामग्री सूची सम्पादन गर्नुहोस्"
+
+msgid "-- Select Category --"
+msgstr "-- वर्ग छान्नुहोस् --"
+
+msgid "Failed to load material categories"
+msgstr "सामग्री वर्गहरू लोड गर्न असफल"
+
+msgid "Failed to load product listing"
+msgstr "उत्पादन सूची लोड गर्न असफल"
+
+msgid "Saving Material Listing..."
+msgstr "सामग्री सूची सुरक्षित हुँदैछ..."
+
+msgid "Material listing saved successfully!"
+msgstr "सामग्री सूची सफलतापूर्वक सुरक्षित गरियो!"
+
+msgid "Failed to save product. Please check input values."
+msgstr "उत्पादन सुरक्षित गर्न असफल। कृपया विवरणहरू जाँच गर्नुहोस्।"
+
+msgid "Supplier Orders - NirmanSathi Marketplace"
+msgstr "आपूर्तिकर्ता अर्डरहरू - निर्माणसाथी बजार"
+
+msgid "View and manage all customer orders placed for your products."
+msgstr ""
+"आफ्ना उत्पादनहरूका लागि आएका ग्राहक अर्डरहरू हेर्नुहोस् र व्यवस्थापन "
+"गर्नुहोस्।"
+
+msgid "Total Orders"
+msgstr "कुल अर्डरहरू"
+
+msgid "Filter by Status"
+msgstr "स्थिति अनुसार फिल्टर गर्नुहोस्"
+
+msgid "Search Order / Reference"
+msgstr "अर्डर / सन्दर्भ नम्बर खोज्नुहोस्"
+
+msgid "Search by reference..."
+msgstr "सन्दर्भ नम्बरबाट खोज्नुहोस्..."
+
+msgid "Apply Filter"
+msgstr "फिल्टर लागू गर्नुहोस्"
+
+msgid "Loading supplier orders..."
+msgstr "आपूर्तिकर्ता अर्डरहरू लोड हुँदैछ..."
+
+msgid "No customer orders have been placed for your products yet."
+msgstr "तपाईंका उत्पादनहरूका लागि अहिलेसम्म कुनै ग्राहक अर्डर आएको छैन।"
+
+msgid "Manage Your Products"
+msgstr "आफ्ना उत्पादनहरू व्यवस्थापन गर्नुहोस्"
+
+msgid "Failed to load orders. Please login as a supplier."
+msgstr "अर्डरहरू लोड गर्न असफल। कृपया आपूर्तिकर्ताको रूपमा लगइन गर्नुहोस्।"
+
+msgid "Products"
+msgstr "उत्पादनहरू"
+
+msgid "Amount"
+msgstr "रकम"
+
+msgid "Province Number (1 to 7)"
+msgstr "प्रदेश नम्बर (१ देखि ७)"
+
+msgid "Metropolitan City"
+msgstr "महानगरपालिका"
+
+msgid "Sub-Metropolitan City"
+msgstr "उपमहानगरपालिका"
+
+msgid "Rural Municipality (Gaunpalika)"
+msgstr "गाउँपालिका"
+
+msgid "Architectural / Structural Blueprint"
+msgstr "भवनको वास्तुशिल्प / संरचनात्मक नक्सा"
+
+msgid "Citizenship Certificate Copy"
+msgstr "नागरिकता प्रमाणपत्रको प्रतिलिपि"
+
+msgid "Land Ownership Certificate (Lalpurja)"
+msgstr "जग्गाधनी दर्ता प्रमाणपुर्जा (लालपुर्जा)"
+
+msgid "Property Tax Clearance Receipt"
+msgstr "सम्पत्ति कर चुक्ता रसिद"
+
+msgid "Other Supporting Document"
+msgstr "अन्य सहयोगी कागजात"
+
+msgid "Refunded"
+msgstr "फिर्ता भयो"
+
+msgid "Price in NPR per unit"
+msgstr "प्रति एकाइ मूल्य (नेपाली रुपैयाँमा)"
+
+msgid "Available stock count"
+msgstr "उपलब्ध मौज्दात संख्या"
+
+msgid "e.g. Bag, Ton, Piece, Cu.Ft"
+msgstr "जस्तै: बोरा, टन, थान, घन फिट"
+
+msgid "items"
+msgstr "सामग्रीहरू"
+
+msgid "Tole or Street Address"
+msgstr "टोल वा सडक ठेगाना"
+
+msgid "Kitta Number"
+msgstr "कित्ता नम्बर"
+
+msgid "Land Area in Sq. Ft."
+msgstr "जग्गाको क्षेत्रफल (वर्ग फिटमा)"
+
+msgid "Proposed Built-up Area in Sq. Ft."
+msgstr "प्रस्तावित निर्माण क्षेत्रफल (वर्ग फिटमा)"
+
+msgid "Number of Storeys"
+msgstr "तला संख्या"
+
+msgid "Estimated Construction Cost (NPR)"
+msgstr "अनुमानित निर्माण लागत (रु.)"
+
+msgid "Officer notes or feedback"
+msgstr "अधिकृतको टिप्पणी वा सुझाव"
+
+msgid "Brief descriptive title of the document"
+msgstr "कागजातको संक्षिप्त शीर्षक"
+
+msgid "Detailed officer justification / inspection feedback"
+msgstr "अधिकृतको विस्तृत औचित्य / निरीक्षण टिप्पणी"
+
+msgid "User's primary role in NirmanSathi system."
+msgstr "निर्माणसाथी प्रणालीमा प्रयोगकर्ताको मुख्य भूमिका।"
+
+msgid "Unique email address for registration and login."
+msgstr "दर्ता र लगइनका लागि अद्वितीय इमेल ठेगाना।"
+
+msgid "Assigned municipality (especially for officers)"
+msgstr "तोकिएको नगरपालिका (विशेष गरी अधिकृतहरूका लागि)"
+
+msgid "For material suppliers"
+msgstr "निर्माण सामग्री आपूर्तिकर्ताहरूका लागि"
+
+msgid "PAN/VAT for suppliers"
+msgstr "आपूर्तिकर्ताहरूको लागि प्यान/भ्याट"

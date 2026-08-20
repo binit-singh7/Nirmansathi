@@ -9,6 +9,14 @@ const ACCESS_TOKEN_KEY = 'ns_access_token';
 const REFRESH_TOKEN_KEY = 'ns_refresh_token';
 const USER_KEY = 'ns_user';
 
+// Frontend Translation Helper
+function _t(key, defaultText) {
+  if (window.NIRMAN_I18N && window.NIRMAN_I18N.t && window.NIRMAN_I18N.t[key]) {
+    return window.NIRMAN_I18N.t[key];
+  }
+  return defaultText !== undefined ? defaultText : key;
+}
+
 // Auth Token Helper Functions
 function getToken() {
   return localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -53,6 +61,11 @@ async function apiFetch(endpoint, options = {}) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
+  // Include current language header if available
+  if (window.NIRMAN_I18N && window.NIRMAN_I18N.lang) {
+    headers['Accept-Language'] = window.NIRMAN_I18N.lang;
+  }
+
   options.headers = headers;
 
   try {
@@ -61,7 +74,7 @@ async function apiFetch(endpoint, options = {}) {
     // Handle 401 Unauthorized
     if (response.status === 401 && !endpoint.includes('/accounts/login/')) {
       clearSession();
-      showToast('Session expired. Please log in again.', 'danger');
+      showToast(_t('session_expired', 'Session expired. Please log in again.'), 'danger');
       setTimeout(() => {
         window.location.href = '/login/';
       }, 1200);
@@ -120,7 +133,7 @@ function showToast(message, type = 'success', duration = 3500) {
       <div class="toast-body font-weight-medium">
         ${message}
       </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="${_t('close', 'Close')}"></button>
     </div>
   `;
 
@@ -141,9 +154,9 @@ function updateNavbarAuthUI() {
   if (!authNav) return;
 
   if (user && getToken()) {
-    const roleBadge = user.role === 'CITIZEN' ? 'Citizen' :
-      user.role === 'MUNICIPALITY_OFFICER' ? 'Municipality Officer' :
-        user.role === 'MATERIAL_SUPPLIER' ? 'Supplier' : 'Admin';
+    const roleBadge = user.role === 'CITIZEN' ? _t('citizen', 'Citizen') :
+      user.role === 'MUNICIPALITY_OFFICER' ? _t('municipality_officer', 'Municipality Officer') :
+        user.role === 'MATERIAL_SUPPLIER' ? _t('supplier', 'Supplier') : _t('admin', 'Admin');
 
     const dashboardUrl = user.role === 'CITIZEN' ? '/dashboard/citizen/' :
       user.role === 'MUNICIPALITY_OFFICER' ? '/dashboard/officer/' :
@@ -153,24 +166,24 @@ function updateNavbarAuthUI() {
     if (userRoleNav) {
       if (user.role === 'CITIZEN') {
         userRoleNav.innerHTML = `
-          <li class="nav-item"><a class="nav-link" href="/permits/apply/"><i class="bi bi-file-earmark-plus me-1"></i>Apply Permit</a></li>
-          <li class="nav-item"><a class="nav-link" href="/permits/my-applications/"><i class="bi bi-journal-text me-1"></i>My Permits</a></li>
-          <li class="nav-item"><a class="nav-link" href="/marketplace/"><i class="bi bi-cart3 me-1"></i>Marketplace</a></li>
-          <li class="nav-item"><a class="nav-link" href="/marketplace/orders/"><i class="bi bi-bag-check me-1"></i>My Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="/permits/apply/"><i class="bi bi-file-earmark-plus me-1"></i>${_t('apply_permit', 'Apply Permit')}</a></li>
+          <li class="nav-item"><a class="nav-link" href="/permits/my-applications/"><i class="bi bi-journal-text me-1"></i>${_t('my_permits', 'My Permits')}</a></li>
+          <li class="nav-item"><a class="nav-link" href="/marketplace/"><i class="bi bi-cart3 me-1"></i>${_t('marketplace', 'Marketplace')}</a></li>
+          <li class="nav-item"><a class="nav-link" href="/marketplace/orders/"><i class="bi bi-bag-check me-1"></i>${_t('my_orders', 'My Orders')}</a></li>
         `;
       } else if (user.role === 'MUNICIPALITY_OFFICER') {
         userRoleNav.innerHTML = `
-          <li class="nav-item"><a class="nav-link" href="/dashboard/officer/"><i class="bi bi-check2-square me-1"></i>Permit Review Queue</a></li>
+          <li class="nav-item"><a class="nav-link" href="/dashboard/officer/"><i class="bi bi-check2-square me-1"></i>${_t('permit_review_queue', 'Permit Review Queue')}</a></li>
         `;
       } else if (user.role === 'MATERIAL_SUPPLIER') {
         userRoleNav.innerHTML = `
-          <li class="nav-item"><a class="nav-link" href="/marketplace/supplier/products/"><i class="bi bi-box-seam me-1"></i>Manage Products</a></li>
-          <li class="nav-item"><a class="nav-link" href="/marketplace/supplier/orders/"><i class="bi bi-truck me-1"></i>Supplier Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="/marketplace/supplier/products/"><i class="bi bi-box-seam me-1"></i>${_t('manage_products', 'Manage Products')}</a></li>
+          <li class="nav-item"><a class="nav-link" href="/marketplace/supplier/orders/"><i class="bi bi-truck me-1"></i>${_t('supplier_orders', 'Supplier Orders')}</a></li>
         `;
       } else if (user.role === 'ADMIN') {
         userRoleNav.innerHTML = `
-          <li class="nav-item"><a class="nav-link" href="/dashboard/admin/"><i class="bi bi-people me-1"></i>Users & Roles</a></li>
-          <li class="nav-item"><a class="nav-link" href="/admin/"><i class="bi bi-gear me-1"></i>Django Admin</a></li>
+          <li class="nav-item"><a class="nav-link" href="/dashboard/admin/"><i class="bi bi-people me-1"></i>${_t('users_roles', 'Users & Roles')}</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/"><i class="bi bi-gear me-1"></i>${_t('django_admin', 'Django Admin')}</a></li>
         `;
       }
     }
@@ -183,19 +196,19 @@ function updateNavbarAuthUI() {
           <span class="badge bg-info text-dark ms-1">${roleBadge}</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenuBtn">
-          <li><a class="dropdown-item fw-bold" href="${dashboardUrl}"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+          <li><a class="dropdown-item fw-bold" href="${dashboardUrl}"><i class="bi bi-speedometer2 me-2"></i>${_t('dashboard', 'Dashboard')}</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><button class="dropdown-item text-danger" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
+          <li><button class="dropdown-item text-danger" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>${_t('logout', 'Logout')}</button></li>
         </ul>
       </div>
     `;
 
     document.getElementById('logoutBtn')?.addEventListener('click', () => {
-      const confirmLogout = window.confirm('Are you sure you want to log out?');
+      const confirmLogout = window.confirm(_t('confirm_logout', 'Are you sure you want to log out?'));
       if (!confirmLogout) return;
 
       clearSession();
-      showToast('Logged out successfully', 'info');
+      showToast(_t('logged_out_success', 'Logged out successfully'), 'info');
       setTimeout(() => {
         window.location.href = '/login/';
       }, 500);
@@ -205,13 +218,13 @@ function updateNavbarAuthUI() {
       userRoleNav.innerHTML = `
       <li class="nav-item">
         <a class="nav-link" href="/permits/apply/">
-          <i class="bi bi-file-earmark-plus me-1"></i>Apply Permit
+          <i class="bi bi-file-earmark-plus me-1"></i>${_t('apply_permit', 'Apply Permit')}
         </a>
       </li>
 
       <li class="nav-item">
         <a class="nav-link" href="/marketplace/">
-          <i class="bi bi-cart3 me-1"></i>Marketplace
+          <i class="bi bi-cart3 me-1"></i>${_t('marketplace', 'Marketplace')}
         </a>
       </li>
     `;
@@ -219,10 +232,10 @@ function updateNavbarAuthUI() {
 
     authNav.innerHTML = `
     <a href="/login/" class="btn btn-outline-light me-2">
-      <i class="bi bi-box-arrow-in-right me-1"></i>Login
+      <i class="bi bi-box-arrow-in-right me-1"></i>${_t('login', 'Login')}
     </a>
     <a href="/register/" class="btn btn-warning fw-semibold">
-      <i class="bi bi-person-plus me-1"></i>Register
+      <i class="bi bi-person-plus me-1"></i>${_t('register', 'Register')}
     </a>
   `;
   }

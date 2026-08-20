@@ -1,0 +1,1867 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: NirmanSathi 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-20 00:00+0545\n"
+"PO-Revision-Date: 2026-08-20 00:00+0545\n"
+"Last-Translator: NirmanSathi Localization Team\n"
+"Language-Team: en <support@nirmansathi.gov.np>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "NirmanSathi - Building Permit & Construction Marketplace"
+msgstr "NirmanSathi - Building Permit & Construction Marketplace"
+
+msgid "Main Navigation"
+msgstr "Main Navigation"
+
+msgid "NirmanSathi Official Nepal E-Governance Portal"
+msgstr "NirmanSathi Official Nepal E-Governance Portal"
+
+msgid "Nepal Emblem"
+msgstr "Nepal Emblem"
+
+msgid "Government of Nepal"
+msgstr "Government of Nepal"
+
+msgid "Digital Construction Platform"
+msgstr "Digital Construction Platform"
+
+msgid "Toggle navigation"
+msgstr "Toggle navigation"
+
+msgid "Select Language"
+msgstr "Select Language"
+
+msgid "Change Language"
+msgstr "Change Language"
+
+msgid "Apply Permit"
+msgstr "Apply Permit"
+
+msgid "My Permits"
+msgstr "My Permits"
+
+msgid "Marketplace"
+msgstr "Marketplace"
+
+msgid "My Orders"
+msgstr "My Orders"
+
+msgid "Permit Review Queue"
+msgstr "Permit Review Queue"
+
+msgid "Manage Products"
+msgstr "Manage Products"
+
+msgid "Supplier Orders"
+msgstr "Supplier Orders"
+
+msgid "Users & Roles"
+msgstr "Users & Roles"
+
+msgid "Django Admin"
+msgstr "Django Admin"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Register"
+msgstr "Register"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Citizen"
+msgstr "Citizen"
+
+msgid "Municipality Officer"
+msgstr "Municipality Officer"
+
+msgid "Material Supplier"
+msgstr "Material Supplier"
+
+msgid "Admin"
+msgstr "Admin"
+
+msgid "Administrator"
+msgstr "Administrator"
+
+msgid "System Administrator"
+msgstr "System Administrator"
+
+msgid "Welcome back"
+msgstr "Welcome back"
+
+msgid "Welcome back!"
+msgstr "Welcome back!"
+
+msgid "Welcome"
+msgstr "Welcome"
+
+msgid "Logged out successfully"
+msgstr "Logged out successfully"
+
+msgid "Session expired. Please log in again."
+msgstr "Session expired. Please log in again."
+
+msgid "Are you sure you want to log out?"
+msgstr "Are you sure you want to log out?"
+
+msgid "Product added to cart!"
+msgstr "Product added to cart!"
+
+msgid "Item removed from cart."
+msgstr "Item removed from cart."
+
+msgid "Please login to add products to your cart."
+msgstr "Please login to add products to your cart."
+
+msgid "Failed to add product to cart."
+msgstr "Failed to add product to cart."
+
+msgid "Failed to remove item."
+msgstr "Failed to remove item."
+
+msgid "-- Select Province --"
+msgstr "-- Select Province --"
+
+msgid "-- Select District --"
+msgstr "-- Select District --"
+
+msgid "-- Select Municipality --"
+msgstr "-- Select Municipality --"
+
+msgid "-- Select Ward --"
+msgstr "-- Select Ward --"
+
+msgid "Ward No."
+msgstr "Ward No."
+
+msgid "Ward"
+msgstr "Ward"
+
+msgid "Failed to load provinces"
+msgstr "Failed to load provinces"
+
+msgid "Failed to load districts"
+msgstr "Failed to load districts"
+
+msgid "Failed to load municipalities"
+msgstr "Failed to load municipalities"
+
+msgid "Failed to load wards"
+msgstr "Failed to load wards"
+
+msgid "In Stock"
+msgstr "In Stock"
+
+msgid "Out of Stock"
+msgstr "Out of Stock"
+
+msgid "unit"
+msgstr "unit"
+
+msgid "units"
+msgstr "units"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Add"
+msgstr "Add"
+
+msgid "Manage"
+msgstr "Manage"
+
+msgid "View Details"
+msgstr "View Details"
+
+msgid "View"
+msgstr "View"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Loading..."
+msgstr "Loading..."
+
+msgid "Processing..."
+msgstr "Processing..."
+
+msgid "Saving..."
+msgstr "Saving..."
+
+msgid "Submitting..."
+msgstr "Submitting..."
+
+msgid "Pending"
+msgstr "Pending"
+
+msgid "Under Technical Review"
+msgstr "Under Technical Review"
+
+msgid "Approved"
+msgstr "Approved"
+
+msgid "Rejected"
+msgstr "Rejected"
+
+msgid "Confirmed"
+msgstr "Confirmed"
+
+msgid "Shipped"
+msgstr "Shipped"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "Delivered"
+msgstr "Delivered"
+
+msgid "Cancelled"
+msgstr "Cancelled"
+
+msgid "Paid"
+msgstr "Paid"
+
+msgid "Unpaid"
+msgstr "Unpaid"
+
+msgid "Failed"
+msgstr "Failed"
+
+msgid "Success"
+msgstr "Success"
+
+msgid "Close"
+msgstr "Close"
+
+msgid ""
+"Nepal Residential Building Permit E-Governance & Construction Material "
+"Marketplace. Streamlining urban construction and governance."
+msgstr ""
+"Nepal Residential Building Permit E-Governance & Construction Material "
+"Marketplace. Streamlining urban construction and governance."
+
+msgid "Quick Links"
+msgstr "Quick Links"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "E-Governance Portal"
+msgstr "E-Governance Portal"
+
+msgid "Ministry of Urban Development, Nepal"
+msgstr "Ministry of Urban Development, Nepal"
+
+msgid "Official CSIT E-Governance Project"
+msgstr "Official CSIT E-Governance Project"
+
+msgid "NirmanSathi E-Governance Platform. All rights reserved."
+msgstr "NirmanSathi E-Governance Platform. All rights reserved."
+
+msgid "NirmanSathi - Residential Building Permit E-Governance & Marketplace"
+msgstr "NirmanSathi - Residential Building Permit E-Governance & Marketplace"
+
+msgid "DIGITAL CONSTRUCTION PLATFORM"
+msgstr "DIGITAL CONSTRUCTION PLATFORM"
+
+msgid "Residential Building Permits & Material Marketplace"
+msgstr "Residential Building Permits & Material Marketplace"
+
+msgid ""
+"NirmanSathi simplifies municipal building permits approval and provides a "
+"verified marketplace for quality construction materials across Nepal."
+msgstr ""
+"NirmanSathi simplifies municipal building permits approval and provides a "
+"verified marketplace for quality construction materials across Nepal."
+
+msgid "Apply for Building Permit"
+msgstr "Apply for Building Permit"
+
+msgid "Explore Marketplace"
+msgstr "Explore Marketplace"
+
+msgid "Portal Access"
+msgstr "Portal Access"
+
+msgid "Select your role to access your dedicated dashboard"
+msgstr "Select your role to access your dedicated dashboard"
+
+msgid "Citizen / Landowner"
+msgstr "Citizen / Landowner"
+
+msgid "Integrated E-Governance & Marketplace"
+msgstr "Integrated E-Governance & Marketplace"
+
+msgid "Streamlining Nepal's residential construction ecosystem"
+msgstr "Streamlining Nepal's residential construction ecosystem"
+
+msgid "1. Submit Permit"
+msgstr "1. Submit Permit"
+
+msgid ""
+"Submit building blueprints, ownership certificates, and structural details "
+"online with location cascades."
+msgstr ""
+"Submit building blueprints, ownership certificates, and structural details "
+"online with location cascades."
+
+msgid "2. Officer Verification"
+msgstr "2. Officer Verification"
+
+msgid ""
+"Municipal officers inspect, review blueprints, add official remarks, and "
+"grant building approval."
+msgstr ""
+"Municipal officers inspect, review blueprints, add official remarks, and "
+"grant building approval."
+
+msgid "3. Order Materials"
+msgstr "3. Order Materials"
+
+msgid ""
+"Browse verified cement, rod, bricks, and sand from local suppliers with live"
+" stock tracking."
+msgstr ""
+"Browse verified cement, rod, bricks, and sand from local suppliers with live"
+" stock tracking."
+
+msgid "4. Simulated Payment"
+msgstr "4. Simulated Payment"
+
+msgid ""
+"Seamless simulated digital payments via eSewa with real-time receipt "
+"generation."
+msgstr ""
+"Seamless simulated digital payments via eSewa with real-time receipt "
+"generation."
+
+msgid "Continue to your dashboard or marketplace based on your role."
+msgstr "Continue to your dashboard or marketplace based on your role."
+
+msgid "Go to Citizen Dashboard"
+msgstr "Go to Citizen Dashboard"
+
+msgid "Go to Officer Dashboard"
+msgstr "Go to Officer Dashboard"
+
+msgid "Go to Supplier Dashboard"
+msgstr "Go to Supplier Dashboard"
+
+msgid "Go to Admin Dashboard"
+msgstr "Go to Admin Dashboard"
+
+msgid "Visit Marketplace"
+msgstr "Visit Marketplace"
+
+msgid "Login - NirmanSathi"
+msgstr "Login - NirmanSathi"
+
+msgid "Account Login"
+msgstr "Account Login"
+
+msgid "Access your NirmanSathi E-Governance Dashboard"
+msgstr "Access your NirmanSathi E-Governance Dashboard"
+
+msgid "Username or Email"
+msgstr "Username or Email"
+
+msgid "Enter username or email"
+msgstr "Enter username or email"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Enter password"
+msgstr "Enter password"
+
+msgid "Don't have an account?"
+msgstr "Don't have an account?"
+
+msgid "Register here"
+msgstr "Register here"
+
+msgid "Please enter your username or email."
+msgstr "Please enter your username or email."
+
+msgid "Please enter your password."
+msgstr "Please enter your password."
+
+msgid "Logging in..."
+msgstr "Logging in..."
+
+msgid "Login failed. Please check your credentials."
+msgstr "Login failed. Please check your credentials."
+
+msgid "Register - NirmanSathi"
+msgstr "Register - NirmanSathi"
+
+msgid "Create Account"
+msgstr "Create Account"
+
+msgid "Register for NirmanSathi E-Governance & Marketplace"
+msgstr "Register for NirmanSathi E-Governance & Marketplace"
+
+msgid "Username *"
+msgstr "Username *"
+
+msgid "Choose username"
+msgstr "Choose username"
+
+msgid "Full Name"
+msgstr "Full Name"
+
+msgid "e.g. Ram Bahadur Shrestha"
+msgstr "e.g. Ram Bahadur Shrestha"
+
+msgid "Email Address *"
+msgstr "Email Address *"
+
+msgid "Phone Number"
+msgstr "Phone Number"
+
+msgid "Account Role *"
+msgstr "Account Role *"
+
+msgid "Citizen / Landowner (Apply Permits & Buy Materials)"
+msgstr "Citizen / Landowner (Apply Permits & Buy Materials)"
+
+msgid "Material Supplier (Sell Construction Supplies)"
+msgstr "Material Supplier (Sell Construction Supplies)"
+
+msgid "Municipality Officer (Review Permits)"
+msgstr "Municipality Officer (Review Permits)"
+
+msgid "Password *"
+msgstr "Password *"
+
+msgid "Min 6 characters"
+msgstr "Min 6 characters"
+
+msgid "Confirm Password *"
+msgstr "Confirm Password *"
+
+msgid "Re-enter password"
+msgstr "Re-enter password"
+
+msgid "I agree to NirmanSathi Terms of Service and E-Governance Guidelines."
+msgstr "I agree to NirmanSathi Terms of Service and E-Governance Guidelines."
+
+msgid "Already registered?"
+msgstr "Already registered?"
+
+msgid "Log in here"
+msgstr "Log in here"
+
+msgid "Username must be at least 3 characters long."
+msgstr "Username must be at least 3 characters long."
+
+msgid "Please enter a valid email address."
+msgstr "Please enter a valid email address."
+
+msgid "Please enter a valid phone number (10 digits)."
+msgstr "Please enter a valid phone number (10 digits)."
+
+msgid "Password must be at least 6 characters long."
+msgstr "Password must be at least 6 characters long."
+
+msgid "Passwords do not match."
+msgstr "Passwords do not match."
+
+msgid "Creating Account..."
+msgstr "Creating Account..."
+
+msgid "Registration successful! Redirecting to login page..."
+msgstr "Registration successful! Redirecting to login page..."
+
+msgid "Registration failed. Please try again."
+msgstr "Registration failed. Please try again."
+
+msgid "System Audit Logs - NirmanSathi"
+msgstr "System Audit Logs - NirmanSathi"
+
+msgid "System Security & Audit Trail"
+msgstr "System Security & Audit Trail"
+
+msgid ""
+"Real-time system activity logs, authentication events, permit decision "
+"audits, and payment verifications."
+msgstr ""
+"Real-time system activity logs, authentication events, permit decision "
+"audits, and payment verifications."
+
+msgid "Back to Control Panel"
+msgstr "Back to Control Panel"
+
+msgid "Filter by user, action keyword, or IP..."
+msgstr "Filter by user, action keyword, or IP..."
+
+msgid "All Event Categories"
+msgstr "All Event Categories"
+
+msgid "Authentication & JWT"
+msgstr "Authentication & JWT"
+
+msgid "Building Permits & Inspections"
+msgstr "Building Permits & Inspections"
+
+msgid "eSewa Payments"
+msgstr "eSewa Payments"
+
+msgid "Marketplace & Orders"
+msgstr "Marketplace & Orders"
+
+msgid "System Administration"
+msgstr "System Administration"
+
+msgid "Live Poll (5s)"
+msgstr "Live Poll (5s)"
+
+msgid "Refresh Logs"
+msgstr "Refresh Logs"
+
+msgid "Timestamp"
+msgstr "Timestamp"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "User / Actor"
+msgstr "User / Actor"
+
+msgid "Action Event"
+msgstr "Action Event"
+
+msgid "IP Address"
+msgstr "IP Address"
+
+msgid "Loading audit trail from database..."
+msgstr "Loading audit trail from database..."
+
+msgid ""
+"Failed to fetch audit logs. Ensure you are logged in as an Administrator."
+msgstr ""
+"Failed to fetch audit logs. Ensure you are logged in as an Administrator."
+
+msgid "No real-time audit logs found matching criteria."
+msgstr "No real-time audit logs found matching criteria."
+
+msgid "unauthenticated"
+msgstr "unauthenticated"
+
+msgid "Citizen Dashboard - NirmanSathi"
+msgstr "Citizen Dashboard - NirmanSathi"
+
+msgid ""
+"Manage your residential building permit applications and purchase verified "
+"construction materials directly online."
+msgstr ""
+"Manage your residential building permit applications and purchase verified "
+"construction materials directly online."
+
+msgid "New Application"
+msgstr "New Application"
+
+msgid "Total Permits"
+msgstr "Total Permits"
+
+msgid "Pending / Review"
+msgstr "Pending / Review"
+
+msgid "Orders Placed"
+msgstr "Orders Placed"
+
+msgid "My Permit Applications"
+msgstr "My Permit Applications"
+
+msgid "View All"
+msgstr "View All"
+
+msgid "Ref Number"
+msgstr "Ref Number"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Municipality"
+msgstr "Municipality"
+
+msgid "Submitted"
+msgstr "Submitted"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Loading permit applications..."
+msgstr "Loading permit applications..."
+
+msgid "Construction Marketplace"
+msgstr "Construction Marketplace"
+
+msgid ""
+"Order verified cement, rod, bricks, and sand from local suppliers with eSewa"
+" payments."
+msgstr ""
+"Order verified cement, rod, bricks, and sand from local suppliers with eSewa"
+" payments."
+
+msgid "Browse Products"
+msgstr "Browse Products"
+
+msgid "E-Permit Process Status"
+msgstr "E-Permit Process Status"
+
+msgid "Submit Application"
+msgstr "Submit Application"
+
+msgid "Fill land details & upload blueprints"
+msgstr "Fill land details & upload blueprints"
+
+msgid "Municipal Review"
+msgstr "Municipal Review"
+
+msgid "Officer inspects documentation"
+msgstr "Officer inspects documentation"
+
+msgid "Permit Approval"
+msgstr "Permit Approval"
+
+msgid "Download approved permit letter"
+msgstr "Download approved permit letter"
+
+msgid "No building permit applications found."
+msgstr "No building permit applications found."
+
+msgid "Apply now"
+msgstr "Apply now"
+
+msgid "Failed to load permit applications."
+msgstr "Failed to load permit applications."
+
+msgid "Municipality Officer Dashboard - NirmanSathi"
+msgstr "Municipality Officer Dashboard - NirmanSathi"
+
+msgid "Municipal E-Governance Inspection Portal"
+msgstr "Municipal E-Governance Inspection Portal"
+
+msgid "Officer Dashboard"
+msgstr "Officer Dashboard"
+
+msgid "Municipality Application Review Queue"
+msgstr "Municipality Application Review Queue"
+
+msgid "Official Reviewer"
+msgstr "Official Reviewer"
+
+msgid "Total Assigned"
+msgstr "Total Assigned"
+
+msgid "Pending Review"
+msgstr "Pending Review"
+
+msgid "Permit Applications Queue"
+msgstr "Permit Applications Queue"
+
+msgid "All Statuses"
+msgstr "All Statuses"
+
+msgid "Applicant"
+msgstr "Applicant"
+
+msgid "Application Type"
+msgstr "Application Type"
+
+msgid "Ward / Tole"
+msgstr "Ward / Tole"
+
+msgid "Built-Up Area"
+msgstr "Built-Up Area"
+
+msgid "Submitted Date"
+msgstr "Submitted Date"
+
+msgid "Loading permit applications queue..."
+msgstr "Loading permit applications queue..."
+
+msgid "Jurisdiction:"
+msgstr "Jurisdiction:"
+
+msgid "All Municipalities"
+msgstr "All Municipalities"
+
+msgid "Failed to load officer queue."
+msgstr "Failed to load officer queue."
+
+msgid "No permit applications found matching the selected filter."
+msgstr "No permit applications found matching the selected filter."
+
+msgid "Review"
+msgstr "Review"
+
+msgid "Material Supplier Portal - NirmanSathi"
+msgstr "Material Supplier Portal - NirmanSathi"
+
+msgid "Verified Supplier Portal"
+msgstr "Verified Supplier Portal"
+
+msgid "Supplier Dashboard"
+msgstr "Supplier Dashboard"
+
+msgid ""
+"Manage construction material inventory and fulfill incoming citizen orders."
+msgstr ""
+"Manage construction material inventory and fulfill incoming citizen orders."
+
+msgid "Add New Product"
+msgstr "Add New Product"
+
+msgid "Active Products"
+msgstr "Active Products"
+
+msgid "Orders Received"
+msgstr "Orders Received"
+
+msgid "Low Stock Warning"
+msgstr "Low Stock Warning"
+
+msgid "My Material Inventory"
+msgstr "My Material Inventory"
+
+msgid "Incoming Citizen Orders"
+msgstr "Incoming Citizen Orders"
+
+msgid "Product"
+msgstr "Product"
+
+msgid "Unit Price"
+msgstr "Unit Price"
+
+msgid "Stock Level"
+msgstr "Stock Level"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Loading inventory..."
+msgstr "Loading inventory..."
+
+msgid "Order Ref"
+msgstr "Order Ref"
+
+msgid "Customer"
+msgstr "Customer"
+
+msgid "Shipping Address"
+msgstr "Shipping Address"
+
+msgid "Total Amount"
+msgstr "Total Amount"
+
+msgid "Payment"
+msgstr "Payment"
+
+msgid "Fulfillment Status"
+msgstr "Fulfillment Status"
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Loading incoming orders..."
+msgstr "Loading incoming orders..."
+
+msgid "No products listed yet."
+msgstr "No products listed yet."
+
+msgid "Add your first material"
+msgstr "Add your first material"
+
+msgid "Material"
+msgstr "Material"
+
+msgid "No incoming customer orders."
+msgstr "No incoming customer orders."
+
+msgid "Are you sure you want to delete this construction material listing?"
+msgstr "Are you sure you want to delete this construction material listing?"
+
+msgid "Product deleted from inventory."
+msgstr "Product deleted from inventory."
+
+msgid "Failed to delete product."
+msgstr "Failed to delete product."
+
+msgid "Order status updated successfully"
+msgstr "Order status updated successfully"
+
+msgid "Failed to update order status."
+msgstr "Failed to update order status."
+
+msgid "System Administrator Dashboard - NirmanSathi"
+msgstr "System Administrator Dashboard - NirmanSathi"
+
+msgid "Master System Administration"
+msgstr "Master System Administration"
+
+msgid "System Control Panel"
+msgstr "System Control Panel"
+
+msgid ""
+"Manage user roles, local municipality permissions, marketplace oversight, "
+"and system security."
+msgstr ""
+"Manage user roles, local municipality permissions, marketplace oversight, "
+"and system security."
+
+msgid "View System Audit Logs"
+msgstr "View System Audit Logs"
+
+msgid "Total Users"
+msgstr "Total Users"
+
+msgid "Citizens"
+msgstr "Citizens"
+
+msgid "Municipal Officers"
+msgstr "Municipal Officers"
+
+msgid "Material Suppliers"
+msgstr "Material Suppliers"
+
+msgid "Platform User Directory & Role Assignment"
+msgstr "Platform User Directory & Role Assignment"
+
+msgid "Search by username or email..."
+msgstr "Search by username or email..."
+
+msgid "All Roles"
+msgstr "All Roles"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Current Role"
+msgstr "Current Role"
+
+msgid "Municipality / Company"
+msgstr "Municipality / Company"
+
+msgid "Date Joined"
+msgstr "Date Joined"
+
+msgid "Manage Role"
+msgstr "Manage Role"
+
+msgid "Loading system users directory..."
+msgstr "Loading system users directory..."
+
+msgid "Confirm Role Change"
+msgstr "Confirm Role Change"
+
+msgid "You are about to change the role for:"
+msgstr "You are about to change the role for:"
+
+msgid "New Role"
+msgstr "New Role"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Confirm Change"
+msgstr "Confirm Change"
+
+msgid "Failed to load users. Make sure you are logged in as an admin."
+msgstr "Failed to load users. Make sure you are logged in as an admin."
+
+msgid "No users found matching your criteria."
+msgstr "No users found matching your criteria."
+
+msgid "You"
+msgstr "You"
+
+msgid "Role updated successfully."
+msgstr "Role updated successfully."
+
+msgid "Failed to update role."
+msgstr "Failed to update role."
+
+msgid "Apply for Residential Building Permit - NirmanSathi"
+msgstr "Apply for Residential Building Permit - NirmanSathi"
+
+msgid "New Building Permit Application"
+msgstr "New Building Permit Application"
+
+msgid ""
+"Fill out official property specifications & upload architectural blueprints "
+"for municipal review."
+msgstr ""
+"Fill out official property specifications & upload architectural blueprints "
+"for municipal review."
+
+msgid "Back to Dashboard"
+msgstr "Back to Dashboard"
+
+msgid "1. Application Type & Location Details"
+msgstr "1. Application Type & Location Details"
+
+msgid "Application Type *"
+msgstr "Application Type *"
+
+msgid "New Residential Building Construction"
+msgstr "New Residential Building Construction"
+
+msgid "Building Renovation"
+msgstr "Building Renovation"
+
+msgid "Building Extension / Storey Addition"
+msgstr "Building Extension / Storey Addition"
+
+msgid "Province *"
+msgstr "Province *"
+
+msgid "-- Loading Provinces --"
+msgstr "-- Loading Provinces --"
+
+msgid "District *"
+msgstr "District *"
+
+msgid "-- Select Province First --"
+msgstr "-- Select Province First --"
+
+msgid "Municipality / Nagarpalika *"
+msgstr "Municipality / Nagarpalika *"
+
+msgid "-- Select District First --"
+msgstr "-- Select District First --"
+
+msgid "Ward Number *"
+msgstr "Ward Number *"
+
+msgid "-- Select Municipality First --"
+msgstr "-- Select Municipality First --"
+
+msgid "Tole / Street Address *"
+msgstr "Tole / Street Address *"
+
+msgid "e.g. Buddhanagar, Ward 10"
+msgstr "e.g. Buddhanagar, Ward 10"
+
+msgid "Kitta / Plot Number *"
+msgstr "Kitta / Plot Number *"
+
+msgid "e.g. Kitta No. 452"
+msgstr "e.g. Kitta No. 452"
+
+msgid "2. Building Specifications & Estimates"
+msgstr "2. Building Specifications & Estimates"
+
+msgid "Land Area (Sq. Ft.) *"
+msgstr "Land Area (Sq. Ft.) *"
+
+msgid "e.g. 1715.00 (5 Aana)"
+msgstr "e.g. 1715.00 (5 Aana)"
+
+msgid "Proposed Built-Up Area (Sq. Ft.) *"
+msgstr "Proposed Built-Up Area (Sq. Ft.) *"
+
+msgid "e.g. 2400.00"
+msgstr "e.g. 2400.00"
+
+msgid "Number of Storeys / Floors *"
+msgstr "Number of Storeys / Floors *"
+
+msgid "Estimated Construction Cost (NPR) *"
+msgstr "Estimated Construction Cost (NPR) *"
+
+msgid "e.g. 4500000"
+msgstr "e.g. 4500000"
+
+msgid "3. Document Attachments"
+msgstr "3. Document Attachments"
+
+msgid ""
+"Attach official blueprint and land documents (PDF or image files, max 5MB "
+"each)."
+msgstr ""
+"Attach official blueprint and land documents (PDF or image files, max 5MB "
+"each)."
+
+msgid "Architectural Blueprint File *"
+msgstr "Architectural Blueprint File *"
+
+msgid "Structural / Cadastral blueprint drawing."
+msgstr "Structural / Cadastral blueprint drawing."
+
+msgid "Lalpurja (Land Ownership Certificate) *"
+msgstr "Lalpurja (Land Ownership Certificate) *"
+
+msgid "Official land ownership registration deed."
+msgstr "Official land ownership registration deed."
+
+msgid "Submitting Permit Application..."
+msgstr "Submitting Permit Application..."
+
+msgid "Building permit application"
+msgstr "Building permit application"
+
+msgid "submitted successfully!"
+msgstr "submitted successfully!"
+
+msgid "Failed to submit application. Please check form fields."
+msgstr "Failed to submit application. Please check form fields."
+
+msgid "My Permit Applications - NirmanSathi"
+msgstr "My Permit Applications - NirmanSathi"
+
+msgid "My Building Permits"
+msgstr "My Building Permits"
+
+msgid ""
+"Track all your submitted residential building permit applications and review"
+" municipal status updates."
+msgstr ""
+"Track all your submitted residential building permit applications and review"
+" municipal status updates."
+
+msgid "Reference No."
+msgstr "Reference No."
+
+msgid "Municipality & Ward"
+msgstr "Municipality & Ward"
+
+msgid "Date Submitted"
+msgstr "Date Submitted"
+
+msgid "storeys"
+msgstr "storeys"
+
+msgid "Failed to load permit list."
+msgstr "Failed to load permit list."
+
+msgid "Permit Application Details - NirmanSathi"
+msgstr "Permit Application Details - NirmanSathi"
+
+msgid "Building Permit Status"
+msgstr "Building Permit Status"
+
+msgid "Back to Permits"
+msgstr "Back to Permits"
+
+msgid "Loading application details..."
+msgstr "Loading application details..."
+
+msgid "Application Progress & Status Timeline"
+msgstr "Application Progress & Status Timeline"
+
+msgid "1. Submitted"
+msgstr "1. Submitted"
+
+msgid "2. Technical Review"
+msgstr "2. Technical Review"
+
+msgid "Municipal Inspection"
+msgstr "Municipal Inspection"
+
+msgid "3. Decision"
+msgstr "3. Decision"
+
+msgid "4. Permit Letter"
+msgstr "4. Permit Letter"
+
+msgid "Pending Approval"
+msgstr "Pending Approval"
+
+msgid "Officer Remarks & Feedback:"
+msgstr "Officer Remarks & Feedback:"
+
+msgid "Application Specifications"
+msgstr "Application Specifications"
+
+msgid "Application Type:"
+msgstr "Application Type:"
+
+msgid "Applicant:"
+msgstr "Applicant:"
+
+msgid "Municipality:"
+msgstr "Municipality:"
+
+msgid "Ward Number:"
+msgstr "Ward Number:"
+
+msgid "Tole / Address:"
+msgstr "Tole / Address:"
+
+msgid "Plot / Kitta No.:"
+msgstr "Plot / Kitta No.:"
+
+msgid "Land Area:"
+msgstr "Land Area:"
+
+msgid "Built-Up Area:"
+msgstr "Built-Up Area:"
+
+msgid "Storeys:"
+msgstr "Storeys:"
+
+msgid "Est. Cost:"
+msgstr "Est. Cost:"
+
+msgid "Attached Documents"
+msgstr "Attached Documents"
+
+msgid "Loading attached files..."
+msgstr "Loading attached files..."
+
+msgid "Upload Additional Document"
+msgstr "Upload Additional Document"
+
+msgid "Document Title"
+msgstr "Document Title"
+
+msgid "e.g. Revised Structural Blueprint"
+msgstr "e.g. Revised Structural Blueprint"
+
+msgid "Document Type"
+msgstr "Document Type"
+
+msgid "Blueprint"
+msgstr "Blueprint"
+
+msgid "Citizenship Certificate"
+msgstr "Citizenship Certificate"
+
+msgid "Lalpurja (Land Ownership)"
+msgstr "Lalpurja (Land Ownership)"
+
+msgid "Tax Clearance Receipt"
+msgstr "Tax Clearance Receipt"
+
+msgid "Other Document"
+msgstr "Other Document"
+
+msgid "File"
+msgstr "File"
+
+msgid "Upload Document"
+msgstr "Upload Document"
+
+msgid "Storey(s)"
+msgstr "Storey(s)"
+
+msgid "Ready to Download"
+msgstr "Ready to Download"
+
+msgid "Application Rejected"
+msgstr "Application Rejected"
+
+msgid "No documents attached yet."
+msgstr "No documents attached yet."
+
+msgid "Download"
+msgstr "Download"
+
+msgid "Failed to load permit details."
+msgstr "Failed to load permit details."
+
+msgid "Uploading..."
+msgstr "Uploading..."
+
+msgid "Document uploaded successfully!"
+msgstr "Document uploaded successfully!"
+
+msgid "Failed to upload document."
+msgstr "Failed to upload document."
+
+msgid "Permit Inspection & Review - NirmanSathi Officer Portal"
+msgstr "Permit Inspection & Review - NirmanSathi Officer Portal"
+
+msgid "Officer Permit Review & Approval"
+msgstr "Officer Permit Review & Approval"
+
+msgid "Back to Review Queue"
+msgstr "Back to Review Queue"
+
+msgid "Loading permit application for inspection..."
+msgstr "Loading permit application for inspection..."
+
+msgid "Building Permit Application"
+msgstr "Building Permit Application"
+
+msgid "Address & Kitta No.:"
+msgstr "Address & Kitta No.:"
+
+msgid "Storeys Count:"
+msgstr "Storeys Count:"
+
+msgid "Estimated Cost:"
+msgstr "Estimated Cost:"
+
+msgid "Current Status:"
+msgstr "Current Status:"
+
+msgid "Uploaded Blueprints & Ownership Deeds"
+msgstr "Uploaded Blueprints & Ownership Deeds"
+
+msgid "Loading attachments..."
+msgstr "Loading attachments..."
+
+msgid "Officer Official Decision"
+msgstr "Officer Official Decision"
+
+msgid "Select Decision *"
+msgstr "Select Decision *"
+
+msgid "Approve Application"
+msgstr "Approve Application"
+
+msgid "Issue building permit approval letter"
+msgstr "Issue building permit approval letter"
+
+msgid "Mark Under Technical Review"
+msgstr "Mark Under Technical Review"
+
+msgid "Request technical modifications / site inspection"
+msgstr "Request technical modifications / site inspection"
+
+msgid "Reject Application"
+msgstr "Reject Application"
+
+msgid "Deny permit application due to code violation"
+msgstr "Deny permit application due to code violation"
+
+msgid "Inspection Remarks & Justification *"
+msgstr "Inspection Remarks & Justification *"
+
+msgid ""
+"Enter detailed inspection notes, setback verification, structural compliance"
+" remarks..."
+msgstr ""
+"Enter detailed inspection notes, setback verification, structural compliance"
+" remarks..."
+
+msgid "Submit Official Decision"
+msgstr "Submit Official Decision"
+
+msgid "Decision Log History"
+msgstr "Decision Log History"
+
+msgid "No past decision history recorded."
+msgstr "No past decision history recorded."
+
+msgid "storey(s)"
+msgstr "storey(s)"
+
+msgid "No document attachments uploaded."
+msgstr "No document attachments uploaded."
+
+msgid "Uploaded:"
+msgstr "Uploaded:"
+
+msgid "Inspect File"
+msgstr "Inspect File"
+
+msgid "No past decisions recorded for this permit."
+msgstr "No past decisions recorded for this permit."
+
+msgid "Failed to load application."
+msgstr "Failed to load application."
+
+msgid "Submitting Official Decision..."
+msgstr "Submitting Official Decision..."
+
+msgid "Please select a decision (Approve, Under Review, or Reject)."
+msgstr "Please select a decision (Approve, Under Review, or Reject)."
+
+msgid "Decision recorded successfully!"
+msgstr "Decision recorded successfully!"
+
+msgid "Failed to submit officer decision."
+msgstr "Failed to submit officer decision."
+
+msgid "Construction Material Marketplace - NirmanSathi"
+msgstr "Construction Material Marketplace - NirmanSathi"
+
+msgid ""
+"Purchase verified cement, steel rods, bricks, and aggregates directly from "
+"licensed Nepalese suppliers."
+msgstr ""
+"Purchase verified cement, steel rods, bricks, and aggregates directly from "
+"licensed Nepalese suppliers."
+
+msgid "View Cart"
+msgstr "View Cart"
+
+msgid "Search products (e.g. OPC Cement, TMT Rod)..."
+msgstr "Search products (e.g. OPC Cement, TMT Rod)..."
+
+msgid "All Products"
+msgstr "All Products"
+
+msgid "Loading construction materials..."
+msgstr "Loading construction materials..."
+
+msgid "Failed to load products."
+msgstr "Failed to load products."
+
+msgid "No construction materials found"
+msgstr "No construction materials found"
+
+msgid "Try adjusting your search query or category filter."
+msgstr "Try adjusting your search query or category filter."
+
+msgid "Stock:"
+msgstr "Stock:"
+
+msgid "Product Details - NirmanSathi Marketplace"
+msgstr "Product Details - NirmanSathi Marketplace"
+
+msgid "Product Details"
+msgstr "Product Details"
+
+msgid "Loading product details..."
+msgstr "Loading product details..."
+
+msgid "Supplied by"
+msgstr "Supplied by"
+
+msgid "Available Stock"
+msgstr "Available Stock"
+
+msgid "Select Quantity"
+msgstr "Select Quantity"
+
+msgid "Add to Cart"
+msgstr "Add to Cart"
+
+msgid "Verified Nepalese Supplier"
+msgstr "Verified Nepalese Supplier"
+
+msgid "Official E-Governance Platform"
+msgstr "Official E-Governance Platform"
+
+msgid "This product is currently out of stock."
+msgstr "This product is currently out of stock."
+
+msgid "Browse Other Products"
+msgstr "Browse Other Products"
+
+msgid "More from This Category"
+msgstr "More from This Category"
+
+msgid "Loading related products..."
+msgstr "Loading related products..."
+
+msgid "Product not found"
+msgstr "Product not found"
+
+msgid "This product may have been removed or is no longer available."
+msgstr "This product may have been removed or is no longer available."
+
+msgid "Back to Marketplace"
+msgstr "Back to Marketplace"
+
+msgid "Verified Supplier"
+msgstr "Verified Supplier"
+
+msgid "No description provided."
+msgstr "No description provided."
+
+msgid "Suppliers manage products here. Use Manage Products to edit listings."
+msgstr "Suppliers manage products here. Use Manage Products to edit listings."
+
+msgid "Manage Product"
+msgstr "Manage Product"
+
+msgid "No other products in this category."
+msgstr "No other products in this category."
+
+msgid "Shopping Cart - NirmanSathi Marketplace"
+msgstr "Shopping Cart - NirmanSathi Marketplace"
+
+msgid "My Shopping Cart"
+msgstr "My Shopping Cart"
+
+msgid "Continue Shopping"
+msgstr "Continue Shopping"
+
+msgid "Loading shopping cart..."
+msgstr "Loading shopping cart..."
+
+msgid "Price"
+msgstr "Price"
+
+msgid "Quantity"
+msgstr "Quantity"
+
+msgid "Subtotal"
+msgstr "Subtotal"
+
+msgid "Order Summary"
+msgstr "Order Summary"
+
+msgid "Subtotal:"
+msgstr "Subtotal:"
+
+msgid "Delivery Charges:"
+msgstr "Delivery Charges:"
+
+msgid "FREE"
+msgstr "FREE"
+
+msgid "Total Amount:"
+msgstr "Total Amount:"
+
+msgid "Proceed to Checkout"
+msgstr "Proceed to Checkout"
+
+msgid ""
+"Suppliers do not use the marketplace cart. Redirecting to Manage Products."
+msgstr ""
+"Suppliers do not use the marketplace cart. Redirecting to Manage Products."
+
+msgid "Your shopping cart is empty"
+msgstr "Your shopping cart is empty"
+
+msgid "Browse our marketplace for cement, steel rods, and bricks."
+msgstr "Browse our marketplace for cement, steel rods, and bricks."
+
+msgid "Explore Materials"
+msgstr "Explore Materials"
+
+msgid "Failed to load cart."
+msgstr "Failed to load cart."
+
+msgid "Failed to update quantity."
+msgstr "Failed to update quantity."
+
+msgid "Checkout - NirmanSathi Marketplace"
+msgstr "Checkout - NirmanSathi Marketplace"
+
+msgid "Order Checkout"
+msgstr "Order Checkout"
+
+msgid "Back to Cart"
+msgstr "Back to Cart"
+
+msgid "Delivery & Contact Details"
+msgstr "Delivery & Contact Details"
+
+msgid "Delivery Address / Tole *"
+msgstr "Delivery Address / Tole *"
+
+msgid "e.g. House No. 42, Sanepa, Ward 2, Lalitpur"
+msgstr "e.g. House No. 42, Sanepa, Ward 2, Lalitpur"
+
+msgid "Contact Phone Number *"
+msgstr "Contact Phone Number *"
+
+msgid "Payment Option"
+msgstr "Payment Option"
+
+msgid "Digital Wallet (Simulated)"
+msgstr "Digital Wallet (Simulated)"
+
+msgid "Instant online wallet payment simulation"
+msgstr "Instant online wallet payment simulation"
+
+msgid "Instant"
+msgstr "Instant"
+
+msgid "Place Order & Pay via eSewa"
+msgstr "Place Order & Pay via eSewa"
+
+msgid "Cart Breakdown"
+msgstr "Cart Breakdown"
+
+msgid "Loading items..."
+msgstr "Loading items..."
+
+msgid "Total Payable:"
+msgstr "Total Payable:"
+
+msgid "Item"
+msgstr "Item"
+
+msgid "Qty:"
+msgstr "Qty:"
+
+msgid "Failed to load checkout details"
+msgstr "Failed to load checkout details"
+
+msgid "Creating Order..."
+msgstr "Creating Order..."
+
+msgid "Order created! Redirecting to eSewa Payment Portal..."
+msgstr "Order created! Redirecting to eSewa Payment Portal..."
+
+msgid "Checkout failed. Please try again."
+msgstr "Checkout failed. Please try again."
+
+msgid "eSewa Payment Portal (Simulated) - NirmanSathi"
+msgstr "eSewa Payment Portal (Simulated) - NirmanSathi"
+
+msgid "Simulated Digital Wallet Gateway"
+msgstr "Simulated Digital Wallet Gateway"
+
+msgid "Connecting to simulated eSewa server..."
+msgstr "Connecting to simulated eSewa server..."
+
+msgid "Merchant:"
+msgstr "Merchant:"
+
+msgid "Order Reference:"
+msgstr "Order Reference:"
+
+msgid "Amount Payable:"
+msgstr "Amount Payable:"
+
+msgid "eSewa ID / Mobile Number"
+msgstr "eSewa ID / Mobile Number"
+
+msgid "eSewa MPIN / Password"
+msgstr "eSewa MPIN / Password"
+
+msgid "Simulate Payment Failure (Test Error Handling)"
+msgstr "Simulate Payment Failure (Test Error Handling)"
+
+msgid "Confirm & Pay Now"
+msgstr "Confirm & Pay Now"
+
+msgid "Cancel & Return to Cart"
+msgstr "Cancel & Return to Cart"
+
+msgid "Invalid payment request. No order ID provided."
+msgstr "Invalid payment request. No order ID provided."
+
+msgid "Order not found."
+msgstr "Order not found."
+
+msgid "Processing eSewa Payment..."
+msgstr "Processing eSewa Payment..."
+
+msgid "Payment Successful!"
+msgstr "Payment Successful!"
+
+msgid "Payment simulation failed."
+msgstr "Payment simulation failed."
+
+msgid "My Orders - NirmanSathi Marketplace"
+msgstr "My Orders - NirmanSathi Marketplace"
+
+msgid ""
+"View all your past and active construction material orders and track "
+"delivery statuses."
+msgstr ""
+"View all your past and active construction material orders and track "
+"delivery statuses."
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Payment Status"
+msgstr "Payment Status"
+
+msgid "Delivery Status"
+msgstr "Delivery Status"
+
+msgid "Loading orders..."
+msgstr "Loading orders..."
+
+msgid "No orders found"
+msgstr "No orders found"
+
+msgid "You haven't placed any construction material orders yet."
+msgstr "You haven't placed any construction material orders yet."
+
+msgid "Failed to load orders."
+msgstr "Failed to load orders."
+
+msgid "Order Details - NirmanSathi Marketplace"
+msgstr "Order Details - NirmanSathi Marketplace"
+
+msgid "Order Status & Tracking"
+msgstr "Order Status & Tracking"
+
+msgid "Back to Orders"
+msgstr "Back to Orders"
+
+msgid "Loading order details..."
+msgstr "Loading order details..."
+
+msgid "Delivery Status Timeline"
+msgstr "Delivery Status Timeline"
+
+msgid "1. Order Placed"
+msgstr "1. Order Placed"
+
+msgid "2. Confirmed"
+msgstr "2. Confirmed"
+
+msgid "Supplier Verification"
+msgstr "Supplier Verification"
+
+msgid "3. Shipped"
+msgstr "3. Shipped"
+
+msgid "In Transit"
+msgstr "In Transit"
+
+msgid "4. Delivered"
+msgstr "4. Delivered"
+
+msgid "Payment Pending:"
+msgstr "Payment Pending:"
+
+msgid "This order has not been paid yet via eSewa."
+msgstr "This order has not been paid yet via eSewa."
+
+msgid "Pay Now via eSewa"
+msgstr "Pay Now via eSewa"
+
+msgid "Items Purchased"
+msgstr "Items Purchased"
+
+msgid "Shipping Details"
+msgstr "Shipping Details"
+
+msgid "Address:"
+msgstr "Address:"
+
+msgid "Phone:"
+msgstr "Phone:"
+
+msgid "Payment Status:"
+msgstr "Payment Status:"
+
+msgid "Items Total:"
+msgstr "Items Total:"
+
+msgid "Delivery:"
+msgstr "Delivery:"
+
+msgid "Grand Total:"
+msgstr "Grand Total:"
+
+msgid "Failed to load order details."
+msgstr "Failed to load order details."
+
+msgid "Manage Product - NirmanSathi Marketplace"
+msgstr "Manage Product - NirmanSathi Marketplace"
+
+msgid "Add Construction Material"
+msgstr "Add Construction Material"
+
+msgid ""
+"List your certified cement, steel, or aggregate materials on the NirmanSathi"
+" marketplace."
+msgstr ""
+"List your certified cement, steel, or aggregate materials on the NirmanSathi"
+" marketplace."
+
+msgid "Back to Inventory"
+msgstr "Back to Inventory"
+
+msgid "Material Category *"
+msgstr "Material Category *"
+
+msgid "-- Loading Categories --"
+msgstr "-- Loading Categories --"
+
+msgid "Product Name *"
+msgstr "Product Name *"
+
+msgid "e.g. Shivam OPC Cement (Grade 43)"
+msgstr "e.g. Shivam OPC Cement (Grade 43)"
+
+msgid "Material Specifications & Description *"
+msgstr "Material Specifications & Description *"
+
+msgid ""
+"Enter grade, compliance standards (NS/IS), setting time, or quality "
+"details..."
+msgstr ""
+"Enter grade, compliance standards (NS/IS), setting time, or quality "
+"details..."
+
+msgid "Unit Price (NPR) *"
+msgstr "Unit Price (NPR) *"
+
+msgid "Available Stock *"
+msgstr "Available Stock *"
+
+msgid "Unit of Measure *"
+msgstr "Unit of Measure *"
+
+msgid "e.g. Bag, Ton, Piece, Trip"
+msgstr "e.g. Bag, Ton, Piece, Trip"
+
+msgid "Product Image"
+msgstr "Product Image"
+
+msgid "Optional product image."
+msgstr "Optional product image."
+
+msgid "In Stock / Available"
+msgstr "In Stock / Available"
+
+msgid "Save Material Listing"
+msgstr "Save Material Listing"
+
+msgid "Edit Material Listing"
+msgstr "Edit Material Listing"
+
+msgid "-- Select Category --"
+msgstr "-- Select Category --"
+
+msgid "Failed to load material categories"
+msgstr "Failed to load material categories"
+
+msgid "Failed to load product listing"
+msgstr "Failed to load product listing"
+
+msgid "Saving Material Listing..."
+msgstr "Saving Material Listing..."
+
+msgid "Material listing saved successfully!"
+msgstr "Material listing saved successfully!"
+
+msgid "Failed to save product. Please check input values."
+msgstr "Failed to save product. Please check input values."
+
+msgid "Supplier Orders - NirmanSathi Marketplace"
+msgstr "Supplier Orders - NirmanSathi Marketplace"
+
+msgid "View and manage all customer orders placed for your products."
+msgstr "View and manage all customer orders placed for your products."
+
+msgid "Total Orders"
+msgstr "Total Orders"
+
+msgid "Filter by Status"
+msgstr "Filter by Status"
+
+msgid "Search Order / Reference"
+msgstr "Search Order / Reference"
+
+msgid "Search by reference..."
+msgstr "Search by reference..."
+
+msgid "Apply Filter"
+msgstr "Apply Filter"
+
+msgid "Loading supplier orders..."
+msgstr "Loading supplier orders..."
+
+msgid "No customer orders have been placed for your products yet."
+msgstr "No customer orders have been placed for your products yet."
+
+msgid "Manage Your Products"
+msgstr "Manage Your Products"
+
+msgid "Failed to load orders. Please login as a supplier."
+msgstr "Failed to load orders. Please login as a supplier."
+
+msgid "Products"
+msgstr "Products"
+
+msgid "Amount"
+msgstr "Amount"
+
+msgid "Province Number (1 to 7)"
+msgstr "Province Number (1 to 7)"
+
+msgid "Metropolitan City"
+msgstr "Metropolitan City"
+
+msgid "Sub-Metropolitan City"
+msgstr "Sub-Metropolitan City"
+
+msgid "Rural Municipality (Gaunpalika)"
+msgstr "Rural Municipality (Gaunpalika)"
+
+msgid "Architectural / Structural Blueprint"
+msgstr "Architectural / Structural Blueprint"
+
+msgid "Citizenship Certificate Copy"
+msgstr "Citizenship Certificate Copy"
+
+msgid "Land Ownership Certificate (Lalpurja)"
+msgstr "Land Ownership Certificate (Lalpurja)"
+
+msgid "Property Tax Clearance Receipt"
+msgstr "Property Tax Clearance Receipt"
+
+msgid "Other Supporting Document"
+msgstr "Other Supporting Document"
+
+msgid "Refunded"
+msgstr "Refunded"
+
+msgid "Price in NPR per unit"
+msgstr "Price in NPR per unit"
+
+msgid "Available stock count"
+msgstr "Available stock count"
+
+msgid "e.g. Bag, Ton, Piece, Cu.Ft"
+msgstr "e.g. Bag, Ton, Piece, Cu.Ft"
+
+msgid "items"
+msgstr "items"
+
+msgid "Tole or Street Address"
+msgstr "Tole or Street Address"
+
+msgid "Kitta Number"
+msgstr "Kitta Number"
+
+msgid "Land Area in Sq. Ft."
+msgstr "Land Area in Sq. Ft."
+
+msgid "Proposed Built-up Area in Sq. Ft."
+msgstr "Proposed Built-up Area in Sq. Ft."
+
+msgid "Number of Storeys"
+msgstr "Number of Storeys"
+
+msgid "Estimated Construction Cost (NPR)"
+msgstr "Estimated Construction Cost (NPR)"
+
+msgid "Officer notes or feedback"
+msgstr "Officer notes or feedback"
+
+msgid "Brief descriptive title of the document"
+msgstr "Brief descriptive title of the document"
+
+msgid "Detailed officer justification / inspection feedback"
+msgstr "Detailed officer justification / inspection feedback"
+
+msgid "User's primary role in NirmanSathi system."
+msgstr "User's primary role in NirmanSathi system."
+
+msgid "Unique email address for registration and login."
+msgstr "Unique email address for registration and login."
+
+msgid "Assigned municipality (especially for officers)"
+msgstr "Assigned municipality (especially for officers)"
+
+msgid "For material suppliers"
+msgstr "For material suppliers"
+
+msgid "PAN/VAT for suppliers"
+msgstr "PAN/VAT for suppliers"

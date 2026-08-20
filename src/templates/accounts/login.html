@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Login - NirmanSathi{% endblock %}
+{% block title %}{% trans "Login - NirmanSathi" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -12,41 +13,41 @@
                         <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-inline-flex p-3 mb-2">
                             <i class="bi bi-shield-lock fs-2"></i>
                         </div>
-                        <h3 class="fw-bold text-navy">Account Login</h3>
-                        <p class="text-muted small">Access your NirmanSathi E-Governance Dashboard</p>
+                        <h3 class="fw-bold text-navy">{% trans "Account Login" %}</h3>
+                        <p class="text-muted small">{% trans "Access your NirmanSathi E-Governance Dashboard" %}</p>
                     </div>
 
                     <div id="loginAlert" class="alert alert-danger d-none" role="alert"></div>
 
                     <form id="loginForm">
                         <div class="mb-3">
-                            <label for="username" class="form-label fw-semibold">Username or Email</label>
+                            <label for="username" class="form-label fw-semibold">{% trans "Username or Email" %}</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-person"></i></span>
                                 <input type="text" class="form-control" id="username"
-                                    placeholder="Enter username or email" required>
+                                    placeholder="{% trans 'Enter username or email' %}" required>
                             </div>
                         </div>
 
                         <div class="mb-4">
-                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <label for="password" class="form-label fw-semibold">{% trans "Password" %}</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-key"></i></span>
-                                <input type="password" class="form-control" id="password" placeholder="Enter password"
+                                <input type="password" class="form-control" id="password" placeholder="{% trans 'Enter password' %}"
                                     required>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-ns-primary w-100 py-2 fw-bold" id="loginSubmitBtn">
-                            <span>Login</span>
+                            <span>{% trans "Login" %}</span>
                         </button>
                     </form>
 
                     <hr class="my-4">
 
                     <div class="text-center">
-                        <p class="small text-muted mb-0">Don't have an account? <a href="/register/"
-                                class="text-primary fw-bold text-decoration-none">Register here</a></p>
+                        <p class="small text-muted mb-0">{% trans "Don't have an account?" %} <a href="/register/"
+                                class="text-primary fw-bold text-decoration-none">{% trans "Register here" %}</a></p>
                     </div>
                 </div>
             </div>
@@ -69,19 +70,19 @@
 
         // Client-side validation
         if (!username) {
-            alertEl.textContent = 'Please enter your username or email.';
+            alertEl.textContent = "{% trans 'Please enter your username or email.' %}";
             alertEl.classList.remove('d-none');
             return;
         }
 
         if (!password) {
-            alertEl.textContent = 'Please enter your password.';
+            alertEl.textContent = "{% trans 'Please enter your password.' %}";
             alertEl.classList.remove('d-none');
             return;
         }
 
         btn.disabled = true;
-        btn.innerHTML = `<span class="loading-spinner me-2"></span>Logging in...`;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>{% trans 'Logging in...' %}`;
 
         try {
             // Obtain JWT token
@@ -96,7 +97,7 @@
             const userRes = await apiFetch('/accounts/me/');
             setUser(userRes);
 
-            showToast(`Welcome back, ${userRes.first_name || userRes.username}!`, 'success');
+            showToast(`${_t('welcome_back', 'Welcome back')}, ${userRes.first_name || userRes.username}!`, 'success');
 
             // Redirect based on role
             setTimeout(() => {
@@ -113,11 +114,11 @@
                 }
             }, 600);
         } catch (err) {
-            alertEl.textContent = err.message || 'Login failed. Please check your credentials.';
+            alertEl.textContent = err.message || "{% trans 'Login failed. Please check your credentials.' %}";
             alertEl.classList.remove('d-none');
         } finally {
             btn.disabled = false;
-            btn.innerHTML = `<span>Login</span>`;
+            btn.innerHTML = `<span>{% trans 'Login' %}</span>`;
         }
     });
 </script>

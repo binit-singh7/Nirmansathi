@@ -1,20 +1,21 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 class CustomUser(AbstractUser):
     class Role(models.TextChoices):
-        CITIZEN = 'CITIZEN', 'Citizen'
-        MUNICIPALITY_OFFICER = 'MUNICIPALITY_OFFICER', 'Municipality Officer'
-        MATERIAL_SUPPLIER = 'MATERIAL_SUPPLIER', 'Material Supplier'
-        ADMIN = 'ADMIN', 'System Administrator'
+        CITIZEN = 'CITIZEN', _('Citizen')
+        MUNICIPALITY_OFFICER = 'MUNICIPALITY_OFFICER', _('Municipality Officer')
+        MATERIAL_SUPPLIER = 'MATERIAL_SUPPLIER', _('Material Supplier')
+        ADMIN = 'ADMIN', _('System Administrator')
 
     role = models.CharField(
         max_length=30,
         choices=Role.choices,
         default=Role.CITIZEN,
-        help_text="User's primary role in NirmanSathi system."
+        help_text=_("User's primary role in NirmanSathi system.")
     )
-    email = models.EmailField(unique=True, help_text="Unique email address for registration and login.")
+    email = models.EmailField(unique=True, help_text=_("Unique email address for registration and login."))
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     
     # Optional link to municipality for municipality officers and localized citizens
@@ -24,7 +25,7 @@ class CustomUser(AbstractUser):
         null=True,
         blank=True,
         related_name='officers_and_citizens',
-        help_text="Assigned municipality (especially for officers)"
+        help_text=_("Assigned municipality (especially for officers)")
     )
 
     REQUIRED_FIELDS = ['email', 'role']
@@ -49,8 +50,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
     full_name = models.CharField(max_length=150, blank=True)
     citizenship_number = models.CharField(max_length=50, blank=True, null=True)
-    company_name = models.CharField(max_length=255, blank=True, null=True, help_text="For material suppliers")
-    company_pan_vat = models.CharField(max_length=50, blank=True, null=True, help_text="PAN/VAT for suppliers")
+    company_name = models.CharField(max_length=255, blank=True, null=True, help_text=_("For material suppliers"))
+    company_pan_vat = models.CharField(max_length=50, blank=True, null=True, help_text=_("PAN/VAT for suppliers"))
     address = models.CharField(max_length=255, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -62,15 +63,15 @@ class UserProfile(models.Model):
 
 class AuditLog(models.Model):
     class Category(models.TextChoices):
-        AUTH = 'AUTH', 'Authentication & JWT'
-        PERMIT = 'PERMIT', 'Building Permits & Inspections'
-        PAYMENT = 'PAYMENT', 'eSewa Payments'
-        MARKETPLACE = 'MARKETPLACE', 'Marketplace & Orders'
-        ADMIN = 'ADMIN', 'System Administration'
+        AUTH = 'AUTH', _('Authentication & JWT')
+        PERMIT = 'PERMIT', _('Building Permits & Inspections')
+        PAYMENT = 'PAYMENT', _('eSewa Payments')
+        MARKETPLACE = 'MARKETPLACE', _('Marketplace & Orders')
+        ADMIN = 'ADMIN', _('System Administration')
 
     class Status(models.TextChoices):
-        SUCCESS = 'SUCCESS', 'Success'
-        FAILED = 'FAILED', 'Failed'
+        SUCCESS = 'SUCCESS', _('Success')
+        FAILED = 'FAILED', _('Failed')
 
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
     category = models.CharField(max_length=30, choices=Category.choices, default=Category.AUTH)
