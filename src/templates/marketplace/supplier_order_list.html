@@ -124,16 +124,19 @@
     let allOrders = [];
 
     const statusBadgeMap = {
-        'PENDING':   { cls: 'bg-warning text-dark', label: _t('status_pending', 'Pending') },
-        'CONFIRMED': { cls: 'bg-primary',           label: _t('status_confirmed', 'Confirmed') },
-        'SHIPPED':   { cls: 'bg-info text-dark',    label: _t('status_shipped', 'Shipped') },
-        'COMPLETED': { cls: 'bg-success',           label: _t('status_delivered', 'Delivered') },
-        'CANCELLED': { cls: 'bg-danger',            label: _t('status_cancelled', 'Cancelled') },
+        'PENDING':    { cls: 'bg-warning text-dark', label: _t('status_pending', 'Pending (Unpaid)') },
+        'CONFIRMED':  { cls: 'bg-primary',           label: _t('status_confirmed', 'Confirmed (Paid)') },
+        'PROCESSING': { cls: 'bg-info text-dark',    label: _t('status_processing', 'Processing') },
+        'SHIPPED':    { cls: 'bg-secondary',         label: _t('status_shipped', 'Shipped') },
+        'DELIVERED':  { cls: 'bg-success',           label: _t('status_delivered', 'Delivered') },
+        'COMPLETED':  { cls: 'bg-success',           label: _t('status_delivered', 'Delivered') },
+        'CANCELLED':  { cls: 'bg-danger',            label: _t('status_cancelled', 'Cancelled') },
     };
 
     const payBadgeMap = {
         'PAID':    'bg-success',
         'PENDING': 'bg-warning text-dark',
+        'UNPAID':  'bg-warning text-dark',
         'FAILED':  'bg-danger',
     };
 
@@ -157,6 +160,25 @@
             const itemCount = o.items ? o.items.length : (o.item_count || '—');
             const customer = o.customer_name || o.buyer_name || o.user || '—';
 
+            // Contextual Action Button based on strict lifecycle
+            let actionBtn = '';
+            if (o.status === 'CONFIRMED') {
+                actionBtn = `
+                    <button class="btn btn-sm btn-info fw-bold me-1" onclick="updateSupplierOrderStatus(${o.id}, 'PROCESSING', this)">
+                        <i class="bi bi-gear-fill me-1"></i>${_t('start_processing', 'Start Processing')}
+                    </button>`;
+            } else if (o.status === 'PROCESSING') {
+                actionBtn = `
+                    <button class="btn btn-sm btn-primary fw-bold me-1" onclick="updateSupplierOrderStatus(${o.id}, 'SHIPPED', this)">
+                        <i class="bi bi-truck me-1"></i>${_t('mark_shipped', 'Mark as Shipped')}
+                    </button>`;
+            } else if (o.status === 'SHIPPED') {
+                actionBtn = `
+                    <button class="btn btn-sm btn-success fw-bold me-1" onclick="updateSupplierOrderStatus(${o.id}, 'DELIVERED', this)">
+                        <i class="bi bi-check2-circle me-1"></i>${_t('mark_delivered', 'Mark Delivered')}
+                    </button>`;
+            }
+
             return `
             <tr>
                 <td class="fw-bold text-navy px-3">
@@ -173,20 +195,42 @@
                 <td class="fw-bold">Rs. ${parseFloat(o.total_amount || 0).toLocaleString('en-IN')}</td>
                 <td><span class="badge ${payBadge}">${o.payment_status_display || o.payment_status || '—'}</span></td>
                 <td><span class="badge ${status.cls}">${status.label}</span></td>
-                <td class="text-end px-3">
-                    <a href="/marketplace/orders/${o.id}/" class="btn btn-sm btn-outline-primary fw-semibold">
-                        <i class="bi bi-eye me-1"></i>${_t('view', 'View')}
+                <td class="text-end px-3 text-nowrap">
+                    ${actionBtn}
+                    <a href="/marketplace/orders/${o.id}/" class="btn btn-sm btn-outline-secondary fw-semibold">
+                        <i class="bi bi-eye"></i>
                     </a>
                 </td>
             </tr>`;
         }).join('');
     }
 
+    async function updateSupplierOrderStatus(orderId, targetStatus, btnEl) {
+        if (!btnEl) return;
+        const originalHtml = btnEl.innerHTML;
+        btnEl.disabled = true;
+        btnEl.innerHTML = `<span class="loading-spinner me-1"></span>${_t('updating', 'Updating...')}`;
+
+        try {
+            const res = await apiFetch(`/marketplace/orders/${orderId}/`, {
+                method: 'PATCH',
+                body: JSON.stringify({ status: targetStatus })
+            });
+
+            showToast(_t('order_status_updated', `Order status updated to ${targetStatus}`), 'success');
+            await reloadOrders();
+        } catch (err) {
+            showToast(err.message || _t('update_failed', 'Failed to update order status.'), 'danger');
+            btnEl.disabled = false;
+            btnEl.innerHTML = originalHtml;
+        }
+    }
+
     function updateStats(orders) {
         document.getElementById('statTotal').textContent = orders.length;
-        document.getElementById('statPending').textContent = orders.filter(o => o.status === 'PENDING' || o.status === 'CONFIRMED').length;
-        document.getElementById('statShipped').textContent = orders.filter(o => o.status === 'SHIPPED').length;
-        document.getElementById('statDelivered').textContent = orders.filter(o => o.status === 'COMPLETED').length;
+        document.getElementById('statPending').textContent = orders.filter(o => o.status === 'PENDING').length;
+        document.getElementById('statShipped').textContent = orders.filter(o => o.status === 'SHIPPED' || o.status === 'PROCESSING').length;
+        document.getElementById('statDelivered').textContent = orders.filter(o => o.status === 'COMPLETED' || o.status === 'DELIVERED').length;
     }
 
     function filterOrders() {
@@ -196,12 +240,13 @@
         if (status) filtered = filtered.filter(o => o.status === status);
         if (search) filtered = filtered.filter(o =>
             (o.order_reference || '').toLowerCase().includes(search) ||
-            (o.customer_name || '').toLowerCase().includes(search)
+            (o.customer_name || '').toLowerCase().includes(search) ||
+            (o.buyer_name || '').toLowerCase().includes(search)
         );
         renderOrders(filtered);
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
+    async function reloadOrders() {
         const tbody = document.getElementById('supplierOrdersBody');
         try {
             const orders = await apiFetch('/marketplace/orders/');
@@ -216,6 +261,10 @@
                 </td>
             </tr>`;
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await reloadOrders();
     });
 </script>
 {% endblock %}

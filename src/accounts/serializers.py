@@ -25,9 +25,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'username', 'email', 'phone_number',
             'role', 'municipality', 'municipality_name',
+            'verification_status', 'verified_at', 'rejection_reason',
             'profile', 'is_active', 'date_joined'
         ]
-        read_only_fields = ['id', 'is_active', 'date_joined']
+        read_only_fields = ['id', 'verification_status', 'verified_at', 'rejection_reason', 'is_active', 'date_joined']
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -69,6 +70,13 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=password,
             **validated_data
         )
+
+        if user.role == User.Role.MUNICIPALITY_OFFICER:
+            user.verification_status = User.VerificationStatus.PENDING
+            user.save(update_fields=['verification_status'])
+        else:
+            user.verification_status = User.VerificationStatus.NOT_APPLICABLE
+            user.save(update_fields=['verification_status'])
         
         # Create profile automatically
         UserProfile.objects.create(user=user, full_name=full_name)
@@ -84,13 +92,24 @@ class AdminUserListSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'username', 'email', 'role', 'phone_number',
-            'municipality', 'municipality_name',
+            'municipality', 'municipality_name', 'verification_status',
+            'verified_at', 'rejection_reason',
             'is_active', 'is_staff', 'date_joined', 'profile'
         ]
         read_only_fields = fields
 
     def get_municipality_name(self, obj):
         return obj.municipality.name if obj.municipality else None
+
+
+class OfficerVerificationSerializer(serializers.Serializer):
+    action = serializers.ChoiceField(choices=['APPROVE', 'REJECT'])
+    rejection_reason = serializers.CharField(required=False, allow_blank=True, default='')
+
+    def validate(self, data):
+        if data['action'] == 'REJECT' and not data.get('rejection_reason', '').strip():
+            raise serializers.ValidationError({'rejection_reason': 'Rejection reason is required when rejecting an officer.'})
+        return data
 
 
 class UserRoleUpdateSerializer(serializers.Serializer):

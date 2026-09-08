@@ -119,6 +119,15 @@ class ShoppingCartViewSet(viewsets.ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        # Validate stock for all items before initiating order
+        for item in cart_items:
+            product = item.product
+            if item.quantity > product.available_stock:
+                return Response(
+                    {"error": f"Insufficient stock for '{product.name}'. Requested {item.quantity}, but only {product.available_stock} available."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
         total_amount = cart.get_total_price()
 
         with transaction.atomic():
@@ -133,9 +142,6 @@ class ShoppingCartViewSet(viewsets.ViewSet):
 
             for item in cart_items:
                 product = item.product
-                if item.quantity > product.available_stock:
-                    raise ValueError(f"Insufficient stock for {product.name}.")
-
                 OrderItem.objects.create(
                     order=order,
                     product=product,
@@ -143,67 +149,176 @@ class ShoppingCartViewSet(viewsets.ViewSet):
                     product_name=product.name,
                     quantity=item.quantity,
                     unit_price=product.price,
-                    subtotal=item.get_subtotal()
+                    subtotal=item.get_subtotal(),
+                    status=Order.OrderStatus.PENDING
                 )
 
                 # Deduct stock
                 product.available_stock -= item.quantity
-                product.save()
+                product.save(update_fields=['available_stock'])
 
             # Clear cart
             cart_items.delete()
 
         return Response({
             'message': 'Order placed successfully.',
-            'order': OrderSerializer(order).data
+            'order': OrderSerializer(order, context={'request': request}).data
         }, status=status.HTTP_201_CREATED)
+
+
+VALID_TRANSITIONS = {
+    Order.OrderStatus.PENDING: [Order.OrderStatus.CONFIRMED, Order.OrderStatus.CANCELLED],
+    Order.OrderStatus.CONFIRMED: [Order.OrderStatus.PROCESSING, Order.OrderStatus.CANCELLED],
+    Order.OrderStatus.PROCESSING: [Order.OrderStatus.SHIPPED, Order.OrderStatus.CANCELLED],
+    Order.OrderStatus.SHIPPED: [Order.OrderStatus.DELIVERED, Order.OrderStatus.COMPLETED],
+    Order.OrderStatus.DELIVERED: [],
+    Order.OrderStatus.COMPLETED: [],
+    Order.OrderStatus.CANCELLED: [],
+}
+
+def restore_order_stock(order_or_items):
+    """Restores deducted stock when order or items are cancelled."""
+    if isinstance(order_or_items, Order):
+        items = order_or_items.items.select_related('product').all()
+    else:
+        items = order_or_items
+    for item in items:
+        if item.product:
+            item.product.available_stock += item.quantity
+            item.product.save(update_fields=['available_stock'])
+
+def recalculate_order_status(order):
+    """Aggregates item-level statuses to determine order-level status."""
+    items = order.items.all()
+    if not items.exists():
+        return
+    statuses = set(items.values_list('status', flat=True))
+    if statuses == {Order.OrderStatus.CANCELLED}:
+        order.status = Order.OrderStatus.CANCELLED
+    elif all(s in (Order.OrderStatus.DELIVERED, Order.OrderStatus.COMPLETED) for s in statuses):
+        order.status = Order.OrderStatus.DELIVERED
+    elif any(s == Order.OrderStatus.SHIPPED for s in statuses):
+        order.status = Order.OrderStatus.SHIPPED
+    elif any(s == Order.OrderStatus.PROCESSING for s in statuses):
+        order.status = Order.OrderStatus.PROCESSING
+    elif all(s == Order.OrderStatus.CONFIRMED for s in statuses):
+        order.status = Order.OrderStatus.CONFIRMED
+    order.save(update_fields=['status', 'updated_at'])
 
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
-    http_method_names = ['get', 'patch', 'head', 'options']  # Disable POST/PUT/DELETE on this viewset
+    http_method_names = ['get', 'post', 'patch', 'head', 'options']
 
     def get_queryset(self):
         user = self.request.user
         if user.is_staff or user.role == 'ADMIN':
             return Order.objects.all()
         if user.is_material_supplier:
-            # Orders containing products supplied by this user
             return Order.objects.filter(items__supplier=user).distinct()
         return Order.objects.filter(buyer=user)
 
     def partial_update(self, request, *args, **kwargs):
-        """Allow suppliers and admins to update the order status only."""
+        """Allow suppliers and admins to update order fulfillment status."""
+        order = self.get_object()
         user = request.user
+
         if not (user.is_staff or getattr(user, 'role', None) == 'ADMIN' or user.is_material_supplier):
             return Response(
                 {"error": "Only suppliers or admins can update order status."},
                 status=status.HTTP_403_FORBIDDEN
             )
-        # Restrict updatable fields to status only
-        allowed_fields = {'status'}
-        data = {k: v for k, v in request.data.items() if k in allowed_fields}
-        if not data:
-            return Response({"error": "No valid fields to update. Only 'status' is allowed."},
-                            status=status.HTTP_400_BAD_REQUEST)
-        if 'status' in data and data['status'] not in Order.OrderStatus.values:
-            return Response({"error": "Invalid status value."}, status=status.HTTP_400_BAD_REQUEST)
 
-        kwargs['partial'] = True
-        return super().partial_update(request, *args, **kwargs)
-
-    @action(detail=True, methods=['post'], url_path='update-status')
-    def update_status(self, request, pk=None):
-        """Legacy POST endpoint kept for compatibility."""
-        order = self.get_object()
-        user = request.user
-        if not (user.is_staff or getattr(user, 'role', None) == 'ADMIN' or user.is_material_supplier):
-            return Response({"error": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
         new_status = request.data.get('status')
+        if not new_status:
+            return Response({"error": "Field 'status' is required."}, status=status.HTTP_400_BAD_REQUEST)
         if new_status not in Order.OrderStatus.values:
             return Response({"error": "Invalid status value."}, status=status.HTTP_400_BAD_REQUEST)
 
-        order.status = new_status
-        order.save()
-        return Response(OrderSerializer(order).data, status=status.HTTP_200_OK)
+        # Map DELIVERED/COMPLETED
+        target_status = new_status
+
+        if user.is_material_supplier and not (user.is_staff or getattr(user, 'role', None) == 'ADMIN'):
+            supplier_items = order.items.filter(supplier=user)
+            if not supplier_items.exists():
+                return Response({"error": "You do not supply any items in this order."}, status=status.HTTP_403_FORBIDDEN)
+
+            current_status = supplier_items.first().status or order.status
+
+            # Disallow processing unpaid orders
+            if target_status in [Order.OrderStatus.PROCESSING, Order.OrderStatus.SHIPPED, Order.OrderStatus.DELIVERED, Order.OrderStatus.COMPLETED]:
+                if order.payment_status != Order.PaymentStatus.PAID:
+                    return Response({"error": "Cannot fulfill or process an unpaid order. Payment must be confirmed first."},
+                                    status=status.HTTP_400_BAD_REQUEST)
+
+            # Check transition validity
+            if target_status not in VALID_TRANSITIONS.get(current_status, []):
+                return Response(
+                    {"error": f"Invalid status transition from {current_status} to {target_status}."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            with transaction.atomic():
+                supplier_items.update(status=target_status)
+                if target_status == Order.OrderStatus.CANCELLED:
+                    restore_order_stock(supplier_items)
+                recalculate_order_status(order)
+
+            return Response(OrderSerializer(order, context={'request': request}).data, status=status.HTTP_200_OK)
+
+        # Admin / Staff update
+        current_status = order.status
+        if target_status in [Order.OrderStatus.PROCESSING, Order.OrderStatus.SHIPPED, Order.OrderStatus.DELIVERED, Order.OrderStatus.COMPLETED]:
+            if order.payment_status != Order.PaymentStatus.PAID:
+                return Response({"error": "Cannot fulfill or process an unpaid order. Payment must be confirmed first."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        if target_status not in VALID_TRANSITIONS.get(current_status, []):
+            return Response(
+                {"error": f"Invalid status transition from {current_status} to {target_status}."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        with transaction.atomic():
+            order.status = target_status
+            order.save(update_fields=['status', 'updated_at'])
+            order.items.all().update(status=target_status)
+            if target_status == Order.OrderStatus.CANCELLED:
+                restore_order_stock(order)
+
+        return Response(OrderSerializer(order, context={'request': request}).data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['post'], url_path='update-status')
+    def update_status(self, request, pk=None):
+        """Status update action (for forms or compatibility)."""
+        return self.partial_update(request, pk=pk)
+
+    @action(detail=True, methods=['post'], url_path='cancel')
+    def cancel(self, request, pk=None):
+        """Customer or Admin order cancellation with inventory replenishment."""
+        order = self.get_object()
+        user = request.user
+
+        if user == order.buyer:
+            if order.status != Order.OrderStatus.PENDING:
+                return Response(
+                    {"error": "Only pending orders can be cancelled by the customer."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        elif not (user.is_staff or getattr(user, 'role', None) == 'ADMIN'):
+            return Response({"error": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+
+        if order.status == Order.OrderStatus.CANCELLED:
+            return Response({"error": "Order is already cancelled."}, status=status.HTTP_400_BAD_REQUEST)
+
+        with transaction.atomic():
+            restore_order_stock(order)
+            order.status = Order.OrderStatus.CANCELLED
+            order.save(update_fields=['status', 'updated_at'])
+            order.items.all().update(status=Order.OrderStatus.CANCELLED)
+
+        return Response({
+            "message": "Order cancelled successfully and inventory restored.",
+            "order": OrderSerializer(order, context={'request': request}).data
+        }, status=status.HTTP_200_OK)

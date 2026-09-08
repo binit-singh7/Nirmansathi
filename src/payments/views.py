@@ -68,6 +68,7 @@ class SimulateEsewaPaymentView(APIView):
                 order.payment_status = Order.PaymentStatus.PAID
                 order.status = Order.OrderStatus.CONFIRMED
                 order.save()
+                order.items.all().update(status=Order.OrderStatus.CONFIRMED)
 
             ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
             log_audit(

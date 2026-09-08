@@ -60,16 +60,22 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    status_display = serializers.ReadOnlyField(source='get_status_display')
+
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'supplier', 'product_name', 'quantity', 'unit_price', 'subtotal']
+        fields = [
+            'id', 'product', 'supplier', 'product_name',
+            'quantity', 'unit_price', 'subtotal', 'status', 'status_display'
+        ]
+        read_only_fields = ['id', 'product', 'supplier', 'product_name', 'quantity', 'unit_price', 'subtotal']
 
 
 class OrderSerializer(serializers.ModelSerializer):
     buyer_name = serializers.ReadOnlyField(source='buyer.username')
-    status_display = serializers.ReadOnlyField(source='get_status_display')
+    status_display = serializers.SerializerMethodField()
     payment_status_display = serializers.ReadOnlyField(source='get_payment_status_display')
-    items = OrderItemSerializer(many=True, read_only=True)
+    items = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
@@ -83,3 +89,17 @@ class OrderSerializer(serializers.ModelSerializer):
             'id', 'order_reference', 'buyer', 'payment_status',
             'total_amount', 'created_at', 'updated_at'
         ]
+
+    def get_status_display(self, obj):
+        if obj.status in (Order.OrderStatus.COMPLETED, Order.OrderStatus.DELIVERED):
+            return 'Delivered'
+        return obj.get_status_display()
+
+    def get_items(self, obj):
+        request = self.context.get('request')
+        queryset = obj.items.all()
+        # Supplier isolation: suppliers only see their own order items
+        if request and request.user and request.user.is_authenticated:
+            if request.user.is_material_supplier and not (request.user.is_staff or request.user.role == 'ADMIN'):
+                queryset = queryset.filter(supplier=request.user)
+        return OrderItemSerializer(queryset, many=True).data

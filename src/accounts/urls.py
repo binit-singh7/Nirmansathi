@@ -5,7 +5,8 @@ from rest_framework_simplejwt.views import (
 )
 from .views import (
     RegisterView, CurrentUserView, UserProfileView,
-    AdminUserListView, AdminUserRoleUpdateView, AuditLogListView
+    AdminUserListView, AdminUserRoleUpdateView, AuditLogListView,
+    AdminOfficerVerificationView
 )
 
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
     # Admin-only user management
     path('users/', AdminUserListView.as_view(), name='admin_user_list'),
     path('users/<int:pk>/role/', AdminUserRoleUpdateView.as_view(), name='admin_user_role_update'),
+    path('officers/<int:pk>/verify/', AdminOfficerVerificationView.as_view(), name='admin_officer_verify'),
     path('audit-logs/', AuditLogListView.as_view(), name='audit_logs_list'),
 ]
 

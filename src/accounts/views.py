@@ -150,3 +150,77 @@ class AuditLogListView(generics.ListAPIView):
 
         return queryset
 
+
+class AdminOfficerVerificationView(APIView):
+    """
+    Admin verification endpoint for municipality officers.
+    POST /api/v1/accounts/officers/<id>/verify/
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        from django.utils import timezone
+        from .serializers import OfficerVerificationSerializer, CustomUserSerializer
+
+        user = request.user
+        if not (user.is_staff or user.role == 'ADMIN'):
+            return Response(
+                {'detail': 'You do not have permission to perform this action.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        try:
+            officer = User.objects.get(pk=pk, role=User.Role.MUNICIPALITY_OFFICER)
+        except User.DoesNotExist:
+            return Response(
+                {'detail': 'Municipality officer not found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = OfficerVerificationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        action = serializer.validated_data['action']
+        ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
+
+        if action == 'APPROVE':
+            officer.verification_status = User.VerificationStatus.APPROVED
+            officer.verified_by = user
+            officer.verified_at = timezone.now()
+            officer.rejection_reason = None
+            officer.save(update_fields=['verification_status', 'verified_by', 'verified_at', 'rejection_reason'])
+
+            log_audit(
+                category=AuditLog.Category.ADMIN,
+                action=f"Approved municipality officer account '{officer.username}' for jurisdiction '{officer.municipality.name if officer.municipality else 'Unassigned'}'.",
+                user=user,
+                ip_address=ip,
+                status=AuditLog.Status.SUCCESS
+            )
+
+            return Response({
+                'message': f"Officer '{officer.username}' has been successfully verified and approved.",
+                'officer': CustomUserSerializer(officer).data
+            }, status=status.HTTP_200_OK)
+
+        elif action == 'REJECT':
+            reason = serializer.validated_data.get('rejection_reason', '')
+            officer.verification_status = User.VerificationStatus.REJECTED
+            officer.verified_by = user
+            officer.verified_at = timezone.now()
+            officer.rejection_reason = reason
+            officer.save(update_fields=['verification_status', 'verified_by', 'verified_at', 'rejection_reason'])
+
+            log_audit(
+                category=AuditLog.Category.ADMIN,
+                action=f"Rejected municipality officer account '{officer.username}'. Reason: {reason}",
+                user=user,
+                ip_address=ip,
+                status=AuditLog.Status.SUCCESS
+            )
+
+            return Response({
+                'message': f"Officer '{officer.username}' has been rejected.",
+                'officer': CustomUserSerializer(officer).data
+            }, status=status.HTTP_200_OK)
+

@@ -1,77 +1,176 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from .models import ProductCategory, Product, Order, OrderItem
+from .models import ProductCategory, Product, ShoppingCart, CartItem, Order, OrderItem
 
 User = get_user_model()
 
-class OrderStatusUpdateTests(TestCase):
+class MarketplaceLifecycleSecurityTests(TestCase):
     def setUp(self):
         self.client = APIClient()
-        # Create users
-        self.supplier = User.objects.create_user(username='supplier1', email='supplier1@example.com', password='pass', role=User.Role.MATERIAL_SUPPLIER)
-        self.other_supplier = User.objects.create_user(username='supplier2', email='supplier2@example.com', password='pass', role=User.Role.MATERIAL_SUPPLIER)
-        self.buyer = User.objects.create_user(username='buyer1', email='buyer1@example.com', password='pass', role=User.Role.CITIZEN)
+        self.supplier1 = User.objects.create_user(username='supplier1', email='supplier1@test.com', password='pass', role=User.Role.MATERIAL_SUPPLIER)
+        self.supplier2 = User.objects.create_user(username='supplier2', email='supplier2@test.com', password='pass', role=User.Role.MATERIAL_SUPPLIER)
+        self.buyer = User.objects.create_user(username='buyer1', email='buyer1@test.com', password='pass', role=User.Role.CITIZEN)
 
-        # Category & Product
         self.cat = ProductCategory.objects.create(name='Cement', slug='cement')
-        self.product = Product.objects.create(
-            supplier=self.supplier,
-            category=self.cat,
-            name='Cement Bag',
-            price=100.00,
-            available_stock=10,
-            unit='Bag',
-            description='Test cement',
-            is_active=True
+        self.product1 = Product.objects.create(
+            supplier=self.supplier1, category=self.cat, name='Shivam Cement',
+            price=800.00, available_stock=100, unit='Bag', description='OPC', is_active=True
+        )
+        self.product2 = Product.objects.create(
+            supplier=self.supplier2, category=self.cat, name='Maruti Cement',
+            price=750.00, available_stock=50, unit='Bag', description='PPC', is_active=True
         )
 
-        # Order created by buyer
-        self.order = Order.objects.create(
-            buyer=self.buyer,
-            total_amount=100.00,
-            shipping_address='Some Address',
-            contact_phone='9999',
-            status=Order.OrderStatus.PENDING,
-            payment_status=Order.PaymentStatus.UNPAID
+    def test_insufficient_stock_returns_400_not_500(self):
+        self.client.force_authenticate(user=self.buyer)
+        cart, _ = ShoppingCart.objects.get_or_create(user=self.buyer)
+        CartItem.objects.create(cart=cart, product=self.product1, quantity=150) # Exceeds 100 stock
+
+        res = self.client.post('/api/v1/marketplace/cart/checkout/', {
+            'shipping_address': 'Baneshwor',
+            'contact_phone': '9841111111'
+        }, format='json')
+        self.assertEqual(res.status_code, 400)
+        self.assertIn('Insufficient stock', str(res.data))
+
+    def test_successful_checkout_deducts_stock(self):
+        self.client.force_authenticate(user=self.buyer)
+        cart, _ = ShoppingCart.objects.get_or_create(user=self.buyer)
+        CartItem.objects.create(cart=cart, product=self.product1, quantity=10)
+
+        res = self.client.post('/api/v1/marketplace/cart/checkout/', {
+            'shipping_address': 'Baneshwor',
+            'contact_phone': '9841111111'
+        }, format='json')
+        self.assertEqual(res.status_code, 201)
+        self.product1.refresh_from_db()
+        self.assertEqual(self.product1.available_stock, 90)
+
+    def test_customer_cancellation_restores_stock(self):
+        self.client.force_authenticate(user=self.buyer)
+        cart, _ = ShoppingCart.objects.get_or_create(user=self.buyer)
+        CartItem.objects.create(cart=cart, product=self.product1, quantity=10)
+
+        res = self.client.post('/api/v1/marketplace/cart/checkout/', {
+            'shipping_address': 'Baneshwor',
+            'contact_phone': '9841111111'
+        }, format='json')
+        self.assertEqual(res.status_code, 201)
+        order_id = res.data['order']['id']
+        self.product1.refresh_from_db()
+        self.assertEqual(self.product1.available_stock, 90)
+
+        # Cancel order
+        cancel_res = self.client.post(f'/api/v1/marketplace/orders/{order_id}/cancel/')
+        self.assertEqual(cancel_res.status_code, 200)
+
+        self.product1.refresh_from_db()
+        self.assertEqual(self.product1.available_stock, 100)
+        order = Order.objects.get(id=order_id)
+        self.assertEqual(order.status, Order.OrderStatus.CANCELLED)
+
+    def test_unpaid_order_cannot_be_processed_or_shipped(self):
+        order = Order.objects.create(
+            buyer=self.buyer, total_amount=800, shipping_address='Addr', contact_phone='123',
+            status=Order.OrderStatus.PENDING, payment_status=Order.PaymentStatus.UNPAID
+        )
+        OrderItem.objects.create(
+            order=order, product=self.product1, supplier=self.supplier1, product_name=self.product1.name,
+            quantity=1, unit_price=800, subtotal=800, status=Order.OrderStatus.PENDING
         )
 
-        # OrderItem linking supplier to order
-        self.order_item = OrderItem.objects.create(
-            order=self.order,
-            product=self.product,
-            supplier=self.supplier,
-            product_name=self.product.name,
-            quantity=1,
-            unit_price=self.product.price,
-            subtotal=self.product.price
-        )
-
-    def test_authorized_supplier_can_update_order(self):
-        self.client.force_authenticate(user=self.supplier)
-        url = f'/api/v1/marketplace/orders/{self.order.id}/update-status/'
-        res = self.client.post(url, {'status': 'SHIPPED'}, format='json')
-        self.assertEqual(res.status_code, 200)
-        self.order.refresh_from_db()
-        self.assertEqual(self.order.status, 'SHIPPED')
-
-    def test_unauthorized_supplier_cannot_update_order(self):
-        self.client.force_authenticate(user=self.other_supplier)
-        url = f'/api/v1/marketplace/orders/{self.order.id}/update-status/'
-        res = self.client.post(url, {'status': 'SHIPPED'}, format='json')
-        # Should be 404 because queryset filters orders to only those containing supplier's items
-        self.assertEqual(res.status_code, 404)
-        self.order.refresh_from_db()
-        self.assertEqual(self.order.status, 'PENDING')
-
-    def test_invalid_status_rejected(self):
-        self.client.force_authenticate(user=self.supplier)
-        url = f'/api/v1/marketplace/orders/{self.order.id}/update-status/'
-        res = self.client.post(url, {'status': 'INVALID_STATUS'}, format='json')
+        self.client.force_authenticate(user=self.supplier1)
+        res = self.client.patch(f'/api/v1/marketplace/orders/{order.id}/', {'status': 'PROCESSING'}, format='json')
         self.assertEqual(res.status_code, 400)
 
-    def test_patch_on_order_is_not_allowed(self):
-        self.client.force_authenticate(user=self.supplier)
-        url = f'/api/v1/marketplace/orders/{self.order.id}/'
-        res = self.client.patch(url, {'status': 'SHIPPED'}, format='json')
-        self.assertIn(res.status_code, (405, 403))
+        res_ship = self.client.patch(f'/api/v1/marketplace/orders/{order.id}/', {'status': 'SHIPPED'}, format='json')
+        self.assertEqual(res_ship.status_code, 400)
+
+    def test_valid_supplier_order_lifecycle(self):
+        # Order is paid
+        order = Order.objects.create(
+            buyer=self.buyer, total_amount=800, shipping_address='Addr', contact_phone='123',
+            status=Order.OrderStatus.CONFIRMED, payment_status=Order.PaymentStatus.PAID
+        )
+        item = OrderItem.objects.create(
+            order=order, product=self.product1, supplier=self.supplier1, product_name=self.product1.name,
+            quantity=1, unit_price=800, subtotal=800, status=Order.OrderStatus.CONFIRMED
+        )
+
+        self.client.force_authenticate(user=self.supplier1)
+
+        # 1. CONFIRMED -> PROCESSING
+        res = self.client.patch(f'/api/v1/marketplace/orders/{order.id}/', {'status': 'PROCESSING'}, format='json')
+        self.assertEqual(res.status_code, 200)
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.OrderStatus.PROCESSING)
+
+        # 2. PROCESSING -> SHIPPED
+        res = self.client.patch(f'/api/v1/marketplace/orders/{order.id}/', {'status': 'SHIPPED'}, format='json')
+        self.assertEqual(res.status_code, 200)
+        order.refresh_from_db()
+        self.assertEqual(order.status, Order.OrderStatus.SHIPPED)
+
+        # 3. SHIPPED -> DELIVERED
+        res = self.client.patch(f'/api/v1/marketplace/orders/{order.id}/', {'status': 'DELIVERED'}, format='json')
+        self.assertEqual(res.status_code, 200)
+        order.refresh_from_db()
+        self.assertIn(order.status, (Order.OrderStatus.DELIVERED, Order.OrderStatus.COMPLETED))
+
+    def test_invalid_status_transitions_rejected(self):
+        order = Order.objects.create(
+            buyer=self.buyer, total_amount=800, shipping_address='Addr', contact_phone='123',
+            status=Order.OrderStatus.CONFIRMED, payment_status=Order.PaymentStatus.PAID
+        )
+        OrderItem.objects.create(
+            order=order, product=self.product1, supplier=self.supplier1, product_name=self.product1.name,
+            quantity=1, unit_price=800, subtotal=800, status=Order.OrderStatus.CONFIRMED
+        )
+
+        self.client.force_authenticate(user=self.supplier1)
+
+        # CONFIRMED -> SHIPPED is invalid (must go through PROCESSING)
+        res = self.client.patch(f'/api/v1/marketplace/orders/{order.id}/', {'status': 'SHIPPED'}, format='json')
+        self.assertEqual(res.status_code, 400)
+
+        # CONFIRMED -> DELIVERED is invalid
+        res = self.client.patch(f'/api/v1/marketplace/orders/{order.id}/', {'status': 'DELIVERED'}, format='json')
+        self.assertEqual(res.status_code, 400)
+
+    def test_supplier_isolation(self):
+        order = Order.objects.create(
+            buyer=self.buyer, total_amount=1550, shipping_address='Addr', contact_phone='123',
+            status=Order.OrderStatus.CONFIRMED, payment_status=Order.PaymentStatus.PAID
+        )
+        item1 = OrderItem.objects.create(
+            order=order, product=self.product1, supplier=self.supplier1, product_name=self.product1.name,
+            quantity=1, unit_price=800, subtotal=800, status=Order.OrderStatus.CONFIRMED
+        )
+        item2 = OrderItem.objects.create(
+            order=order, product=self.product2, supplier=self.supplier2, product_name=self.product2.name,
+            quantity=1, unit_price=750, subtotal=750, status=Order.OrderStatus.CONFIRMED
+        )
+
+        # Supplier 1 views order
+        self.client.force_authenticate(user=self.supplier1)
+        res = self.client.get(f'/api/v1/marketplace/orders/{order.id}/')
+        self.assertEqual(res.status_code, 200)
+        items = res.data['items']
+        # Supplier 1 only sees their item, not Supplier 2's item
+        self.assertEqual(len(items), 1)
+        self.assertEqual(items[0]['product_name'], self.product1.name)
+
+        # Supplier 2 cannot modify Supplier 1's items or an order where they have no items
+        other_order = Order.objects.create(
+            buyer=self.buyer, total_amount=800, shipping_address='Addr', contact_phone='123',
+            status=Order.OrderStatus.CONFIRMED, payment_status=Order.PaymentStatus.PAID
+        )
+        OrderItem.objects.create(
+            order=other_order, product=self.product1, supplier=self.supplier1, product_name=self.product1.name,
+            quantity=1, unit_price=800, subtotal=800, status=Order.OrderStatus.CONFIRMED
+        )
+
+        self.client.force_authenticate(user=self.supplier2)
+        res_unauth = self.client.patch(f'/api/v1/marketplace/orders/{other_order.id}/', {'status': 'PROCESSING'}, format='json')
+        self.assertIn(res_unauth.status_code, (403, 404))

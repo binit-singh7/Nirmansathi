@@ -10,13 +10,13 @@ class UserProfileInline(admin.StackedInline):
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     inlines = (UserProfileInline,)
-    list_display = ('username', 'email', 'role', 'phone_number', 'municipality', 'is_staff', 'is_active')
-    list_filter = ('role', 'is_staff', 'is_superuser', 'is_active')
+    list_display = ('username', 'email', 'role', 'verification_status', 'phone_number', 'municipality', 'is_staff', 'is_active')
+    list_filter = ('role', 'verification_status', 'is_staff', 'is_superuser', 'is_active')
     fieldsets = UserAdmin.fieldsets + (
-        ('NirmanSathi Details', {'fields': ('role', 'phone_number', 'municipality')}),
+        ('NirmanSathi Details', {'fields': ('role', 'verification_status', 'verified_by', 'verified_at', 'rejection_reason', 'phone_number', 'municipality')}),
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('NirmanSathi Details', {'fields': ('role', 'email', 'phone_number', 'municipality')}),
+        ('NirmanSathi Details', {'fields': ('role', 'verification_status', 'email', 'phone_number', 'municipality')}),
     )
     search_fields = ('username', 'email', 'phone_number')
     ordering = ('username',)

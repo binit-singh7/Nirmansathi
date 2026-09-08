@@ -22,45 +22,67 @@
         <div class="card card-ns shadow-sm p-4 mb-4">
             <h5 class="fw-bold text-navy mb-3">{% trans "Delivery Status Timeline" %}</h5>
 
-            <div class="row text-center my-2" id="orderTimeline">
-                <div class="col-md-3 mb-2 mb-md-0">
-                    <div class="p-3 rounded bg-light border" id="stepPlaced">
+            <!-- Cancelled Order Banner -->
+            <div id="cancelledAlert" class="alert alert-danger d-flex align-items-center mb-3 d-none" role="alert">
+                <i class="bi bi-x-circle-fill me-2 fs-4"></i>
+                <div>
+                    <strong>{% trans "Order Cancelled:" %}</strong> {% trans "This order was cancelled. Reserved inventory was restored to stock." %}
+                </div>
+            </div>
+
+            <div class="row text-center g-2 my-2" id="orderTimeline">
+                <div class="col-6 col-md">
+                    <div class="p-3 rounded bg-light border h-100" id="stepPlaced">
                         <i class="bi bi-bag-check fs-2 text-success"></i>
-                        <h6 class="fw-bold mt-2 mb-0">{% trans "1. Order Placed" %}</h6>
-                        <small class="text-muted" id="orderDate"></small>
+                        <h6 class="fw-bold mt-2 mb-0 small">{% trans "1. Placed" %}</h6>
+                        <small class="text-muted d-block" id="orderDate"></small>
                     </div>
                 </div>
-                <div class="col-md-3 mb-2 mb-md-0">
-                    <div class="p-3 rounded bg-light border" id="stepConfirmed">
+                <div class="col-6 col-md">
+                    <div class="p-3 rounded bg-light border h-100" id="stepConfirmed">
                         <i class="bi bi-check2-circle fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">{% trans "2. Confirmed" %}</h6>
-                        <small class="text-muted">{% trans "Supplier Verification" %}</small>
+                        <h6 class="fw-bold mt-2 mb-0 small">{% trans "2. Confirmed" %}</h6>
+                        <small class="text-muted d-block">{% trans "Payment Verified" %}</small>
                     </div>
                 </div>
-                <div class="col-md-3 mb-2 mb-md-0">
-                    <div class="p-3 rounded bg-light border" id="stepShipped">
+                <div class="col-6 col-md">
+                    <div class="p-3 rounded bg-light border h-100" id="stepProcessing">
+                        <i class="bi bi-gear fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0 small">{% trans "3. Processing" %}</h6>
+                        <small class="text-muted d-block">{% trans "Supplier Packaging" %}</small>
+                    </div>
+                </div>
+                <div class="col-6 col-md">
+                    <div class="p-3 rounded bg-light border h-100" id="stepShipped">
                         <i class="bi bi-truck fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">{% trans "3. Shipped" %}</h6>
-                        <small class="text-muted">{% trans "In Transit" %}</small>
+                        <h6 class="fw-bold mt-2 mb-0 small">{% trans "4. Shipped" %}</h6>
+                        <small class="text-muted d-block">{% trans "In Transit" %}</small>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="p-3 rounded bg-light border" id="stepDelivered">
+                <div class="col-12 col-md">
+                    <div class="p-3 rounded bg-light border h-100" id="stepDelivered">
                         <i class="bi bi-house-check fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">{% trans "4. Delivered" %}</h6>
-                        <small class="text-muted">{% trans "Completed" %}</small>
+                        <h6 class="fw-bold mt-2 mb-0 small">{% trans "5. Delivered" %}</h6>
+                        <small class="text-muted d-block">{% trans "Completed" %}</small>
                     </div>
                 </div>
             </div>
 
             <div id="unpaidAlert"
-                class="alert alert-warning d-flex align-items-center justify-content-between mt-3 mb-0 d-none"
+                class="alert alert-warning d-flex align-items-center justify-content-between flex-wrap gap-2 mt-3 mb-0 d-none"
                 role="alert">
                 <div>
                     <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
                     <strong>{% trans "Payment Pending:" %}</strong> {% trans "This order has not been paid yet via eSewa." %}
                 </div>
-                <a id="payNowBtn" href="#" class="btn btn-sm btn-success fw-bold"><i class="bi bi-wallet2 me-1"></i>{% trans "Pay Now via eSewa" %}</a>
+                <div class="d-flex gap-2">
+                    <button id="cancelOrderBtn" type="button" class="btn btn-sm btn-outline-danger fw-bold">
+                        <i class="bi bi-x-circle me-1"></i>{% trans "Cancel Order" %}
+                    </button>
+                    <a id="payNowBtn" href="#" class="btn btn-sm btn-success fw-bold">
+                        <i class="bi bi-wallet2 me-1"></i>{% trans "Pay Now via eSewa" %}
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -120,12 +142,11 @@
 
 {% block extra_js %}
 <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-        const parts = window.location.pathname.split('/').filter(Boolean);
-        const orderId = parts[2]; // /marketplace/orders/<id>/
+    let currentOrderId = null;
 
+    async function loadOrderDetail() {
         try {
-            const order = await apiFetch(`/marketplace/orders/${orderId}/`);
+            const order = await apiFetch(`/marketplace/orders/${currentOrderId}/`);
             document.getElementById('orderLoading').classList.add('d-none');
             document.getElementById('orderContainer').classList.remove('d-none');
 
@@ -137,30 +158,56 @@
             // Payment Status Badge
             const payBadge = document.getElementById('paymentStatusBadge');
             payBadge.textContent = order.payment_status_display || order.payment_status;
-            payBadge.className = `badge ${order.payment_status === 'PAID' ? 'bg-success' : 'bg-danger'}`;
+            payBadge.className = `badge ${order.payment_status === 'PAID' ? 'bg-success' : 'bg-warning text-dark'}`;
 
-            if (order.payment_status === 'UNPAID') {
-                const unpaidAlert = document.getElementById('unpaidAlert');
+            const unpaidAlert = document.getElementById('unpaidAlert');
+            const cancelledAlert = document.getElementById('cancelledAlert');
+
+            if (order.status === 'CANCELLED') {
+                cancelledAlert.classList.remove('d-none');
+                unpaidAlert.classList.add('d-none');
+            } else if (order.payment_status === 'UNPAID') {
                 unpaidAlert.classList.remove('d-none');
                 document.getElementById('payNowBtn').href = `/marketplace/payment-simulation/?order_id=${order.id}`;
+            } else {
+                unpaidAlert.classList.add('d-none');
             }
 
-            // Timeline Updates
+            // Timeline Step elements
+            const stPlaced = document.getElementById('stepPlaced');
             const stConfirmed = document.getElementById('stepConfirmed');
+            const stProcessing = document.getElementById('stepProcessing');
             const stShipped = document.getElementById('stepShipped');
             const stDelivered = document.getElementById('stepDelivered');
 
-            if (order.status === 'CONFIRMED' || order.status === 'SHIPPED' || order.status === 'COMPLETED') {
-                stConfirmed.className = 'p-3 rounded bg-success bg-opacity-20 border border-success';
-                stConfirmed.querySelector('i').className = 'bi bi-check2-circle fs-2 text-success';
+            function markActive(el, iconEl, iconClass, bgClass) {
+                el.className = `p-3 rounded ${bgClass} border h-100`;
+                iconEl.className = `${iconClass} fs-2 text-primary`;
             }
-            if (order.status === 'SHIPPED' || order.status === 'COMPLETED') {
-                stShipped.className = 'p-3 rounded bg-info bg-opacity-20 border border-info';
-                stShipped.querySelector('i').className = 'bi bi-truck fs-2 text-info';
-            }
-            if (order.status === 'COMPLETED') {
-                stDelivered.className = 'p-3 rounded bg-success text-white border border-success';
-                stDelivered.querySelector('i').className = 'bi bi-house-check fs-2 text-white';
+
+            if (order.status !== 'CANCELLED') {
+                stPlaced.className = 'p-3 rounded bg-success bg-opacity-20 border border-success h-100';
+                stPlaced.querySelector('i').className = 'bi bi-bag-check fs-2 text-success';
+
+                if (['CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'COMPLETED'].includes(order.status)) {
+                    stConfirmed.className = 'p-3 rounded bg-success bg-opacity-20 border border-success h-100';
+                    stConfirmed.querySelector('i').className = 'bi bi-check2-circle fs-2 text-success';
+                }
+                if (['PROCESSING', 'SHIPPED', 'DELIVERED', 'COMPLETED'].includes(order.status)) {
+                    stProcessing.className = 'p-3 rounded bg-info bg-opacity-20 border border-info h-100';
+                    stProcessing.querySelector('i').className = 'bi bi-gear-fill fs-2 text-info';
+                }
+                if (['SHIPPED', 'DELIVERED', 'COMPLETED'].includes(order.status)) {
+                    stShipped.className = 'p-3 rounded bg-primary bg-opacity-20 border border-primary h-100';
+                    stShipped.querySelector('i').className = 'bi bi-truck fs-2 text-primary';
+                }
+                if (['DELIVERED', 'COMPLETED'].includes(order.status)) {
+                    stDelivered.className = 'p-3 rounded bg-success text-white border border-success h-100';
+                    stDelivered.querySelector('i').className = 'bi bi-house-check fs-2 text-white';
+                }
+            } else {
+                // Dim timeline if cancelled
+                document.getElementById('orderTimeline').classList.add('opacity-50');
             }
 
             // Render items
@@ -172,16 +219,15 @@
                 const sub = parseFloat(item.subtotal);
                 total += sub;
                 return `
-        <tr>
-          <td>
-            <span class="fw-bold text-dark d-block">${item.product_name}</span>
-            <small class="text-muted">${_t('supplier', 'Supplier')}: ${item.supplier_name || "{% trans 'Verified Supplier' %}"}</small>
-          </td>
-          <td>Rs. ${parseFloat(item.unit_price).toLocaleString('en-IN')}</td>
-          <td>${item.quantity}</td>
-          <td class="text-end fw-bold text-primary">Rs. ${sub.toLocaleString('en-IN')}</td>
-        </tr>
-      `;
+                <tr>
+                    <td>
+                        <span class="fw-bold text-dark d-block">${item.product_name}</span>
+                        <span class="badge bg-light text-dark border me-1">${item.status_display || item.status || ''}</span>
+                    </td>
+                    <td>Rs. ${parseFloat(item.unit_price).toLocaleString('en-IN')}</td>
+                    <td>${item.quantity}</td>
+                    <td class="text-end fw-bold text-primary">Rs. ${sub.toLocaleString('en-IN')}</td>
+                </tr>`;
             }).join('');
 
             document.getElementById('itemsTotal').textContent = `Rs. ${total.toLocaleString('en-IN')}`;
@@ -189,6 +235,27 @@
         } catch (err) {
             document.getElementById('orderLoading').innerHTML = `<p class="text-danger py-4">${err.message || "{% trans 'Failed to load order details.' %}"}</p>`;
         }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        currentOrderId = parts[2]; // /marketplace/orders/<id>/
+
+        await loadOrderDetail();
+
+        document.getElementById('cancelOrderBtn')?.addEventListener('click', async () => {
+            if (!confirm("{% trans 'Are you sure you want to cancel this order? Deducted inventory items will be restored.' %}")) return;
+
+            try {
+                const res = await apiFetch(`/marketplace/orders/${currentOrderId}/cancel/`, {
+                    method: 'POST'
+                });
+                showToast(res.message || "{% trans 'Order cancelled successfully.' %}", 'info');
+                await loadOrderDetail();
+            } catch (err) {
+                showToast(err.message || "{% trans 'Failed to cancel order.' %}", 'danger');
+            }
+        });
     });
 </script>
 {% endblock %}

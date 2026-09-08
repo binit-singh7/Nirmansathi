@@ -20,8 +20,8 @@ class IsPermitParticipant(permissions.BasePermission):
             return obj.applicant == user
 
         if user.is_municipality_officer:
-            if user.municipality:
+            if user.is_verified_officer and user.municipality:
                 return obj.municipality == user.municipality
-            return True
+            return False
 
         return False

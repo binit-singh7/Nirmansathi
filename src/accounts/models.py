@@ -9,6 +9,12 @@ class CustomUser(AbstractUser):
         MATERIAL_SUPPLIER = 'MATERIAL_SUPPLIER', _('Material Supplier')
         ADMIN = 'ADMIN', _('System Administrator')
 
+    class VerificationStatus(models.TextChoices):
+        NOT_APPLICABLE = 'NOT_APPLICABLE', _('Not Applicable')
+        PENDING = 'PENDING', _('Pending Verification')
+        APPROVED = 'APPROVED', _('Approved')
+        REJECTED = 'REJECTED', _('Rejected')
+
     role = models.CharField(
         max_length=30,
         choices=Role.choices,
@@ -28,6 +34,24 @@ class CustomUser(AbstractUser):
         help_text=_("Assigned municipality (especially for officers)")
     )
 
+    # Officer verification fields
+    verification_status = models.CharField(
+        max_length=20,
+        choices=VerificationStatus.choices,
+        default=VerificationStatus.NOT_APPLICABLE,
+        help_text=_("Verification status for officer accounts.")
+    )
+    verified_by = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='verified_officers',
+        help_text=_("Admin user who verified or rejected this officer.")
+    )
+    verified_at = models.DateTimeField(null=True, blank=True)
+    rejection_reason = models.TextField(blank=True, null=True)
+
     REQUIRED_FIELDS = ['email', 'role']
 
     def __str__(self):
@@ -40,6 +64,10 @@ class CustomUser(AbstractUser):
     @property
     def is_municipality_officer(self):
         return self.role == self.Role.MUNICIPALITY_OFFICER
+
+    @property
+    def is_verified_officer(self):
+        return self.role == self.Role.MUNICIPALITY_OFFICER and self.verification_status == self.VerificationStatus.APPROVED
 
     @property
     def is_material_supplier(self):

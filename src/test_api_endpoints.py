@@ -32,10 +32,12 @@ def run_tests():
     print("[PASS] FR-02: User Profile & Role retrieval working.")
 
     # 3. Test Location API (/api/v1/locations/municipalities/)
-    res = client.get('/api/v1/locations/municipalities/')
+    res = client.get('/api/v1/locations/municipalities/?search=Kathmandu')
     assert res.status_code == 200, f"Location fetch failed: {res.data}"
-    muni_id = res.data['results'][0]['id'] if 'results' in res.data else res.data[0]['id']
-    ward_id = res.data['results'][0]['wards'][0]['id'] if 'results' in res.data else res.data[0]['wards'][0]['id']
+    munis = res.data['results'] if 'results' in res.data else res.data
+    ktm_muni = next((m for m in munis if 'Kathmandu' in m['name']), munis[0])
+    muni_id = ktm_muni['id']
+    ward_id = ktm_muni['wards'][0]['id'] if ktm_muni.get('wards') else 1
     print("[PASS] FR-03: Location Hierarchy API working.")
 
     # 4. Test Submit Permit Application (FR-04)

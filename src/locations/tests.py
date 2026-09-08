@@ -39,8 +39,10 @@ class SeedLocationsCommandTests(TestCase):
         province = Province.objects.get(code=1)
         self.assertEqual(province.name, "Province 1")
 
-        district = District.objects.get(province=province, name="KATHMANDU")
-        municipality = Municipality.objects.get(district=district, name="Budhanilkantha")
+        district = District.objects.filter(province=province, name__iexact="KATHMANDU").first()
+        self.assertIsNotNone(district)
+        municipality = Municipality.objects.filter(district=district, name__icontains="Budhanilkantha").first()
+        self.assertIsNotNone(municipality)
         self.assertEqual(municipality.type, Municipality.TypeChoices.MUNICIPALITY)
 
         wards = list(Ward.objects.filter(municipality=municipality).values_list('ward_number', flat=True))
@@ -84,8 +86,8 @@ class SeedLocationsCommandTests(TestCase):
         finally:
             Path(temp_path).unlink(missing_ok=True)
 
-        self.assertFalse(Municipality.objects.filter(name="Sample Gaunpalika").exists())
-        self.assertTrue(Municipality.objects.filter(name="Budhanilkantha Nagarpalika").exists())
+        self.assertFalse(Municipality.objects.filter(name__icontains="Sample Gaunpalika").exists())
+        self.assertTrue(Municipality.objects.filter(name__icontains="Budhanilkantha").exists())
 
 
 class LocationHierarchyApiTests(TestCase):

@@ -32,9 +32,9 @@ class PermitApplicationViewSet(viewsets.ModelViewSet):
             return PermitApplication.objects.filter(applicant=user)
 
         if user.is_municipality_officer:
-            if user.municipality:
+            if user.is_verified_officer and user.municipality:
                 return PermitApplication.objects.filter(municipality=user.municipality)
-            return PermitApplication.objects.all()
+            return PermitApplication.objects.none()
 
         return PermitApplication.objects.none()
 
@@ -54,14 +54,28 @@ class PermitApplicationViewSet(viewsets.ModelViewSet):
         """
         Officer Review & Decision Endpoint (FR-06)
         """
-        application = self.get_object()
         user = request.user
 
-        if not (user.is_municipality_officer or user.is_staff or user.role == 'ADMIN'):
+        if user.is_municipality_officer:
+            if not user.is_verified_officer:
+                return Response(
+                    {"error": "Your officer account is pending verification or rejected. You cannot review applications."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        elif not (user.is_staff or user.role == 'ADMIN'):
             return Response(
-                {"error": "Only municipality officers can review building permit applications."},
+                {"error": "Only municipality officers or administrators can review building permit applications."},
                 status=status.HTTP_403_FORBIDDEN
             )
+
+        application = self.get_object()
+
+        if user.is_municipality_officer:
+            if not user.municipality or application.municipality != user.municipality:
+                return Response(
+                    {"error": "You do not have jurisdiction over this application's municipality."},
+                    status=status.HTTP_403_FORBIDDEN
+                )
 
         decision_choice = request.data.get('decision')
         remarks = request.data.get('remarks', '')
@@ -111,6 +125,18 @@ class ApplicationDocumentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        if not user.is_authenticated:
+            return ApplicationDocument.objects.none()
+
         if user.is_staff or user.role == 'ADMIN':
             return ApplicationDocument.objects.all()
-        return ApplicationDocument.objects.filter(application__applicant=user)
+
+        if user.is_citizen:
+            return ApplicationDocument.objects.filter(application__applicant=user)
+
+        if user.is_municipality_officer:
+            if user.is_verified_officer and user.municipality:
+                return ApplicationDocument.objects.filter(application__municipality=user.municipality)
+            return ApplicationDocument.objects.none()
+
+        return ApplicationDocument.objects.none()

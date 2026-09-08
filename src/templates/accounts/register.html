@@ -54,6 +54,19 @@
                             </select>
                         </div>
 
+                        <!-- Officer Specific Notice & Municipality Selection -->
+                        <div id="officerNotice" class="alert alert-info py-2 px-3 small d-none" role="alert">
+                            <i class="bi bi-info-circle-fill me-1"></i>
+                            {% trans "Municipality officer accounts require official administrative review and verification before permit inspection access is granted." %}
+                        </div>
+
+                        <div class="mb-3 d-none" id="municipalityGroup">
+                            <label for="municipality" class="form-label fw-semibold">{% trans "Assigned Municipality *" %}</label>
+                            <select class="form-select" id="municipality">
+                                <option value="" selected disabled>{% trans "Select Municipality..." %}</option>
+                            </select>
+                        </div>
+
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label for="password" class="form-label fw-semibold">{% trans "Password *" %}</label>
@@ -94,6 +107,45 @@
 
 {% block extra_js %}
 <script>
+    let municipalitiesLoaded = false;
+
+    async function loadMunicipalities() {
+        if (municipalitiesLoaded) return;
+        try {
+            const data = await apiFetch('/locations/municipalities/');
+            const munis = Array.isArray(data) ? data : (data.results || []);
+            const select = document.getElementById('municipality');
+            select.innerHTML = '<option value="" selected disabled>{% trans "Select Municipality..." %}</option>';
+            munis.forEach(m => {
+                const opt = document.createElement('option');
+                opt.value = m.id;
+                opt.textContent = `${m.name} (${m.type_display || m.type || ''})`;
+                select.appendChild(opt);
+            });
+            municipalitiesLoaded = true;
+        } catch (err) {
+            console.error('Failed to load municipalities:', err);
+        }
+    }
+
+    document.getElementById('role').addEventListener('change', async (e) => {
+        const isOfficer = e.target.value === 'MUNICIPALITY_OFFICER';
+        const notice = document.getElementById('officerNotice');
+        const muniGroup = document.getElementById('municipalityGroup');
+        const muniSelect = document.getElementById('municipality');
+
+        if (isOfficer) {
+            notice.classList.remove('d-none');
+            muniGroup.classList.remove('d-none');
+            muniSelect.setAttribute('required', 'required');
+            await loadMunicipalities();
+        } else {
+            notice.classList.add('d-none');
+            muniGroup.classList.add('d-none');
+            muniSelect.removeAttribute('required');
+        }
+    });
+
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const alertEl = document.getElementById('registerAlert');
@@ -106,6 +158,7 @@
         const email = document.getElementById('email').value.trim();
         const phone_number = document.getElementById('phoneNumber').value.trim();
         const role = document.getElementById('role').value;
+        const municipality = document.getElementById('municipality').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
@@ -124,6 +177,12 @@
 
         if (phone_number && !isValidPhone(phone_number)) {
             alertEl.textContent = "{% trans 'Please enter a valid phone number (10 digits).' %}";
+            alertEl.classList.remove('d-none');
+            return;
+        }
+
+        if (role === 'MUNICIPALITY_OFFICER' && !municipality) {
+            alertEl.textContent = "{% trans 'Please select your assigned municipality.' %}";
             alertEl.classList.remove('d-none');
             return;
         }
@@ -153,24 +212,33 @@
         btn.disabled = true;
         btn.innerHTML = `<span class="loading-spinner me-2"></span>{% trans 'Creating Account...' %}`;
 
+        const payload = {
+            username,
+            email,
+            password,
+            role,
+            phone_number,
+            full_name
+        };
+        if (role === 'MUNICIPALITY_OFFICER' && municipality) {
+            payload.municipality = parseInt(municipality);
+        }
+
         try {
             const res = await apiFetch('/accounts/register/', {
                 method: 'POST',
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password,
-                    role,
-                    phone_number,
-                    full_name
-                })
+                body: JSON.stringify(payload)
             });
 
-            showToast("{% trans 'Registration successful! Redirecting to login page...' %}", 'success');
+            const successMsg = role === 'MUNICIPALITY_OFFICER'
+                ? "{% trans 'Officer registration submitted! Your account is pending admin verification. Redirecting to login...' %}"
+                : "{% trans 'Registration successful! Redirecting to login page...' %}";
+
+            showToast(successMsg, 'success', 5000);
 
             setTimeout(() => {
                 window.location.href = '/login/';
-            }, 1500);
+            }, 1800);
         } catch (err) {
             alertEl.textContent = err.message || "{% trans 'Registration failed. Please try again.' %}";
             alertEl.classList.remove('d-none');
