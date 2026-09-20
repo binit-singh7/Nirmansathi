@@ -93,6 +93,8 @@
                         <option value="PENDING" selected>{% trans "Pending Review" %}</option>
                         <option value="UNDER_REVIEW">{% trans "Under Technical Review" %}</option>
                         <option value="APPROVED">{% trans "Approved" %}</option>
+                        <option value="CONSTRUCTION_ONGOING">{% trans "Construction Ongoing" %}</option>
+                        <option value="COMPLETED">{% trans "Construction Completed" %}</option>
                         <option value="REJECTED">{% trans "Rejected" %}</option>
                     </select>
                 </div>
@@ -210,9 +212,12 @@
         }
 
         tbody.innerHTML = filtered.map(p => {
-            const badgeClass = p.status === 'APPROVED' ? 'badge-approved' :
-                p.status === 'REJECTED' ? 'badge-rejected' :
-                    p.status === 'UNDER_REVIEW' ? 'badge-review' : 'badge-pending';
+            let badgeClass = 'badge bg-warning text-dark';
+            if (p.status === 'COMPLETED') badgeClass = 'badge bg-success';
+            else if (p.status === 'CONSTRUCTION_ONGOING') badgeClass = 'badge bg-primary';
+            else if (p.status === 'APPROVED') badgeClass = 'badge bg-info text-dark';
+            else if (p.status === 'REJECTED') badgeClass = 'badge bg-danger';
+            else if (p.status === 'UNDER_REVIEW') badgeClass = 'badge bg-warning text-dark';
             const dateStr = new Date(p.created_at).toLocaleDateString();
 
             return `

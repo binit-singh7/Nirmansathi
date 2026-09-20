@@ -1868,3 +1868,1425 @@ msgstr "निर्माण सामग्री आपूर्तिकर�
 
 msgid "PAN/VAT for suppliers"
 msgstr "आपूर्तिकर्ताहरूको लागि प्यान/भ्याट"
+
+msgid "Access the major NirmanSathi services from a single digital platform."
+msgstr ""
+"एउटै डिजिटल प्रणालीबाट निर्माणसाथीका प्रमुख सेवाहरू प्राप्त गर्नुहोस्।"
+
+msgid "Admin Dashboard"
+msgstr "प्रशासक ड्यासबोर्ड"
+
+msgid "Administrative management"
+msgstr "प्रशासनिक व्यवस्थापन"
+
+msgid "Apply and track building permits"
+msgstr "भवन निर्माण अनुमति आवेदन दिनुहोस् र प्रगति हेर्नुहोस्"
+
+msgid ""
+"Apply for a residential building permit, upload documents, and track the "
+"application through municipal review."
+msgstr ""
+"आवासीय भवन निर्माण अनुमतिका लागि आवेदन दिनुहोस्, कागजातहरू पेश गर्नुहोस्, र "
+"नगरपालिका पुनरावलोकन ट्र्याक गर्नुहोस्।"
+
+msgid "Apply for permit"
+msgstr "अनुमतिका लागि आवेदन दिनुहोस्"
+
+msgid ""
+"Apply for residential building permits, track municipal approvals, manage "
+"construction progress, and purchase construction materials through one "
+"integrated platform."
+msgstr ""
+"एउटै एकीकृत प्रणालीमार्फत आवासीय भवन निर्माण अनुमतिका लागि आवेदन दिनुहोस्, "
+"नगरपालिका स्वीकृति ट्र्याक गर्नुहोस्, निर्माण प्रगति व्यवस्थापन गर्नुहोस्, र"
+" निर्माण सामग्री खरिद गर्नुहोस्।"
+
+msgid "Browse construction materials"
+msgstr "निर्माण सामग्रीहरू खोज्नुहोस्"
+
+msgid ""
+"Browse construction materials, add products to your cart, place orders, and "
+"track order status."
+msgstr ""
+"निर्माण सामग्रीहरू खोज्नुहोस्, कार्टमा थप्नुहोस्, अर्डर गर्नुहोस्, र अर्डरको"
+" स्थिति हेर्नुहोस्।"
+
+msgid "Browse materials and manage orders"
+msgstr "सामग्रीहरू खोज्नुहोस् र अर्डरहरू व्यवस्थापन गर्नुहोस्"
+
+msgid "Build"
+msgstr "निर्माण गर्नुहोस्"
+
+msgid "Build and manage your"
+msgstr "आफ्नो भवन निर्माण यात्रा"
+
+msgid "Building Permits"
+msgstr "भवन निर्माण अनुमति"
+
+msgid "Choose your portal"
+msgstr "आफ्नो पोर्टल छान्नुहोस्"
+
+msgid "Citizen Dashboard"
+msgstr "नागरिक ड्यासबोर्ड"
+
+msgid "Citizen, officer, supplier and admin portals"
+msgstr "नागरिक, अधिकृत, आपूर्तिकर्ता र प्रशासक पोर्टलहरू"
+
+msgid "Complete"
+msgstr "सम्पन्न गर्नुहोस्"
+
+msgid "Complete the final review and documentation."
+msgstr "अन्तिम पुनरावलोकन र कागजात प्रक्रिया सम्पन्न गर्नुहोस्।"
+
+msgid ""
+"Complete the required process and generate the final project documentation."
+msgstr "आवश्यक प्रक्रिया पूरा गरी अन्तिम परियोजना कागजात प्राप्त गर्नुहोस्।"
+
+msgid "Completion"
+msgstr "निर्माण सम्पन्न"
+
+msgid "Construction Progress"
+msgstr "निर्माण प्रगति"
+
+msgid "Construction lifecycle"
+msgstr "निर्माण चक्र"
+
+msgid ""
+"Construction progress can be managed phase by phase after the initial "
+"building permit approval, providing a clearer digital record of the process."
+msgstr ""
+"प्रारम्भिक भवन निर्माण अनुमति स्वीकृतिपछि चरणबद्ध रूपमा निर्माण प्रगति "
+"व्यवस्थापन गरी स्पष्ट डिजिटल अभिलेख राख्न सकिन्छ।"
+
+msgid "Continue through the applicable construction phases."
+msgstr "लागू हुने निर्माण चरणहरू क्रमिक रूपमा अगाडि बढाउनुहोस्।"
+
+msgid "Core services"
+msgstr "प्रमुख सेवाहरू"
+
+msgid "Digital Permit Process"
+msgstr "डिजिटल अनुमति प्रक्रिया"
+
+msgid "Everything connected in one platform"
+msgstr "एउटै प्रणालीमा सबै सेवाहरू आबद्ध"
+
+msgid "Explore marketplace"
+msgstr "निर्माण सामग्री बजार हेर्नुहोस्"
+
+msgid "Floor Phases"
+msgstr "तला निर्माण चरणहरू"
+
+msgid ""
+"Follow the construction lifecycle from initial approval through required "
+"construction phases and completion."
+msgstr ""
+"प्रारम्भिक स्वीकृतिदेखि निर्माण चरणहरू हुँदै अन्तिम निर्माण सम्पन्नतासम्मको "
+"चक्र पछ्याउनुहोस्।"
+
+msgid "From permit approval to completion"
+msgstr "अनुमति स्वीकृतिदेखि निर्माण सम्पन्नतासम्म"
+
+msgid "How it works"
+msgstr "यसले कसरी काम गर्छ"
+
+msgid "Initial authorization for construction."
+msgstr "निर्माण सुरु गर्नका लागि प्रारम्भिक आधिकारिक स्वीकृति।"
+
+msgid "Integrated Marketplace"
+msgstr "एकीकृत निर्माण सामग्री बजार"
+
+msgid "Manage customer orders"
+msgstr "ग्राहकका अर्डरहरू व्यवस्थापन गर्नुहोस्"
+
+msgid "Manage permits and construction progress"
+msgstr "अनुमति र निर्माण प्रगति व्यवस्थापन गर्नुहोस्"
+
+msgid "Manage platform operations"
+msgstr "प्रणाली सञ्चालन व्यवस्थापन गर्नुहोस्"
+
+msgid "Manage products and marketplace activity"
+msgstr "उत्पादनहरू र बजार गतिविधि व्यवस्थापन गर्नुहोस्"
+
+msgid "Manage products and orders"
+msgstr "उत्पादन तथा अर्डरहरू व्यवस्थापन गर्नुहोस्"
+
+msgid "Manage your construction products"
+msgstr "आफ्ना निर्माण सामग्रीहरू व्यवस्थापन गर्नुहोस्"
+
+msgid ""
+"Municipality officers review the submitted application and supporting "
+"documents."
+msgstr ""
+"नगरपालिका अधिकृतहरूले पेश गरिएको आवेदन र आवश्यक कागजातहरूको प्राविधिक "
+"परीक्षण गर्छन्।"
+
+msgid "My Products"
+msgstr "मेरो उत्पादनहरू"
+
+msgid ""
+"NirmanSathi connects the major steps of the residential construction process"
+" into a single digital workflow."
+msgstr ""
+"निर्माणसाथीले आवासीय भवन निर्माण प्रक्रियाका प्रमुख चरणहरूलाई एउटै डिजिटल "
+"कार्यप्रणालीमा जोड्दछ।"
+
+msgid "One construction journey, managed digitally"
+msgstr "एउटै निर्माण यात्रा, डिजिटल व्यवस्थापन"
+
+msgid "Open Citizen Dashboard"
+msgstr "नागरिक ड्यासबोर्ड खोल्नुहोस्"
+
+msgid "Open Officer Dashboard"
+msgstr "अधिकृत ड्यासबोर्ड खोल्नुहोस्"
+
+msgid "Open dashboard"
+msgstr "ड्यासबोर्ड खोल्नुहोस्"
+
+msgid "Permit Approved"
+msgstr "अनुमति स्वीकृत"
+
+msgid "Plinth Phase"
+msgstr "प्लिन्थ (DPC) चरण"
+
+msgid "Ready to start your construction journey?"
+msgstr "आफ्नो भवन निर्माण यात्रा सुरु गर्न तयार हुनुहुन्छ?"
+
+msgid "Review and manage applications"
+msgstr "आवेदनहरू पुनरावलोकन र व्यवस्थापन गर्नुहोस्"
+
+msgid "Review and manage permit applications"
+msgstr "अनुमति आवेदनहरू पुनरावलोकन र व्यवस्थापन गर्नुहोस्"
+
+msgid "Role-Based Access"
+msgstr "भूमिकामा आधारित पहुँच प्रणाली"
+
+msgid "STEP 01"
+msgstr "चरण ०१"
+
+msgid "STEP 02"
+msgstr "चरण ०२"
+
+msgid "STEP 03"
+msgstr "चरण ०३"
+
+msgid "STEP 04"
+msgstr "चरण ०४"
+
+msgid "Submit"
+msgstr "आवेदन पेश"
+
+msgid ""
+"Submit a building permit application or explore construction materials "
+"through NirmanSathi."
+msgstr ""
+"निर्माणसाथीमार्फत भवन निर्माण अनुमतिका लागि आवेदन दिनुहोस् वा निर्माण "
+"सामग्रीहरू खोज्नुहोस्।"
+
+msgid "Submit and review the required phase documents."
+msgstr "आवश्यक चरणका कागजातहरू पेश र पुनरावलोकन गर्नुहोस्।"
+
+msgid "Submit and track applications online"
+msgstr "अनलाइन आवेदन पेश गर्नुहोस् र स्थिति हेर्नुहोस्"
+
+msgid ""
+"Submit your residential building permit application and required documents."
+msgstr ""
+"आफ्नो आवासीय भवन निर्माण अनुमति आवेदन र आवश्यक कागजातहरू पेश गर्नुहोस्।"
+
+msgid "Track construction progress through the required construction phases."
+msgstr "आवश्यक निर्माण चरणहरूमार्फत निर्माण कार्यको प्रगति ट्र्याक गर्नुहोस्।"
+
+msgid "Verify"
+msgstr "प्रमाणीकरण"
+
+msgid "View Orders"
+msgstr "अर्डरहरू हेर्नुहोस्"
+
+msgid "construction journey"
+msgstr "डिजिटल रूपमा व्यवस्थापन"
+
+msgid "digitally."
+msgstr "गर्नुहोस्।"
+
+msgid "Awaiting Payment"
+msgstr "भुक्तानीको प्रतीक्षामा"
+
+msgid "Cart"
+msgstr "कार्ट"
+
+msgid "Failed to download file."
+msgstr "फाइल डाउनलोड गर्न असफल भयो।"
+
+msgid "Mark Delivered"
+msgstr "डेलिभर भएको जनाउनुहोस्"
+
+msgid "Mark as Shipped"
+msgstr "पठाएको (Shipped) जनाउनुहोस्"
+
+msgid "My Profile & Details"
+msgstr "मेरो प्रोफाइल तथा विवरण"
+
+msgid "Order status updated"
+msgstr "अर्डरको स्थिति अद्यावधिक भयो"
+
+msgid "Processing"
+msgstr "प्रशोधन हुँदै"
+
+msgid "Start Processing"
+msgstr "तयारी सुरु गर्नुहोस्"
+
+msgid "Supplier"
+msgstr "आपूर्तिकर्ता"
+
+msgid "Unauthorized to download this document. Please log in."
+msgstr "यो कागजात डाउनलोड गर्न अनुमति छैन। कृपया पहिले लगइन गर्नुहोस्।"
+
+msgid "Updating..."
+msgstr "अद्यावधिक हुँदैछ..."
+
+msgid ""
+"Accepted: JPG, PNG, WebP (Max 5MB). Ensure the document number is clearly "
+"legible."
+msgstr ""
+"स्वीकृत ढाँचा: JPG, PNG, WebP (अधिकतम ५MB)। परिचयपत्र नम्बर प्रस्ट देखिने "
+"हुनुपर्छ।"
+
+msgid "Account Information"
+msgstr "खाता विवरण"
+
+msgid "Account details updated!"
+msgstr "खाता विवरण अद्यावधिक भयो!"
+
+msgid "Address"
+msgstr "ठेगाना"
+
+msgid "Address / Location"
+msgstr "ठेगाना / स्थान"
+
+msgid "Assigned Municipality"
+msgstr "तोकिएको नगरपालिका"
+
+msgid "Assigned Municipality *"
+msgstr "तोकिएको नगरपालिका *"
+
+msgid "Bio"
+msgstr "परिचय (Bio)"
+
+msgid "Bio / Description"
+msgstr "छोटो परिचय / विवरण"
+
+msgid "Brief info about yourself or your organization..."
+msgstr "आफ्नो वा आफ्नो संस्थाको बारेमा छोटो जानकारी..."
+
+msgid "Change Password"
+msgstr "पासवर्ड परिवर्तन गर्नुहोस्"
+
+msgid "Change Photo"
+msgstr "फोटो परिवर्तन गर्नुहोस्"
+
+msgid "Citizenship / NID Number"
+msgstr "नागरिकता / राष्ट्रिय परिचयपत्र नं."
+
+msgid "Company / Business Name"
+msgstr "कम्पनी / व्यवसायको नाम"
+
+msgid "Company Name"
+msgstr "कम्पनीको नाम"
+
+msgid "Confirm New Password *"
+msgstr "नयाँ पासवर्ड पुष्टि गर्नुहोस् *"
+
+msgid "Current Password *"
+msgstr "हालको पासवर्ड *"
+
+msgid "Document Attached"
+msgstr "कागजात संलग्न गरिएको छ"
+
+msgid "Document number verified"
+msgstr "कागजात नम्बर प्रमाणित भयो"
+
+msgid "Edit Details"
+msgstr "विवरण सम्पादन गर्नुहोस्"
+
+msgid "Edit Profile"
+msgstr "प्रोफाइल सम्पादन गर्नुहोस्"
+
+msgid "Edit Profile & Credentials"
+msgstr "प्रोफाइल र विवरण सम्पादन गर्नुहोस्"
+
+msgid ""
+"Enter your ID number and upload a clear photo of your National ID or "
+"Citizenship card. Your number will be verified against the document on the "
+"server."
+msgstr ""
+"आफ्नो परिचयपत्र नम्बर प्रविष्ट गर्नुहोस् र राष्ट्रिय परिचयपत्र वा नागरिकता "
+"कार्डको स्पष्ट तस्बिर अपलोड गर्नुहोस्। तपाईंको नम्बर सर्भरमा कागजातसँग रुजु "
+"गरिनेछ।"
+
+msgid "Enter your exact ID number including hyphens (e.g. 12-34-56-78901)."
+msgstr ""
+"हाइफन (-) सहित आफ्नो सही परिचयपत्र नम्बर प्रविष्ट गर्नुहोस् (जस्तै: "
+"१२-३४-५६-७८९०१)।"
+
+msgid "Failed to change password."
+msgstr "पासवर्ड परिवर्तन गर्न असफल भयो।"
+
+msgid "Failed to load profile."
+msgstr "प्रोफाइल लोड गर्न असफल भयो।"
+
+msgid "Failed to update account."
+msgstr "खाता अद्यावधिक गर्न असफल भयो।"
+
+msgid "Failed to update profile."
+msgstr "प्रोफाइल अद्यावधिक गर्न असफल भयो।"
+
+msgid "Failed to upload photo."
+msgstr "फोटो अपलोड गर्न असफल भयो।"
+
+msgid "Full Name *"
+msgstr "पूरा नाम *"
+
+msgid "Loading profile..."
+msgstr "प्रोफाइल लोड हुँदैछ..."
+
+msgid "Member since"
+msgstr "सदस्यता मिति"
+
+msgid ""
+"Municipality officer accounts require official administrative review and "
+"verification before permit inspection access is granted."
+msgstr ""
+"नगरपालिका अधिकृत खाताहरूलाई अनुमति निरीक्षण पहुँच प्रदान गर्नुअघि प्रशासकीय "
+"पुनरावलोकन र प्रमाणीकरण आवश्यक पर्दछ।"
+
+msgid "Must be at least 6 characters long."
+msgstr "कम्तीमा ६ अक्षरको हुनुपर्दछ।"
+
+msgid "My Details"
+msgstr "मेरो विवरण"
+
+msgid "My Profile & Account - NirmanSathi"
+msgstr "मेरो प्रोफाइल तथा खाता - निर्माणसाथी"
+
+msgid "NID / Citizenship No."
+msgstr "राष्ट्रिय परिचयपत्र / नागरिकता नं."
+
+msgid "NID Card Preview"
+msgstr "परिचयपत्र पूर्वावलोकन"
+
+msgid "NID Document Card Photo"
+msgstr "परिचयपत्र कार्डको फोटो"
+
+msgid "NID Document Verified"
+msgstr "परिचयपत्र कागजात प्रमाणित भयो"
+
+msgid "NID Unverified"
+msgstr "परिचयपत्र अप्रमाणित"
+
+msgid "National ID / Citizenship Number *"
+msgstr "राष्ट्रिय परिचयपत्र / नागरिकता नम्बर *"
+
+msgid "National ID / Citizenship Verification"
+msgstr "राष्ट्रिय परिचयपत्र / नागरिकता प्रमाणीकरण"
+
+msgid "National Identity / Citizenship Number"
+msgstr "राष्ट्रिय परिचयपत्र / नागरिकता नम्बर"
+
+msgid "New Password *"
+msgstr "नयाँ पासवर्ड *"
+
+msgid "New passwords do not match."
+msgstr "नयाँ पासवर्डहरू मिलेनन्।"
+
+msgid "Officer Verification"
+msgstr "अधिकृत प्रमाणीकरण"
+
+msgid ""
+"Officer registration submitted! Your account is pending administrative "
+"approval. Redirecting to login..."
+msgstr ""
+"अधिकृत दर्ता पेश भयो! तपाईंको खाता प्रशासनिक स्वीकृतिको प्रतीक्षामा छ। "
+"लगइनमा जाँदैछ..."
+
+msgid "PAN / VAT"
+msgstr "प्यान / भ्याट (PAN/VAT)"
+
+msgid "PAN / VAT Number"
+msgstr "प्यान / भ्याट नम्बर"
+
+msgid "Password changed! Please log in again."
+msgstr "पासवर्ड परिवर्तन भयो! कृपया पुन: लगइन गर्नुहोस्।"
+
+msgid "Pending Admin Verification"
+msgstr "प्रशासक प्रमाणीकरण बाँकी"
+
+msgid "Personal & Role Info"
+msgstr "व्यक्तिगत तथा भूमिका विवरण"
+
+msgid "Phone"
+msgstr "फोन"
+
+msgid "Phone Number *"
+msgstr "फोन नम्बर *"
+
+msgid "Please enter a valid 10-digit phone number."
+msgstr "कृपया मान्य १० अङ्कको फोन नम्बर प्रविष्ट गर्नुहोस्।"
+
+msgid "Please enter your National ID / Citizenship number."
+msgstr "कृपया आफ्नो राष्ट्रिय परिचयपत्र वा नागरिकता नम्बर प्रविष्ट गर्नुहोस्।"
+
+msgid "Please login to access your profile."
+msgstr "आफ्नो प्रोफाइल हेर्न कृपया पहिले लगइन गर्नुहोस्।"
+
+msgid "Please select your assigned municipality."
+msgstr "कृपया आफू खटिएको नगरपालिका चयन गर्नुहोस्।"
+
+msgid "Please upload your National ID or Citizenship card document."
+msgstr "कृपया आफ्नो राष्ट्रिय परिचयपत्र वा नागरिकताको कार्ड अपलोड गर्नुहोस्।"
+
+msgid "Profile Information"
+msgstr "प्रोफाइल जानकारी"
+
+msgid "Profile Photo"
+msgstr "प्रोफाइल तस्बिर"
+
+msgid "Profile photo updated!"
+msgstr "प्रोफाइल तस्बिर अद्यावधिक भयो!"
+
+msgid "Profile updated successfully!"
+msgstr "प्रोफाइल सफलतापूर्वक अद्यावधिक भयो!"
+
+msgid "Ready to verify"
+msgstr "प्रमाणीकरणका लागि तयार"
+
+msgid "Remove Document"
+msgstr "कागजात हटाउनुहोस्"
+
+msgid "Save Account Details"
+msgstr "खाता विवरण सुरक्षित गर्नुहोस्"
+
+msgid "Save Profile Details"
+msgstr "प्रोफाइल विवरण सुरक्षित गर्नुहोस्"
+
+msgid "Select Municipality..."
+msgstr "नगरपालिका छान्नुहोस्..."
+
+msgid "Status"
+msgstr "स्थिति"
+
+msgid "System Admin"
+msgstr "प्रणाली प्रशासक"
+
+msgid "Update Password"
+msgstr "पासवर्ड अद्यावधिक गर्नुहोस्"
+
+msgid "Upload NID / Citizenship Document Card *"
+msgstr "राष्ट्रिय परिचयपत्र / नागरिकता कार्ड अपलोड गर्नुहोस् *"
+
+msgid "Upload Required"
+msgstr "अपलोड आवश्यक"
+
+msgid "Verification Rejected"
+msgstr "प्रमाणीकरण अस्वीकृत"
+
+msgid "Verified & Active"
+msgstr "प्रमाणित तथा सक्रिय"
+
+msgid "Verifying document..."
+msgstr "कागजात रुजु गरिँदैछ..."
+
+msgid "View Document"
+msgstr "कागजात हेर्नुहोस्"
+
+msgid "e.g. 12-01-75-12345"
+msgstr "जस्तै: १२-०१-७५-१२३४५"
+
+msgid "e.g. Kathmandu, Bagmati Province"
+msgstr "जस्तै: काठमाडौं, बागमती प्रदेश"
+
+msgid "✓ Document number verified"
+msgstr "✓ कागजात नम्बर प्रमाणित भयो"
+
+msgid "3. Permit Decision"
+msgstr "३. अनुमति निर्णय"
+
+msgid "4. Construction & Completion"
+msgstr "४. निर्माण तथा सम्पन्नता"
+
+msgid ""
+"A municipality technical officer is currently reviewing your structural "
+"documentation and field compliance."
+msgstr ""
+"नगरपालिका प्राविधिक अधिकृतले हाल तपाईंको संरचनात्मक कागजात र स्थलगत "
+"मापदण्डको पुनरावलोकन गर्दै हुनुहुन्छ।"
+
+msgid "ACADEMIC DEMO • SIMULATED DOCUMENT SYSTEM"
+msgstr "शैक्षिक नमुना • नक्कली कागजात प्रमाणीकरण प्रणाली"
+
+msgid "Active Construction Monitoring:"
+msgstr "सक्रिय निर्माण सुपरिवेक्षण:"
+
+msgid ""
+"All construction phases have been inspected and approved by the municipal "
+"officer. Your final completion certificate is now available for download."
+msgstr ""
+"सबै निर्माण चरणहरू नगरपालिका अधिकृतद्वारा निरीक्षण र स्वीकृत भएका छन्। "
+"तपाईंको अन्तिम निर्माण सम्पन्न प्रमाणपत्र डाउनलोडका लागि तयार छ।"
+
+msgid ""
+"All preceding structural construction phases have been officially approved. "
+"You may now perform the final completion inspection and issue the Building "
+"Construction Completion Certificate."
+msgstr ""
+"अघिल्ला सबै संरचनात्मक निर्माण चरणहरू आधिकारिक रूपमा स्वीकृत भइसकेका छन्। अब"
+" अन्तिम निरीक्षण सम्पन्न गरी भवन निर्माण सम्पन्न प्रमाणपत्र जारी गर्न "
+"सक्नुहुन्छ।"
+
+msgid "Apply for Permit"
+msgstr "भवन निर्माण अनुमतिका लागि आवेदन दिनुहोस्"
+
+msgid "Approve Construction Completion & Issue Certificate"
+msgstr "निर्माण सम्पन्नता स्वीकृत गर्नुहोस् र प्रमाणपत्र जारी गर्नुहोस्"
+
+msgid "Approve Permit Application"
+msgstr "अनुमति आवेदन स्वीकृत गर्नुहोस्"
+
+msgid "Approve Phase & Generate Documents"
+msgstr "चरण स्वीकृत गर्नुहोस् र कागजात जारी गर्नुहोस्"
+
+msgid "Approved on"
+msgstr "स्वीकृत मिति"
+
+msgid "Attach Document to Phase"
+msgstr "यस चरणमा कागजात संलग्न गर्नुहोस्"
+
+msgid "Authorizes construction to proceed to Plinth phase"
+msgstr "प्लिन्थ चरणको निर्माण अगाडि बढाउन अधिकार प्रदान गर्दछ"
+
+msgid "Awaiting Citizen Submission"
+msgstr "नागरिकबाट पेश हुन बाँकी"
+
+msgid "Awaiting Permit Approval"
+msgstr "अनुमति स्वीकृतिको प्रतीक्षामा"
+
+msgid "Awaiting Resubmission"
+msgstr "पुन: पेश गर्न बाँकी"
+
+msgid "Building Construction Officially Completed"
+msgstr "भवन निर्माण आधिकारिक रूपमा सम्पन्न भयो"
+
+msgid "Building Permit & Construction Monitoring"
+msgstr "भवन निर्माण अनुमति तथा निर्माण सुपरिवेक्षण"
+
+msgid "Building Permit Details"
+msgstr "भवन निर्माण अनुमति विवरण"
+
+msgid "Building Permit Officially Approved"
+msgstr "भवन निर्माण अनुमति आधिकारिक रूपमा स्वीकृत"
+
+msgid "CONFIGURED FOR"
+msgstr "तोकिएको संरचना:"
+
+msgid "CONSTRUCTION COMPLETE"
+msgstr "निर्माण सम्पन्न"
+
+msgid "CONSTRUCTION LIFECYCLE MONITORING"
+msgstr "निर्माण जीवनचक्र सुपरिवेक्षण"
+
+msgid "Certifying Completion..."
+msgstr "निर्माण सम्पन्नता प्रमाणीकरण गरिँदैछ..."
+
+msgid "Completion was certified on"
+msgstr "निर्माण सम्पन्नता प्रमाणित भएको मिति"
+
+msgid "Construction Completed"
+msgstr "निर्माण सम्पन्न"
+
+msgid "Construction Ongoing"
+msgstr "निर्माण कार्य जारी"
+
+msgid "Construction Phase Monitoring & Approvals"
+msgstr "निर्माण चरण सुपरिवेक्षण तथा स्वीकृतिहरू"
+
+msgid "Construction Phases & Site Inspections"
+msgstr "निर्माण चरणहरू तथा स्थलगत निरीक्षण"
+
+msgid "Construction completed! Certificate generated."
+msgstr "निर्माण सम्पन्न भयो! प्रमाणपत्र जारी गरियो।"
+
+msgid "Construction monitoring phases are being initialized for"
+msgstr "निर्माण सुपरिवेक्षण चरणहरू प्रारम्भ गरिँदैछ:"
+
+msgid "Construction phase monitoring initialized!"
+msgstr "निर्माण चरण सुपरिवेक्षण सुरु गरियो!"
+
+msgid "Decision & Audit History"
+msgstr "निर्णय तथा अडिट इतिहास"
+
+msgid "Deficiencies were noted during technical inspection."
+msgstr "प्राविधिक निरीक्षणका क्रममा कैफियतहरू फेला परेका छन्।"
+
+msgid "Deny permit due to zoning or code violations"
+msgstr "मापदण्ड वा भवन संहिता उल्लङ्घनका कारण अनुमति अस्वीकार गर्नुहोस्"
+
+msgid "Download Approval Letter"
+msgstr "स्वीकृति पत्र डाउनलोड गर्नुहोस्"
+
+msgid "Download Approval PDF"
+msgstr "स्वीकृति PDF डाउनलोड गर्नुहोस्"
+
+msgid "Download Final Completion Certificate"
+msgstr "अन्तिम निर्माण सम्पन्न प्रमाणपत्र डाउनलोड गर्नुहोस्"
+
+msgid "Download Official Approval Letter"
+msgstr "आधिकारिक स्वीकृति पत्र डाउनलोड गर्नुहोस्"
+
+msgid "Download Official Completion Certificate"
+msgstr "आधिकारिक निर्माण सम्पन्न प्रमाणपत्र डाउनलोड गर्नुहोस्"
+
+msgid "Download Phase Certificate"
+msgstr "चरण प्रमाणपत्र डाउनलोड गर्नुहोस्"
+
+msgid "Download Stamped Blueprint"
+msgstr "मोहर लागेको नक्सा डाउनलोड गर्नुहोस्"
+
+msgid "Eighth Floor"
+msgstr "आठौं तला"
+
+msgid ""
+"Enter inspection results, structural test verification, or reason for "
+"rejection..."
+msgstr ""
+"निरीक्षण नतिजा, संरचनात्मक परीक्षण वा अस्वीकृतिको कारण प्रविष्ट गर्नुहोस्..."
+
+msgid "Failed to approve completion."
+msgstr "निर्माण सम्पन्नता स्वीकृत गर्न असफल भयो।"
+
+msgid "Failed to review phase."
+msgstr "चरण पुनरावलोकन गर्न असफल भयो।"
+
+msgid "Failed to start construction."
+msgstr "निर्माण सुरु गर्न असफल भयो।"
+
+msgid "Failed to submit phase."
+msgstr "चरण पेश गर्न असफल भयो।"
+
+msgid "Failed to upload phase document."
+msgstr "चरण कागजात अपलोड गर्न असफल भयो।"
+
+msgid "Field Inspection Report"
+msgstr "स्थलगत निरीक्षण प्रतिवेदन"
+
+msgid "Fifth Floor"
+msgstr "पाँचौं तला"
+
+msgid "Final Building Completion Certificate"
+msgstr "अन्तिम भवन निर्माण सम्पन्न प्रमाणपत्र"
+
+msgid "Final Completion"
+msgstr "अन्तिम निर्माण सम्पन्नता"
+
+msgid "Final Completion Inspection Approval"
+msgstr "अन्तिम निरीक्षण तथा निर्माण सम्पन्नता स्वीकृति"
+
+msgid "Final Inspection Assessment & Remarks *"
+msgstr "अन्तिम निरीक्षण मूल्याङ्कन तथा टिप्पणी *"
+
+msgid "First Floor"
+msgstr "पहिलो तला"
+
+msgid ""
+"Following municipal permit approval, construction must be inspected phase by"
+" phase. Each floor/phase requires sequential submission, officer site "
+"review, simulated stamping, and approval before subsequent phases can "
+"unlock."
+msgstr ""
+"नगरपालिकाबाट अनुमति स्वीकृत भएपछि निर्माण कार्य चरणबद्ध रूपमा निरीक्षण "
+"हुनुपर्छ। प्रत्येक तला/चरणको क्रमिक पेश, अधिकृत स्थलगत निरीक्षण, डिजिटल "
+"मोहर, र स्वीकृतिपछि मात्र अर्को चरण खुल्नेछ।"
+
+msgid "Fourth Floor"
+msgstr "चौथो तला"
+
+msgid "Initial Building Permit Decision"
+msgstr "प्रारम्भिक भवन निर्माण अनुमति निर्णय"
+
+msgid "Initialize Construction Monitoring"
+msgstr "निर्माण सुपरिवेक्षण सुरु गर्नुहोस्"
+
+msgid "Inspect"
+msgstr "निरीक्षण गर्नुहोस्"
+
+msgid "Inspect Phase Documents"
+msgstr "चरण कागजातहरू निरीक्षण गर्नुहोस्"
+
+msgid "Inspected by"
+msgstr "निरीक्षण अधिकृत"
+
+msgid "Loading application & construction details..."
+msgstr "आवेदन तथा निर्माण विवरण लोड हुँदैछ..."
+
+msgid "Loading permit application & inspection queue..."
+msgstr "अनुमति आवेदन तथा निरीक्षण सूची लोड हुँदैछ..."
+
+msgid "Locked"
+msgstr "ताल्चा लगाइएको (Locked)"
+
+msgid "Monitored Construction Phases"
+msgstr "सुपरिवेक्षण गरिने निर्माण चरणहरू"
+
+msgid "Municipal Officer"
+msgstr "नगरपालिका अधिकृत"
+
+msgid "Municipal Officer Remarks & Directives:"
+msgstr "नगरपालिका अधिकृतको टिप्पणी तथा निर्देशन:"
+
+msgid "Ninth Floor"
+msgstr "नवौं तला"
+
+msgid "No construction phases initialized for"
+msgstr "कुनै निर्माण चरण प्रारम्भ गरिएको छैन:"
+
+msgid ""
+"No documents uploaded for this phase. Ask citizen to upload blueprints or "
+"site photos before approving."
+msgstr ""
+"यस चरणका लागि कागजात अपलोड गरिएको छैन। स्वीकृति दिनुअघि नागरिकलाई नक्सा वा "
+"स्थलगत फोटो अपलोड गर्न भन्नुहोस्।"
+
+msgid "No permit applications found"
+msgstr "कुनै अनुमति आवेदनहरू फेला परेनन्"
+
+msgid "Not yet submitted"
+msgstr "अझै पेश नगरिएको"
+
+msgid ""
+"Note: The building permit's approved blueprint is automatically linked if a "
+"phase-specific blueprint is not uploaded."
+msgstr ""
+"द्रष्टव्य: चरण-विशेष नक्सा अपलोड नगरिएमा भवन अनुमतिको स्वीकृत नक्सा स्वतः "
+"आबद्ध हुनेछ।"
+
+msgid "Officer Inspection & Phase Approval"
+msgstr "अधिकृत निरीक्षण तथा चरण स्वीकृति"
+
+msgid "Officer Notes:"
+msgstr "अधिकृतको टिप्पणी:"
+
+msgid "Officer Remarks / Directives *"
+msgstr "अधिकृतको टिप्पणी / निर्देशन *"
+
+msgid "PHASE APPROVED — CERTIFICATE READY"
+msgstr "चरण स्वीकृत भयो — प्रमाणपत्र तयार छ"
+
+msgid "Pending Permit Approval"
+msgstr "अनुमति स्वीकृतिको प्रतीक्षामा"
+
+msgid "Permit & Construction Inspection - NirmanSathi Officer Portal"
+msgstr "अनुमति तथा निर्माण निरीक्षण - निर्माणसाथी अधिकृत पोर्टल"
+
+msgid "Permit & Construction Monitoring - NirmanSathi"
+msgstr "अनुमति तथा निर्माण सुपरिवेक्षण - निर्माणसाथी"
+
+msgid "Permit Application Approved"
+msgstr "अनुमति आवेदन स्वीकृत भयो"
+
+msgid "Permit Progress & Construction Lifecycle"
+msgstr "अनुमति प्रगति तथा निर्माण जीवनचक्र"
+
+msgid "Permit Supporting Documents"
+msgstr "अनुमति सहायक कागजातहरू"
+
+msgid "Phase"
+msgstr "चरण"
+
+msgid "Phase Architectural Blueprint"
+msgstr "यस चरणको वास्तुकला नक्सा (ब्लुप्रिन्ट)"
+
+msgid "Phase Documents for Inspection"
+msgstr "निरीक्षणका लागि चरण कागजातहरू"
+
+msgid "Phase Inspection Not Approved (Rejection Remarks):"
+msgstr "चरण निरीक्षण स्वीकृत भएन (अस्वीकृतिका कैफियतहरू):"
+
+msgid "Phase Inspection:"
+msgstr "चरण निरीक्षण:"
+
+msgid "Phase Status:"
+msgstr "चरण स्थिति:"
+
+msgid "Phase decision recorded!"
+msgstr "चरण निर्णय सुरक्षित गरियो!"
+
+msgid "Phase document attached successfully!"
+msgstr "चरण कागजात सफलतापूर्वक संलग्न गरियो!"
+
+msgid ""
+"Phase submission will unlock once your building permit application is "
+"officially reviewed and approved by the municipal engineer."
+msgstr ""
+"तपाईंको भवन निर्माण अनुमति नगरपालिका इन्जिनियरद्वारा स्वीकृत भएपछि मात्र चरण"
+" पेश गर्ने सुविधा खुल्नेछ।"
+
+msgid "Phase submitted for municipal review!"
+msgstr "चरण नगरपालिका पुनरावलोकनका लागि पेश गरियो!"
+
+msgid "Phases"
+msgstr "चरणहरू"
+
+msgid "Phases for"
+msgstr "चरणहरू:"
+
+msgid ""
+"Please address the officer remarks above, attach any rectified blueprints or"
+" site photos, and resubmit this phase."
+msgstr ""
+"कृपया माथि उल्लेखित अधिकृतको टिप्पणी अनुसार संशोधन गरी, सच्याइएको नक्सा वा "
+"फोटो संलग्न गरेर पुन: पेश गर्नुहोस्।"
+
+msgid "Plinth Level"
+msgstr "प्लिन्थ (DPC) स्तर"
+
+msgid ""
+"Prerequisite phase has been approved. Attach phase blueprints, site "
+"inspection reports, or progress photos, and submit for municipal officer "
+"review."
+msgstr ""
+"अघिल्लो चरण स्वीकृत भइसकेको छ। यस चरणको नक्सा, स्थलगत निरीक्षण प्रतिवेदन वा "
+"फोटो संलग्न गरी अधिकृत समक्ष पेश गर्नुहोस्।"
+
+msgid "Ready"
+msgstr "तयार"
+
+msgid "Ready for Submission"
+msgstr "पेश गर्न तयार"
+
+msgid "Reject Permit Application"
+msgstr "अनुमति आवेदन अस्वीकृत गर्नुहोस्"
+
+msgid "Reject Phase"
+msgstr "चरण अस्वीकृत गर्नुहोस्"
+
+msgid "Remarks are required for phase review."
+msgstr "चरण पुनरावलोकनका लागि टिप्पणी अनिवार्य छ।"
+
+msgid "Request technical modifications or site inspection"
+msgstr "प्राविधिक परिमार्जन वा स्थलगत निरीक्षण माग गर्नुहोस्"
+
+msgid "Resubmission Required"
+msgstr "पुन: पेश गर्न आवश्यक"
+
+msgid "Review Decision *"
+msgstr "पुनरावलोकन निर्णय *"
+
+msgid "Review blueprints and site inspections sequentially."
+msgstr "नक्सा र स्थलगत निरीक्षण क्रमिक रूपमा पुनरावलोकन गर्नुहोस्।"
+
+msgid ""
+"Review sequential construction milestones. Review submitted blueprints and "
+"field inspection evidence before granting phase approval."
+msgstr ""
+"क्रमिक निर्माण चरणहरू पुनरावलोकन गर्नुहोस्। चरण स्वीकृति दिनुअघि पेश गरिएका "
+"नक्सा र स्थलगत निरीक्षण प्रमाण जाँच गर्नुहोस्।"
+
+msgid "Roadmap Configured for Submitted Storey Count:"
+msgstr "पेश गरिएको तला संख्या अनुसार तयार गरिएको कार्ययोजना:"
+
+msgid "SUBMITTED STOREY(S)"
+msgstr "पेश गरिएको तला संख्या"
+
+msgid "Second Floor"
+msgstr "दोस्रो तला"
+
+msgid "Select Permit Decision *"
+msgstr "अनुमति निर्णय चयन गर्नुहोस् *"
+
+msgid "Sequence"
+msgstr "क्रम"
+
+msgid ""
+"Sequential construction monitoring phases generated for your submitted "
+"storey count:"
+msgstr ""
+"तपाईंको भवनको तला संख्या अनुसार स्वचालित रूपमा सिर्जना गरिएका निर्माण "
+"सुपरिवेक्षण चरणहरू:"
+
+msgid "Seventh Floor"
+msgstr "सातौं तला"
+
+msgid "Site Construction Photo"
+msgstr "निर्माण स्थलको तस्बिर"
+
+msgid "Sixth Floor"
+msgstr "छैटौं तला"
+
+msgid "Standard architectural blueprint linked."
+msgstr "मानक वास्तुकला नक्सा आबद्ध गरिएको छ।"
+
+msgid "Storeys Approved:"
+msgstr "स्वीकृत तला संख्या:"
+
+msgid "Submit Permit Decision"
+msgstr "अनुमति निर्णय पेश गर्नुहोस्"
+
+msgid "Submit Phase for Officer Review"
+msgstr "अधिकृत पुनरावलोकनका लागि चरण पेश गर्नुहोस्"
+
+msgid "Submitted Phase Documents:"
+msgstr "पेश गरिएका चरण कागजातहरू:"
+
+msgid "Submitted on"
+msgstr "पेश मिति"
+
+msgid "Tenth Floor"
+msgstr "दशौं तला"
+
+msgid "The official Permit Approval Letter has been generated and signed."
+msgstr "आधिकारिक भवन निर्माण अनुमति पत्र जारी र प्रमाणीकरण गरिएको छ।"
+
+msgid ""
+"These sequential monitoring phases are ready and will unlock for inspection "
+"once the permit application is officially approved."
+msgstr ""
+"यी क्रमिक सुपरिवेक्षण चरणहरू तयार छन् र भवन अनुमति स्वीकृत भएपछि निरीक्षणका "
+"लागि खुल्नेछन्।"
+
+msgid "Third Floor"
+msgstr "तेस्रो तला"
+
+msgid "This phase is configured according to your submitted storey count"
+msgstr "यो चरण तपाईंले पेश गर्नुभएको भवनको तला अनुसार व्यवस्थित गरिएको छ"
+
+msgid ""
+"This phase is locked. You must obtain official approval for the previous "
+"construction phase before this phase can be submitted."
+msgstr ""
+"यो चरण बन्द छ। यो चरण पेश गर्नका लागि तपाईंले अघिल्लो निर्माण चरणको आधिकारिक"
+" स्वीकृति प्राप्त गर्नुपर्दछ।"
+
+msgid "Under Municipal Technical Review"
+msgstr "नगरपालिका प्राविधिक पुनरावलोकनमा"
+
+msgid "Upload Phase Architectural Document / Photo"
+msgstr "यस चरणको वास्तुकला नक्सा / स्थलगत तस्बिर अपलोड गर्नुहोस्"
+
+msgid "Uploaded Permit Blueprints & Deeds"
+msgstr "अपलोड गरिएका नक्सा तथा लालपुर्जा कागजातहरू"
+
+msgid "You haven't submitted any building permit applications yet."
+msgstr "तपाईंले अहिलेसम्म कुनै भवन निर्माण अनुमति आवेदन पेश गर्नुभएको छैन।"
+
+msgid ""
+"You will be notified once the officer approves or requests revisions for "
+"this phase."
+msgstr ""
+"अधिकृतले यो चरण स्वीकृत गरेमा वा संशोधन मागेमा तपाईंलाई जानकारी दिइनेछ।"
+
+msgid "Your official signed Permit Approval Letter is ready to download."
+msgstr ""
+"तपाईंको आधिकारिक स्वीकृत भवन निर्माण अनुमति पत्र डाउनलोडका लागि तयार छ।"
+
+msgid "e.g. Column Casting Photo or Phase Blueprint"
+msgstr "जस्तै: पिल्लर ढलानको तस्बिर वा चरण नक्सा"
+
+msgid ""
+"e.g. Final site inspection confirmed full compliance with municipal building"
+" bylaws and setbacks."
+msgstr ""
+"जस्तै: अन्तिम स्थलगत निरीक्षणमा भवन मापदण्ड र सेटब्याक पूर्ण पालना भएको "
+"पाइयो।"
+
+msgid "storey(s) approved"
+msgstr "तला स्वीकृत"
+
+msgid "storeys."
+msgstr "तला।"
+
+msgid "-- All Provinces --"
+msgstr "-- सबै प्रदेशहरू --"
+
+msgid "1. Placed"
+msgstr "१. अर्डर पेश भयो"
+
+msgid "3. Processing"
+msgstr "३. तयारी हुँदैछ"
+
+msgid "4. Shipped"
+msgstr "४. पठाइयो (Shipped)"
+
+msgid "5. Delivered"
+msgstr "५. डेलिभर भयो"
+
+msgid "Active filters:"
+msgstr "सक्रिय फिल्टरहरू:"
+
+msgid "All Provinces"
+msgstr "सबै प्रदेशहरू"
+
+msgid ""
+"Are you sure you want to cancel this order? Deducted inventory items will be"
+" restored."
+msgstr ""
+"के तपाईं यो अर्डर रद्द गर्न निश्चित हुनुहुन्छ? मौज्दातबाट घटाइएका सामग्रीहरू"
+" पुन: मौज्दातमा फर्काइनेछ।"
+
+msgid "Cancel Order"
+msgstr "अर्डर रद्द गर्नुहोस्"
+
+msgid "Categories:"
+msgstr "कोटिहरू:"
+
+msgid "Clear Location"
+msgstr "स्थान हटाउनुहोस्"
+
+msgid "Clear all filters"
+msgstr "सबै फिल्टरहरू हटाउनुहोस्"
+
+msgid "Clear selection (Nationwide)"
+msgstr "छनोट हटाउनुहोस् (देशभरि उपलब्ध)"
+
+msgid "Construction Material Marketplace"
+msgstr "निर्माण सामग्री बजार"
+
+msgid "Failed to cancel order."
+msgstr "अर्डर रद्द गर्न असफल भयो।"
+
+msgid "Filter by Province"
+msgstr "प्रदेश अनुसार फिल्टर गर्नुहोस्"
+
+msgid "Marketplace Location"
+msgstr "बजार स्थान"
+
+msgid "Order Cancelled:"
+msgstr "अर्डर रद्द भयो:"
+
+msgid "Order cancelled successfully."
+msgstr "अर्डर सफलतापूर्वक रद्द गरियो।"
+
+msgid "Payment Verified"
+msgstr "भुक्तानी प्रमाणित भयो"
+
+msgid "Reset All"
+msgstr "सबै रिसेट गर्नुहोस्"
+
+msgid "Reset Filters"
+msgstr "फिल्टर रिसेट गर्नुहोस्"
+
+msgid "Search municipality / district..."
+msgstr "नगरपालिका वा जिल्ला खोज्नुहोस्..."
+
+msgid "Supplier Packaging"
+msgstr "आपूर्तिकर्ता प्याकेजिङ"
+
+msgid "Supply Municipality (Optional)"
+msgstr "आपूर्ति गर्ने नगरपालिका (ऐच्छिक)"
+
+msgid "Supply Province (Optional)"
+msgstr "आपूर्ति गर्ने प्रदेश (ऐच्छिक)"
+
+msgid "This order was cancelled. Reserved inventory was restored to stock."
+msgstr ""
+"यो अर्डर रद्द गरिएको छ। सुरक्षित गरिएको सामग्री पुन: मौज्दातमा थपिएको छ।"
+
+msgid ""
+"Try adjusting your search query, category, province, or municipality filter."
+msgstr ""
+"आफ्नो खोजी शब्द, कोटि, प्रदेश, वा नगरपालिका फिल्टर मिलाएर पुन: प्रयास "
+"गर्नुहोस्।"
+
+msgid "Type municipality / district..."
+msgstr "नगरपालिका वा जिल्ला टाइप गर्नुहोस्..."
+
+msgid "Unit"
+msgstr "एकाइ"
+
+msgid "Administrative review rejected this account."
+msgstr "प्रशासनिक पुनरावलोकनले यो खाता अस्वीकृत गरेको छ।"
+
+msgid ""
+"An administrator has rejected this officer registration request. You cannot "
+"access permit review queues."
+msgstr ""
+"प्रशासकले यो अधिकृत दर्ता आवेदन अस्वीकृत गरेका छन्। तपाईं अनुमति पुनरावलोकन "
+"सूची हेर्न सक्नुहुन्न।"
+
+msgid "Approve"
+msgstr "स्वीकृत गर्नुहोस्"
+
+msgid "Are you sure you want to approve municipality officer"
+msgstr "के तपाईं यस नगरपालिका अधिकृतलाई स्वीकृत गर्न निश्चित हुनुहुन्छ"
+
+msgid "Audit Logs"
+msgstr "अडिट लगहरू"
+
+msgid "Checking for pending officer registrations..."
+msgstr "प्रमाणीकरण बाँकी रहेका अधिकृतहरू खोज्दै..."
+
+msgid "Confirm Rejection"
+msgstr "अस्वीकृति पुष्टि गर्नुहोस्"
+
+msgid "Failed to approve officer."
+msgstr "अधिकृत स्वीकृत गर्न असफल भयो।"
+
+msgid "Failed to reject officer."
+msgstr "अधिकृत अस्वीकृत गर्न असफल भयो।"
+
+msgid "Monitor"
+msgstr "सुपरिवेक्षण"
+
+msgid ""
+"No pending officer verifications. All officer accounts are verified or "
+"processed."
+msgstr ""
+"प्रमाणीकरण बाँकी रहेका कुनै अधिकृत छैनन्। सबै खाताहरू प्रमाणित वा प्रशोधित "
+"छन्।"
+
+msgid "Not Specified"
+msgstr "उल्लेख नगरिएको"
+
+msgid "Officer Account:"
+msgstr "अधिकृतको खाता:"
+
+msgid "Officer Name"
+msgstr "अधिकृतको नाम"
+
+msgid "Officer approved successfully!"
+msgstr "अधिकृत सफलतापूर्वक स्वीकृत भयो!"
+
+msgid "Officer registration rejected."
+msgstr "अधिकृत दर्ता अस्वीकृत गरियो।"
+
+msgid "PENDING"
+msgstr "प्रतीक्षारत"
+
+msgid "Pending Officer Verifications"
+msgstr "प्रमाणीकरण बाँकी अधिकृतहरू"
+
+msgid "Please provide a rejection reason."
+msgstr "कृपया अस्वीकृतिको कारण उल्लेख गर्नुहोस्।"
+
+msgid ""
+"Provide a specific reason for rejecting this officer registration. The "
+"officer will see this feedback."
+msgstr ""
+"यो अधिकृत दर्ता अस्वीकृत गर्नुको स्पष्ट कारण खुलाउनुहोस्। अधिकृतले यो "
+"प्रतिक्रिया देख्नेछन्।"
+
+msgid "Reason for Rejection:"
+msgstr "अस्वीकृतिको कारण:"
+
+msgid "Registration Date"
+msgstr "दर्ता मिति"
+
+msgid "Reject"
+msgstr "अस्वीकृत गर्नुहोस्"
+
+msgid "Reject Municipality Officer"
+msgstr "नगरपालिका अधिकृत अस्वीकृत गर्नुहोस्"
+
+msgid "Rejecting..."
+msgstr "अस्वीकृत गरिँदैछ..."
+
+msgid "Rejection Reason *"
+msgstr "अस्वीकृतिको कारण *"
+
+msgid "Requested Municipality"
+msgstr "माग गरिएको नगरपालिका"
+
+msgid ""
+"Review official municipality credentials before granting permit access."
+msgstr "अनुमति पहुँच दिनुअघि आधिकारिक नगरपालिका परिचयपत्र जाँच गर्नुहोस्।"
+
+msgid "System Bye-Laws"
+msgstr "प्रणाली मापदण्ड तथा उप-नियमहरू"
+
+msgid "Unassigned"
+msgstr "तोकिन बाँकी"
+
+msgid "Verified"
+msgstr "प्रमाणित"
+
+msgid "Your Officer Account Verification was Rejected."
+msgstr "तपाईंको अधिकृत खाता प्रमाणीकरण अस्वीकृत भएको छ।"
+
+msgid ""
+"Your Officer Account is Pending Official Verification by System "
+"Administration."
+msgstr "तपाईंको अधिकृत खाता प्रणाली प्रशासनद्वारा प्रमाणीकरणको प्रतीक्षामा छ।"
+
+msgid ""
+"Your registration as a Municipality Officer is currently under "
+"administrative review. Official building permit applications and technical "
+"review tools will become accessible once an administrator approves your "
+"verification."
+msgstr ""
+"नगरपालिका अधिकृतको रूपमा तपाईंको दर्ता हाल प्रशासनिक पुनरावलोकनमा छ। "
+"प्रशासकले प्रमाणीकरण स्वीकृत गरेपछि मात्र आधिकारिक अनुमति आवेदनहरू र "
+"प्राविधिक औजारहरू उपलब्ध हुनेछन्।"
+
+msgid ""
+"e.g. Invalid government verification documents or unrecognized officer "
+"jurisdiction."
+msgstr "जस्तै: अमान्य सरकारी कागजात वा अपुष्ट कार्यक्षेत्र।"
+
+msgid "1.5m / 1.5m"
+msgstr "१.५ मिटर / १.५ मिटर"
+
+msgid "2.0m / 2.0m"
+msgstr "२.० मिटर / २.० मिटर"
+
+msgid "3.0m / 3.0m"
+msgstr "३.० मिटर / ३.० मिटर"
+
+msgid "4 to 5 Storeys"
+msgstr "४ देखि ५ तला"
+
+msgid "50%"
+msgstr "५०%"
+
+msgid "50% to 60%"
+msgstr "५०% देखि ६०%"
+
+msgid "60% to 70%"
+msgstr "६०% देखि ७०%"
+
+msgid "Admin Control Panel"
+msgstr "प्रशासक नियन्त्रण प्यानल"
+
+msgid "Administrative Jurisdiction & Location Data"
+msgstr "प्रशासनिक कार्यक्षेत्र तथा ठेगाना विवरण"
+
+msgid "Application Filing & Scrutiny"
+msgstr "आवेदन दर्ता तथा छानबिन"
+
+msgid "Basis / Rate"
+msgstr "आधार / दर"
+
+msgid "Building Bye-Laws & System Configuration"
+msgstr "भवन निर्माण मापदण्ड तथा प्रणाली व्यवस्था"
+
+msgid "Building Type"
+msgstr "भवनको प्रकार"
+
+msgid "Built-up Area Permit Rate"
+msgstr "कुल निर्मित क्षेत्रफल अनुमति दर"
+
+msgid "Commercial / Mixed"
+msgstr "व्यापारिक / मिश्रित"
+
+msgid ""
+"Configured according to Nepal National Building Code (NBC 206:2015) and "
+"Municipal Urban Planning Bye-Laws."
+msgstr ""
+"नेपाल राष्ट्रिय भवन संहिता (NBC 206:2015) र नगरपालिका सहरी योजना मापदण्ड "
+"अनुसार व्यवस्थित।"
+
+msgid "Construction Monitoring Phase Sequence Engine"
+msgstr "निर्माण सुपरिवेक्षण चरण निर्धारण संयन्त्र"
+
+msgid "Districts Covered"
+msgstr "समेटिएका जिल्लाहरू"
+
+msgid "Final Completion Certificate"
+msgstr "अन्तिम निर्माण सम्पन्न प्रमाणपत्र"
+
+msgid "Foundation & DPC field inspection submission"
+msgstr "जग तथा DPC स्थलगत निरीक्षण प्रतिवेदन"
+
+msgid "Ground Coverage"
+msgstr "जमिन ओगट्ने क्षेत्रफल (ग्राउन्ड कभरेज)"
+
+msgid "Initial drawing and land ownership verification"
+msgstr "प्रारम्भिक नक्सा तथा लालपुर्जा स्वामित्व प्रमाणीकरण"
+
+msgid "Item / Fee Head"
+msgstr "शीर्षक / दस्तुर विवरण"
+
+msgid "Max Storeys"
+msgstr "अधिकतम तला"
+
+msgid "Municipal Permit Fee Schedule"
+msgstr "नगरपालिका अनुमति दस्तुर तालिका"
+
+msgid "Municipalities & Sub-Metros"
+msgstr "नगरपालिका तथा उपमहानगरपालिकाहरू"
+
+msgid ""
+"National Building Code (NBC) parameters, municipal permit fee schedules, and"
+" construction monitoring rules."
+msgstr ""
+"राष्ट्रिय भवन संहिता (NBC) का मापदण्ड, नगरपालिका अनुमति दस्तुर दर, र निर्माण"
+" सुपरिवेक्षण नियमहरू।"
+
+msgid "Nirman Sampanna Pramanpatra certificate issuance"
+msgstr "निर्माण सम्पन्न प्रमाणपत्र जारी"
+
+msgid "Per Municipal Zoning"
+msgstr "नगरपालिका क्षेत्र वर्गीकरण अनुसार"
+
+msgid "Phase 1: Permit Approval"
+msgstr "चरण १: अनुमति स्वीकृति"
+
+msgid "Phase 2: Plinth Level"
+msgstr "चरण २: प्लिन्थ (DPC) स्तर"
+
+msgid "Phase 3..N: Superstructure"
+msgstr "चरण ३..N: सुपरस्ट्रक्चर (तला निर्माण)"
+
+msgid "Provinces of Nepal"
+msgstr "नेपालका प्रदेशहरू"
+
+msgid "Residential (Low Rise)"
+msgstr "आवासीय (सानो भवन)"
+
+msgid "Residential (Medium)"
+msgstr "आवासीय (मध्यम भवन)"
+
+msgid "Residential Building Categories & Storey Rules"
+msgstr "आवासीय भवनका वर्ग तथा तला सम्बन्धी नियमहरू"
+
+msgid "Rs. 1,000 per inspection"
+msgstr "रु. १,००० प्रति निरीक्षण"
+
+msgid "Rs. 1,500 flat"
+msgstr "रु. १,५०० एकमुष्ट"
+
+msgid "Rs. 15 per sq ft"
+msgstr "रु. १५ प्रति वर्गफिट"
+
+msgid "Rs. 2,000 flat"
+msgstr "रु. २,००० एकमुष्ट"
+
+msgid "Setback (Front/Rear)"
+msgstr "सेटब्याक (अगाडि / पछाडि छाड्नुपर्ने दूरी)"
+
+msgid "Simulated Payment Gateway"
+msgstr "सिमुलेटेड भुक्तानी गेटवे (eSewa)"
+
+msgid "Site Inspection Fee"
+msgstr "स्थलगत निरीक्षण दस्तुर"
+
+msgid ""
+"Standard application verification and scrutiny fees configured across "
+"participating municipalities."
+msgstr ""
+"सहभागी नगरपालिकाहरूमा लागू हुने मानक आवेदन प्रमाणीकरण र जाँच दस्तुरहरू।"
+
+msgid "Storey-by-storey structural slab approvals"
+msgstr "तला अनुसारको स्ल्याब ढलान स्वीकृति"
+
+msgid "System Configuration & Building Bye-Laws - NirmanSathi"
+msgstr "प्रणाली व्यवस्था तथा भवन निर्माण मापदण्ड - निर्माणसाथी"
+
+msgid "System Parameters & Standards"
+msgstr "प्रणाली मापदण्ड तथा मानकहरू"
+
+msgid "Up to 3 Storeys"
+msgstr "३ तलासम्म"
+
+msgid ""
+"When a citizen submits an application with N storeys, the system "
+"automatically initializes sequential monitoring phases."
+msgstr ""
+"जब कुनै नागरिकले N तलाको भवनका लागि आवेदन दिन्छ, प्रणालीले स्वतः सोही अनुसार"
+" क्रमिक सुपरिवेक्षण चरणहरू निर्धारण गर्दछ।"

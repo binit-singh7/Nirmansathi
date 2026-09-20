@@ -81,7 +81,7 @@
 
           <!-- Category Badge -->
           <div class="mb-2">
-            <span class="badge bg-secondary opacity-75 me-2" id="productCategory">Category</span>
+            <span class="badge bg-secondary opacity-75 me-2" id="productCategory">{% trans "Category" %}</span>
             <span class="stock-badge" id="productStockBadge">—</span>
           </div>
 
@@ -95,7 +95,7 @@
           <!-- Price -->
           <div class="py-3 mb-2 border-top border-bottom">
             <span class="fs-2 fw-bold text-primary" id="productPrice">—</span>
-            <small class="text-muted ms-2 fs-6" id="productUnit">/ unit</small>
+            <small class="text-muted ms-2 fs-6" id="productUnit">/ {% trans "unit" %}</small>
           </div>
 
           <!-- Description -->
@@ -114,6 +114,10 @@
             <div class="spec-row d-flex justify-content-between">
               <span class="text-muted">{% trans "Category" %}</span>
               <span class="fw-semibold" id="specCategory">—</span>
+            </div>
+            <div class="spec-row d-flex justify-content-between" id="specLocationRow">
+              <span class="text-muted"><i class="bi bi-geo-alt me-1"></i>{% trans "Marketplace Location" %}</span>
+              <span class="fw-semibold text-primary" id="specLocation">—</span>
             </div>
           </div>
 
@@ -239,6 +243,14 @@
     document.getElementById('specStock').textContent = `${p.available_stock} ${p.unit || _t('units', 'units')}`;
     document.getElementById('specUnit').textContent = p.unit || _t('unit', 'unit');
     document.getElementById('specCategory').textContent = p.category_name || '—';
+    // Location
+    if (p.municipality_name) {
+      let loc = p.municipality_name;
+      if (p.municipality_district) loc += `, ${p.municipality_district}`;
+      document.getElementById('specLocation').textContent = loc;
+    } else {
+      document.getElementById('specLocationRow').classList.add('d-none');
+    }
 
     // Stock badge & section
     const stockBadge = document.getElementById('productStockBadge');

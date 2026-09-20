@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Permit Application Details - NirmanSathi" %}{% endblock %}
+{% block title %}{% trans "Permit & Construction Monitoring - NirmanSathi" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <span class="badge bg-secondary mb-1" id="detailRef">Ref: {% trans "Loading..." %}</span>
-            <h2 class="fw-bold text-navy mb-0">{% trans "Building Permit Status" %}</h2>
+            <h2 class="fw-bold text-navy mb-0">{% trans "Building Permit & Construction Monitoring" %}</h2>
         </div>
         <a href="/permits/my-applications/" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>{% trans "Back to Permits" %}</a>
     </div>
 
     <div id="detailLoading" class="text-center py-5">
-        <span class="loading-spinner fs-3 me-2"></span>{% trans "Loading application details..." %}
+        <span class="loading-spinner fs-3 me-2"></span>{% trans "Loading application & construction details..." %}
     </div>
 
     <div id="detailContainer" class="d-none">
         <!-- Status Progress Timeline Card -->
         <div class="card card-ns shadow-sm p-4 mb-4">
-            <h5 class="fw-bold text-navy mb-3">{% trans "Application Progress & Status Timeline" %}</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-navy mb-0">{% trans "Permit Progress & Construction Lifecycle" %}</h5>
+                <span class="badge fs-6 px-3 py-2" id="overallStatusBadge"></span>
+            </div>
 
             <div class="row align-items-center text-center my-3" id="statusTimelineRow">
                 <div class="col-md-3 mb-3 mb-md-0">
@@ -40,22 +43,83 @@
                 <div class="col-md-3 mb-3 mb-md-0">
                     <div class="p-3 rounded bg-light border" id="stepDecision">
                         <i class="bi bi-award fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">{% trans "3. Decision" %}</h6>
+                        <h6 class="fw-bold mt-2 mb-0">{% trans "3. Permit Decision" %}</h6>
                         <small class="text-muted" id="statusBadgeText"></small>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="p-3 rounded bg-light border" id="stepApprovalLetter">
-                        <i class="bi bi-file-earmark-pdf fs-2 text-secondary"></i>
-                        <h6 class="fw-bold mt-2 mb-0">{% trans "4. Permit Letter" %}</h6>
-                        <small class="text-muted" id="permitLetterSub">{% trans "Pending Approval" %}</small>
+                    <div class="p-3 rounded bg-light border" id="stepConstruction">
+                        <i class="bi bi-building-gear fs-2 text-secondary"></i>
+                        <h6 class="fw-bold mt-2 mb-0">{% trans "4. Construction & Completion" %}</h6>
+                        <small class="text-muted" id="constructionLifecycleSub">{% trans "Pending Approval" %}</small>
                     </div>
                 </div>
             </div>
 
             <div id="officerRemarksBox" class="alert alert-info d-none mt-3 mb-0" role="alert">
-                <h6 class="fw-bold mb-1"><i class="bi bi-chat-left-text me-2"></i>{% trans "Officer Remarks & Feedback:" %}</h6>
+                <h6 class="fw-bold mb-1"><i class="bi bi-chat-left-text me-2"></i>{% trans "Municipal Officer Remarks & Directives:" %}</h6>
                 <p class="mb-0" id="officerRemarksText"></p>
+            </div>
+
+            <!-- Permit Approval Letter Download (shown when APPROVED or further) -->
+            <div id="permitApprovalLetterBanner" class="alert alert-success d-none mt-3 mb-0 p-3" role="alert">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <i class="bi bi-patch-check-fill text-success me-2"></i>
+                        <strong>{% trans "Building Permit Officially Approved" %}</strong>
+                        <p class="mb-0 small text-muted mt-1">{% trans "Your official signed Permit Approval Letter is ready to download." %}</p>
+                    </div>
+                    <a id="btnDownloadPermitLetter" href="#" target="_blank"
+                       class="btn btn-success btn-sm fw-bold shadow-sm">
+                        <i class="bi bi-file-earmark-pdf-fill me-1"></i>{% trans "Download Official Approval Letter" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Construction Phase Monitoring Card (Visible when APPROVED, CONSTRUCTION_ONGOING, or COMPLETED) -->
+        <div id="constructionMonitoringSection" class="card card-ns shadow-sm p-4 mb-4 border-primary d-none">
+            <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-3 border-bottom">
+                <div>
+                    <span id="phaseRoadmapBadge" class="badge bg-primary px-3 py-1 mb-1">{% trans "ACADEMIC DEMO • SIMULATED DOCUMENT SYSTEM" %}</span>
+                    <h4 class="fw-bold text-navy mb-0"><i class="bi bi-building me-2 text-primary"></i>{% trans "Construction Phase Monitoring & Approvals" %}</h4>
+                </div>
+            </div>
+
+            <p class="text-muted small">
+                {% trans "Following municipal permit approval, construction must be inspected phase by phase. Each floor/phase requires sequential submission, officer site review, simulated stamping, and approval before subsequent phases can unlock." %}
+            </p>
+
+            <!-- Phase Tracker Visual Bar -->
+            <div class="row g-3 mb-4" id="phaseCardsContainer">
+                <!-- Dynamically populated phase cards -->
+            </div>
+
+            <!-- Active Phase Action Box -->
+            <div id="activePhaseActionBox" class="card p-4 bg-light border mb-3">
+                <!-- Populated dynamically based on selected or current phase -->
+            </div>
+        </div>
+
+        <!-- Final Completion Certificate Banner — shown ONLY when all construction phases are COMPLETED -->
+        <div id="finalCompletionCertSection" class="d-none mb-4">
+            <div class="card border-0 shadow" style="background: linear-gradient(135deg, #064e3b 0%, #065f46 60%, #047857 100%);">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                        <div class="text-white">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-award-fill fs-2"></i>
+                                <span class="badge bg-light text-success fw-bold">{% trans "CONSTRUCTION COMPLETE" %}</span>
+                            </div>
+                            <h4 class="fw-bold mb-1">{% trans "Final Building Completion Certificate" %}</h4>
+                            <p class="mb-0 opacity-75 small">{% trans "All construction phases have been inspected and approved by the municipal officer. Your final completion certificate is now available for download." %}</p>
+                        </div>
+                        <a id="btnDownloadCompletionCert" href="#" target="_blank"
+                           class="btn btn-light text-success fw-bold px-4 py-2 shadow-sm flex-shrink-0">
+                            <i class="bi bi-file-earmark-pdf-fill me-2"></i>{% trans "Download Final Completion Certificate" %}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -77,7 +141,7 @@
                             </tr>
                             <tr>
                                 <th class="text-muted">{% trans "Municipality:" %}</th>
-                                <td class="fw-bold" id="detailMunicipality"></td>
+                                <td class="fw-bold text-primary" id="detailMunicipality"></td>
                             </tr>
                             <tr>
                                 <th class="text-muted">{% trans "Ward Number:" %}</th>
@@ -100,7 +164,7 @@
                                 <td class="fw-bold" id="detailBuiltArea"></td>
                             </tr>
                             <tr>
-                                <th class="text-muted">{% trans "Storeys:" %}</th>
+                                <th class="text-muted">{% trans "Storeys Approved:" %}</th>
                                 <td class="fw-bold" id="detailStoreys"></td>
                             </tr>
                             <tr>
@@ -112,11 +176,11 @@
                 </div>
             </div>
 
-            <!-- Uploaded Documents & Additional Upload -->
+            <!-- Uploaded Initial Documents & Upload -->
             <div class="col-lg-6">
                 <div class="card card-ns shadow-sm h-100 p-4">
                     <h5 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i
-                            class="bi bi-paperclip me-2 text-warning"></i>{% trans "Attached Documents" %}</h5>
+                            class="bi bi-paperclip me-2 text-warning"></i>{% trans "Permit Supporting Documents" %}</h5>
 
                     <div id="documentsList" class="mb-4">
                         <p class="text-muted small">{% trans "Loading attached files..." %}</p>
@@ -160,17 +224,19 @@
 {% block extra_js %}
 <script>
     let currentAppId = null;
+    let applicationData = null;
+    let selectedPhaseId = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
         const parts = window.location.pathname.split('/').filter(Boolean);
         currentAppId = parts[1]; // /permits/<id>/
-
         await loadPermitDetail();
     });
 
     async function loadPermitDetail() {
         try {
             const data = await apiFetch(`/permits/applications/${currentAppId}/`);
+            applicationData = data;
             document.getElementById('detailLoading').classList.add('d-none');
             document.getElementById('detailContainer').classList.remove('d-none');
 
@@ -188,26 +254,48 @@
             document.getElementById('submittedDate').textContent = new Date(data.created_at).toLocaleDateString();
             document.getElementById('statusBadgeText').textContent = data.status_display || data.status;
 
+            // Overall Status Badge
+            const ovBadge = document.getElementById('overallStatusBadge');
+            ovBadge.textContent = data.status_display || data.status;
+            if (data.status === 'COMPLETED') {
+                ovBadge.className = 'badge bg-success fs-6 px-3 py-2';
+            } else if (data.status === 'CONSTRUCTION_ONGOING') {
+                ovBadge.className = 'badge bg-primary fs-6 px-3 py-2';
+            } else if (data.status === 'APPROVED') {
+                ovBadge.className = 'badge bg-info text-dark fs-6 px-3 py-2';
+            } else if (data.status === 'REJECTED') {
+                ovBadge.className = 'badge bg-danger fs-6 px-3 py-2';
+            } else {
+                ovBadge.className = 'badge bg-warning text-dark fs-6 px-3 py-2';
+            }
+
             // Update Status Timeline
             const stepReview = document.getElementById('stepReview');
             const stepDecision = document.getElementById('stepDecision');
-            const stepApprovalLetter = document.getElementById('stepApprovalLetter');
-            const permitLetterSub = document.getElementById('permitLetterSub');
+            const stepConstruction = document.getElementById('stepConstruction');
+            const constructionSub = document.getElementById('constructionLifecycleSub');
 
             if (data.status === 'UNDER_REVIEW') {
                 stepReview.className = 'p-3 rounded bg-warning bg-opacity-20 border border-warning';
                 stepReview.querySelector('i').className = 'bi bi-person-workspace fs-2 text-warning';
-            } else if (data.status === 'APPROVED') {
+            } else if (['APPROVED', 'CONSTRUCTION_ONGOING', 'COMPLETION_PENDING', 'COMPLETED'].includes(data.status)) {
                 stepReview.className = 'p-3 rounded bg-success bg-opacity-20 border border-success';
                 stepDecision.className = 'p-3 rounded bg-success bg-opacity-20 border border-success';
                 stepDecision.querySelector('i').className = 'bi bi-award fs-2 text-success';
-                stepApprovalLetter.className = 'p-3 rounded bg-success text-white border border-success';
-                permitLetterSub.textContent = "{% trans 'Ready to Download' %}";
-                permitLetterSub.className = 'text-white font-weight-bold';
+
+                if (data.status === 'COMPLETED') {
+                    stepConstruction.className = 'p-3 rounded bg-success text-white border border-success';
+                    constructionSub.textContent = "{% trans 'Construction Completed' %}";
+                    constructionSub.className = 'text-white font-weight-bold';
+                } else {
+                    stepConstruction.className = 'p-3 rounded bg-primary text-white border border-primary';
+                    constructionSub.textContent = "{% trans 'Construction Ongoing' %}";
+                    constructionSub.className = 'text-white font-weight-bold';
+                }
             } else if (data.status === 'REJECTED') {
                 stepDecision.className = 'p-3 rounded bg-danger bg-opacity-20 border border-danger';
                 stepDecision.querySelector('i').className = 'bi bi-x-circle fs-2 text-danger';
-                permitLetterSub.textContent = "{% trans 'Application Rejected' %}";
+                constructionSub.textContent = "{% trans 'Application Rejected' %}";
             }
 
             // Officer Remarks
@@ -216,28 +304,386 @@
                 document.getElementById('officerRemarksBox').classList.remove('d-none');
             }
 
+            // Show Permit Approval Letter download banner if permit is approved
+            if (['APPROVED', 'CONSTRUCTION_ONGOING', 'COMPLETION_PENDING', 'COMPLETED'].includes(data.status)) {
+                const letterBanner = document.getElementById('permitApprovalLetterBanner');
+                letterBanner.classList.remove('d-none');
+                document.getElementById('btnDownloadPermitLetter').href =
+                    getAuthDownloadUrl(`/permits/applications/${data.id}/download_permit_approval_letter/`);
+            }
+
+            // Render Construction Monitoring Section only for active/completed permits
+            const isPermitActive = ['APPROVED', 'CONSTRUCTION_ONGOING', 'COMPLETION_PENDING', 'COMPLETED'].includes(data.status);
+            if (isPermitActive) {
+                document.getElementById('constructionMonitoringSection').classList.remove('d-none');
+                renderConstructionPhases(data);
+            }
+
+            // Final Completion Certificate — show prominent banner only when fully COMPLETED
+            if (data.status === 'COMPLETED') {
+                const certSection = document.getElementById('finalCompletionCertSection');
+                certSection.classList.remove('d-none');
+                document.getElementById('btnDownloadCompletionCert').href =
+                    getAuthDownloadUrl(`/permits/applications/${data.id}/download_completion_certificate/`);
+            }
+
             // Documents List
             const docsBox = document.getElementById('documentsList');
             if (!data.documents || data.documents.length === 0) {
                 docsBox.innerHTML = `<p class="text-muted small mb-0">{% trans "No documents attached yet." %}</p>`;
             } else {
                 docsBox.innerHTML = `
-        <div class="list-group list-group-flush">
-          ${data.documents.map(d => `
-            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
-              <div>
-                <span class="fw-semibold d-block text-dark small">${d.title}</span>
-                <span class="badge bg-secondary me-2">${d.document_type_display || d.document_type}</span>
-                <small class="text-muted">${new Date(d.uploaded_at).toLocaleDateString()}</small>
-              </div>
-              <a href="${d.file}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> {% trans "Download" %}</a>
-            </div>
-          `).join('')}
-        </div>
-      `;
+                <div class="list-group list-group-flush">
+                  ${data.documents.map(d => `
+                    <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                      <div>
+                        <span class="fw-semibold d-block text-dark small">${d.title}</span>
+                        <span class="badge bg-secondary me-2">${d.document_type_display || d.document_type}</span>
+                        <small class="text-muted">${new Date(d.uploaded_at).toLocaleDateString()}</small>
+                      </div>
+                      <a href="${d.file}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i> {% trans "Download" %}</a>
+                    </div>
+                  `).join('')}
+                </div>
+              `;
             }
         } catch (err) {
             document.getElementById('detailLoading').innerHTML = `<p class="text-danger">${err.message || "{% trans 'Failed to load permit details.' %}"}</p>`;
+        }
+    }
+
+    function renderConstructionPhases(data) {
+        const phases = data.construction_phases || [];
+        const container = document.getElementById('phaseCardsContainer');
+        const isPermitApproved = ['APPROVED', 'CONSTRUCTION_ONGOING', 'COMPLETION_PENDING', 'COMPLETED'].includes(data.status);
+
+        const headerBadge = document.getElementById('phaseRoadmapBadge');
+        if (headerBadge) {
+            headerBadge.textContent = isPermitApproved 
+                ? "{% trans 'ACADEMIC DEMO • SIMULATED DOCUMENT SYSTEM' %}"
+                : `{% trans 'CONFIGURED FOR' %} ${data.storeys_count} {% trans 'SUBMITTED STOREY(S)' %}`;
+            headerBadge.className = isPermitApproved ? 'badge bg-primary px-3 py-1 mb-1' : 'badge bg-secondary px-3 py-1 mb-1';
+        }
+
+        if (phases.length === 0) {
+            container.innerHTML = `
+                <div class="col-12 text-center py-4">
+                    <p class="text-muted mb-2">{% trans "Construction monitoring phases are being initialized for" %} ${data.storeys_count} {% trans "storeys." %}</p>
+                    <button class="btn btn-primary" onclick="startConstructionMonitoring()">
+                        <i class="bi bi-play-circle me-1"></i>{% trans "Initialize Construction Monitoring" %}
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        // Default selected phase: first unapproved phase, or the first phase
+        if (!selectedPhaseId) {
+            const activeP = phases.find(p => p.status !== 'APPROVED') || phases[0];
+            selectedPhaseId = activeP ? activeP.id : phases[0].id;
+        }
+
+        container.innerHTML = phases.map(p => {
+            const isSelected = p.id === selectedPhaseId;
+            let statusClass = 'border-secondary text-secondary bg-white';
+            let icon = 'bi-lock-fill';
+            let badgeHtml = `<span class="badge bg-secondary">{% trans 'Locked' %}</span>`;
+
+            if (p.status === 'APPROVED') {
+                statusClass = 'border-success bg-success bg-opacity-10';
+                icon = 'bi-check-circle-fill text-success';
+                badgeHtml = `<span class="badge bg-success">{% trans 'Approved' %}</span>`;
+            } else if (p.status === 'SUBMITTED') {
+                statusClass = 'border-primary bg-primary bg-opacity-10';
+                icon = 'bi-clock-history text-primary';
+                badgeHtml = `<span class="badge bg-primary">{% trans 'Submitted' %}</span>`;
+            } else if (p.status === 'REJECTED') {
+                statusClass = 'border-danger bg-danger bg-opacity-10';
+                icon = 'bi-exclamation-octagon-fill text-danger';
+                badgeHtml = `<span class="badge bg-danger">{% trans 'Rejected' %}</span>`;
+            } else if (p.is_prerequisite_satisfied) {
+                statusClass = 'border-warning bg-warning bg-opacity-10';
+                icon = 'bi-unlock-fill text-warning';
+                badgeHtml = `<span class="badge bg-warning text-dark">{% trans 'Ready' %}</span>`;
+            }
+
+            return `
+                <div class="col-md">
+                    <div class="card p-3 h-100 text-center cursor-pointer ${statusClass} ${isSelected ? 'shadow ring-2 ring-primary border-3' : ''}" 
+                         onclick="selectPhase(${p.id})">
+                        <i class="bi ${icon} fs-3 mb-1"></i>
+                        <h6 class="fw-bold mb-1 small">${p.name}</h6>
+                        <small class="text-muted d-block mb-2">{% trans "Phase" %} ${p.sequence}</small>
+                        ${badgeHtml}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        renderActivePhaseAction(phases.find(p => p.id === selectedPhaseId) || phases[0]);
+    }
+
+    function selectPhase(phaseId) {
+        selectedPhaseId = phaseId;
+        renderConstructionPhases(applicationData);
+    }
+
+    function renderActivePhaseAction(phase) {
+        const box = document.getElementById('activePhaseActionBox');
+        if (!phase) return;
+
+        let actionHtml = '';
+
+        if (phase.status === 'APPROVED') {
+            const phaseApprovalUrl = getAuthDownloadUrl('/permits/phases/' + phase.id + '/download_approval_pdf/');
+            const phaseBlueprintUrl = getAuthDownloadUrl('/permits/phases/' + phase.id + '/download_stamped_blueprint/');
+            actionHtml = `
+                <div class="alert alert-success border-success p-0 overflow-hidden" style="border-left: 5px solid #198754 !important;">
+                    <div class="p-3" style="background: linear-gradient(to right, #f0fdf4, #ffffff);">
+                        <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <i class="bi bi-patch-check-fill text-success fs-4"></i>
+                                    <span class="badge bg-success px-3">{% trans "PHASE APPROVED — CERTIFICATE READY" %}</span>
+                                </div>
+                                <h5 class="fw-bold text-navy mb-1">${phase.name} <span class="text-muted fw-normal small">({% trans "Phase" %} ${phase.sequence})</span></h5>
+                                <p class="text-muted small mb-1">
+                                    <i class="bi bi-calendar-check me-1"></i>{% trans "Approved on" %}: <b>${phase.approved_at ? new Date(phase.approved_at).toLocaleDateString() : 'N/A'}</b>
+                                    &nbsp;•&nbsp; <i class="bi bi-person-badge me-1"></i>{% trans "Inspected by" %}: <b>${phase.reviewed_by_name || '{% trans "Municipal Officer" %}'}</b>
+                                </p>
+                                ${phase.review_notes ? '<div class="alert alert-light border small mb-0 py-2 mt-2"><i class="bi bi-chat-left-quote me-1"></i>' + phase.review_notes + '</div>' : ''}
+                            </div>
+                            <div class="d-flex flex-column gap-2">
+                                <a href="${phaseApprovalUrl}" target="_blank"
+                                   class="btn btn-success btn-sm fw-bold shadow-sm">
+                                    <i class="bi bi-file-earmark-pdf-fill me-1"></i>{% trans "Download Phase Certificate" %}
+                                </a>
+                                <a href="${phaseBlueprintUrl}" target="_blank"
+                                   class="btn btn-outline-primary btn-sm fw-bold">
+                                    <i class="bi bi-stamp me-1"></i>{% trans "Download Stamped Blueprint" %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (phase.status === 'SUBMITTED') {
+            actionHtml = `
+                <div>
+                    <span class="badge bg-primary mb-1"><i class="bi bi-clock-history me-1"></i>{% trans "Under Municipal Technical Review" %}</span>
+                    <h5 class="fw-bold text-navy mb-1">${phase.name} (Phase ${phase.sequence})</h5>
+                    <p class="text-muted small mb-3">
+                        {% trans "Submitted on" %}: <b>${phase.submitted_at ? new Date(phase.submitted_at).toLocaleDateString() : 'N/A'}</b>. 
+                        {% trans "A municipality technical officer is currently reviewing your structural documentation and field compliance." %}
+                    </p>
+                    <div class="border rounded p-3 bg-white mb-3">
+                        <h6 class="fw-bold text-navy mb-2 small"><i class="bi bi-paperclip me-1"></i>{% trans "Submitted Phase Documents:" %}</h6>
+                        ${phase.documents && phase.documents.length > 0 ? `
+                            <ul class="list-unstyled mb-0 small">
+                                ${phase.documents.map(d => `
+                                    <li class="py-1 border-bottom d-flex justify-content-between align-items-center">
+                                        <span><b>${d.title}</b> (${d.document_type_display || d.document_type})</span>
+                                        <a href="${d.file}" target="_blank" class="btn btn-sm btn-link py-0"><i class="bi bi-box-arrow-up-right"></i> View</a>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        ` : `<p class="text-muted small mb-0">{% trans "No phase-specific document has been attached yet." %}</p>`}
+                    </div>
+                    ${renderPhaseUploadForm(phase, false)}
+                    <p class="text-secondary small mb-0"><i class="bi bi-info-circle me-1"></i>{% trans "You will be notified once the officer approves or requests revisions for this phase." %}</p>
+                </div>
+            `;
+        } else if (phase.status === 'REJECTED') {
+            actionHtml = `
+                <div>
+                    <div class="alert alert-danger mb-3">
+                        <h6 class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i>{% trans "Phase Inspection Not Approved (Rejection Remarks):" %}</h6>
+                        <p class="mb-0 small">${phase.review_notes || "{% trans 'Deficiencies were noted during technical inspection.' %}"}</p>
+                    </div>
+                    <h5 class="fw-bold text-navy mb-2">${phase.name} (Phase ${phase.sequence}) - {% trans "Resubmission Required" %}</h5>
+                    <p class="text-muted small mb-3">{% trans "Please address the officer remarks above, attach any rectified blueprints or site photos, and resubmit this phase." %}</p>
+                    ${renderPhaseUploadForm(phase)}
+                </div>
+            `;
+        } else {
+            // PENDING
+            if (!['APPROVED', 'CONSTRUCTION_ONGOING', 'COMPLETION_PENDING', 'COMPLETED'].includes(applicationData.status)) {
+                actionHtml = `
+                    <div class="text-center py-3">
+                        <i class="bi bi-hourglass-split fs-1 text-warning mb-2 d-block"></i>
+                        <h5 class="fw-bold text-navy">${phase.name} (Phase ${phase.sequence})</h5>
+                        <p class="text-muted small mb-0">
+                            {% trans "This phase is configured according to your submitted storey count" %} (<b>${applicationData.storeys_count} {% trans "Storey(s)" %}</b>).<br>
+                            {% trans "Phase submission will unlock once your building permit application is officially reviewed and approved by the municipal engineer." %}
+                        </p>
+                    </div>
+                `;
+            } else if (!phase.is_prerequisite_satisfied) {
+                actionHtml = `
+                    <div class="text-center py-3">
+                        <i class="bi bi-lock-fill fs-1 text-muted mb-2 d-block"></i>
+                        <h5 class="fw-bold text-secondary">${phase.name} (Phase ${phase.sequence}) - {% trans "Locked" %}</h5>
+                        <p class="text-muted small mb-0">
+                            {% trans "This phase is locked. You must obtain official approval for the previous construction phase before this phase can be submitted." %}
+                        </p>
+                    </div>
+                `;
+            } else {
+                actionHtml = `
+                    <div>
+                        <span class="badge bg-warning text-dark mb-1"><i class="bi bi-unlock-fill me-1"></i>{% trans "Ready for Submission" %}</span>
+                        <h5 class="fw-bold text-navy mb-2">${phase.name} (Phase ${phase.sequence})</h5>
+                        <p class="text-muted small mb-3">
+                            {% trans "Prerequisite phase has been approved. Attach phase blueprints, site inspection reports, or progress photos, and submit for municipal officer review." %}
+                        </p>
+                        ${renderPhaseUploadForm(phase)}
+                    </div>
+                `;
+            }
+        }
+
+        box.innerHTML = actionHtml;
+    }
+
+    function renderPhaseUploadForm(phase, allowSubmission = true) {
+        const attachedDocuments = phase.documents || [];
+        const attachedDocumentsHtml = attachedDocuments.length > 0 ? `
+            <div class="alert alert-success small py-2 mb-3">
+                <div class="fw-semibold mb-1"><i class="bi bi-check-circle-fill me-1"></i>{% trans "Documents attached to this phase" %} (${attachedDocuments.length})</div>
+                ${attachedDocuments.map(document => `
+                    <div class="d-flex justify-content-between align-items-center border-top pt-1 mt-1">
+                        <span>${document.title} (${document.document_type_display || document.document_type})</span>
+                        <a href="${document.file}" target="_blank" class="btn btn-sm btn-link py-0">{% trans "Inspect" %}</a>
+                    </div>
+                `).join('')}
+            </div>
+        ` : `
+            <div class="alert alert-warning small py-2 mb-3">
+                <i class="bi bi-exclamation-triangle me-1"></i>{% trans "No document is attached to this phase yet." %}
+            </div>
+        `;
+
+        return `
+            <div class="card p-3 bg-white border mb-3">
+                <h6 class="fw-bold text-navy mb-3 small"><i class="bi bi-cloud-arrow-up text-primary me-1"></i>${allowSubmission ? '{% trans "Upload Phase Architectural Document / Photo" %}' : '{% trans "Attach an Additional Document to This Submitted Phase" %}'}</h6>
+                ${attachedDocumentsHtml}
+                <form id="phaseDocUploadForm" onsubmit="handlePhaseDocUpload(event, ${phase.id})">
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-5">
+                            <input type="text" class="form-control form-control-sm" id="phaseDocTitle" placeholder="{% trans 'e.g. Column Casting Photo or Phase Blueprint' %}" required>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-select form-select-sm" id="phaseDocType" required>
+                                <option value="BLUEPRINT">{% trans "Phase Architectural Blueprint" %}</option>
+                                <option value="SITE_PHOTO">{% trans "Site Construction Photo" %}</option>
+                                <option value="INSPECTION_REPORT">{% trans "Field Inspection Report" %}</option>
+                                <option value="OTHER">{% trans "Other Supporting Document" %}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="file" class="form-control form-control-sm" id="phaseDocFile" accept=".pdf,.png,.jpg,.jpeg" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-outline-primary" id="btnUploadPhaseDoc">
+                        <i class="bi bi-paperclip me-1"></i>{% trans "Attach Document to Phase" %}
+                    </button>
+                </form>
+            </div>
+
+            ${allowSubmission ? `
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">{% trans "At least one phase-specific document is required before submission." %}</small>
+                    <button class="btn btn-primary fw-bold px-4" id="btnSubmitPhase" onclick="submitPhaseForReview(${phase.id})" ${attachedDocuments.length === 0 ? 'disabled' : ''}>
+                        <i class="bi bi-send-check me-1"></i>{% trans "Submit Phase for Officer Review" %}
+                    </button>
+                </div>
+            ` : ''}
+        `;
+    }
+
+    async function handlePhaseDocUpload(event, phaseId) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const btn = document.getElementById('btnUploadPhaseDoc');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="loading-spinner me-1"></span>{% trans "Uploading..." %}`;
+
+        const fd = new FormData();
+        const title = form.querySelector('#phaseDocTitle').value.trim();
+        const documentType = form.querySelector('#phaseDocType').value;
+        const fileInput = form.querySelector('#phaseDocFile');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            showToast("{% trans 'Select a file before attaching it to this phase.' %}", 'warning');
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-paperclip me-1"></i>{% trans "Attach Document to Phase" %}`;
+            return;
+        }
+
+        fd.append('title', title);
+        fd.append('document_type', documentType);
+        fd.append('file', file);
+
+        try {
+            const upload = await apiFetch(`/permits/phases/${phaseId}/upload_document/`, {
+                method: 'POST',
+                body: fd
+            });
+
+            if (!upload.document || Number(upload.document.phase) !== Number(phaseId)) {
+                throw new Error("{% trans 'The uploaded file was not linked to the selected construction phase.' %}");
+            }
+
+            // Re-read the exact phase before showing success. This prevents a
+            // permit-level upload or a stale UI response from being presented
+            // as a phase-level attachment.
+            const updatedPhase = await apiFetch(`/permits/phases/${phaseId}/`);
+            if (!updatedPhase.documents?.some(document => document.id === upload.document.id)) {
+                throw new Error("{% trans 'The phase document could not be confirmed after upload.' %}");
+            }
+
+            showToast(`${upload.document.title} — {% trans 'attached to this phase successfully!' %}`, 'success');
+            await loadPermitDetail();
+        } catch (err) {
+            showToast(err.message || "{% trans 'Failed to upload phase document.' %}", 'danger');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="bi bi-paperclip me-1"></i>{% trans "Attach Document to Phase" %}`;
+        }
+    }
+
+    async function submitPhaseForReview(phaseId) {
+        const btn = document.getElementById('btnSubmitPhase');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<span class="loading-spinner me-1"></span>{% trans "Submitting..." %}`;
+        }
+
+        try {
+            const res = await apiFetch(`/permits/phases/${phaseId}/submit/`, {
+                method: 'POST'
+            });
+            showToast(res.message || "{% trans 'Phase submitted for municipal review!' %}", 'success');
+            await loadPermitDetail();
+        } catch (err) {
+            showToast(err.message || "{% trans 'Failed to submit phase.' %}", 'danger');
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="bi bi-send-check me-1"></i>{% trans "Submit Phase for Officer Review" %}`;
+            }
+        }
+    }
+
+    async function startConstructionMonitoring() {
+        try {
+            await apiFetch(`/permits/applications/${currentAppId}/start_construction/`, {
+                method: 'POST'
+            });
+            showToast("{% trans 'Construction phase monitoring initialized!' %}", 'success');
+            await loadPermitDetail();
+        } catch (err) {
+            showToast(err.message || "{% trans 'Failed to start construction.' %}", 'danger');
         }
     }
 

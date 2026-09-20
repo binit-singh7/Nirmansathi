@@ -142,11 +142,39 @@
 
 {% block extra_js %}
 <script>
-    let currentOrderId = null;
+    document.addEventListener('DOMContentLoaded', async () => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        currentOrderId = parts[2]; // /marketplace/orders/<id>/
+
+        const user = getUser();
+        if (user && user.role === 'MATERIAL_SUPPLIER') {
+            const backBtn = document.querySelector('a[href="/marketplace/orders/"]');
+            if (backBtn) backBtn.href = '/marketplace/supplier/orders/';
+        }
+
+        await loadOrderDetail();
+
+        document.getElementById('cancelOrderBtn')?.addEventListener('click', async () => {
+            if (!confirm("{% trans 'Are you sure you want to cancel this order? Deducted inventory items will be restored.' %}")) return;
+
+            try {
+                const res = await apiFetch(`/marketplace/orders/${currentOrderId}/cancel/`, {
+                    method: 'POST'
+                });
+                showToast(res.message || "{% trans 'Order cancelled successfully.' %}", 'info');
+                await loadOrderDetail();
+            } catch (err) {
+                showToast(err.message || "{% trans 'Failed to cancel order.' %}", 'danger');
+            }
+        });
+    });
 
     async function loadOrderDetail() {
         try {
             const order = await apiFetch(`/marketplace/orders/${currentOrderId}/`);
+            const user = getUser();
+            const isSupplier = user && user.role === 'MATERIAL_SUPPLIER';
+
             document.getElementById('orderLoading').classList.add('d-none');
             document.getElementById('orderContainer').classList.remove('d-none');
 
@@ -168,7 +196,12 @@
                 unpaidAlert.classList.add('d-none');
             } else if (order.payment_status === 'UNPAID') {
                 unpaidAlert.classList.remove('d-none');
-                document.getElementById('payNowBtn').href = `/marketplace/payment-simulation/?order_id=${order.id}`;
+                if (isSupplier) {
+                    document.getElementById('cancelOrderBtn')?.classList.add('d-none');
+                    document.getElementById('payNowBtn')?.classList.add('d-none');
+                } else {
+                    document.getElementById('payNowBtn').href = `/marketplace/payment-simulation/?order_id=${order.id}`;
+                }
             } else {
                 unpaidAlert.classList.add('d-none');
             }
@@ -180,28 +213,25 @@
             const stShipped = document.getElementById('stepShipped');
             const stDelivered = document.getElementById('stepDelivered');
 
-            function markActive(el, iconEl, iconClass, bgClass) {
-                el.className = `p-3 rounded ${bgClass} border h-100`;
-                iconEl.className = `${iconClass} fs-2 text-primary`;
-            }
+            const activeStatus = isSupplier && order.supplier_status ? order.supplier_status : order.status;
 
-            if (order.status !== 'CANCELLED') {
+            if (activeStatus !== 'CANCELLED') {
                 stPlaced.className = 'p-3 rounded bg-success bg-opacity-20 border border-success h-100';
                 stPlaced.querySelector('i').className = 'bi bi-bag-check fs-2 text-success';
 
-                if (['CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'COMPLETED'].includes(order.status)) {
+                if (['CONFIRMED', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'COMPLETED'].includes(activeStatus)) {
                     stConfirmed.className = 'p-3 rounded bg-success bg-opacity-20 border border-success h-100';
                     stConfirmed.querySelector('i').className = 'bi bi-check2-circle fs-2 text-success';
                 }
-                if (['PROCESSING', 'SHIPPED', 'DELIVERED', 'COMPLETED'].includes(order.status)) {
+                if (['PROCESSING', 'SHIPPED', 'DELIVERED', 'COMPLETED'].includes(activeStatus)) {
                     stProcessing.className = 'p-3 rounded bg-info bg-opacity-20 border border-info h-100';
                     stProcessing.querySelector('i').className = 'bi bi-gear-fill fs-2 text-info';
                 }
-                if (['SHIPPED', 'DELIVERED', 'COMPLETED'].includes(order.status)) {
+                if (['SHIPPED', 'DELIVERED', 'COMPLETED'].includes(activeStatus)) {
                     stShipped.className = 'p-3 rounded bg-primary bg-opacity-20 border border-primary h-100';
                     stShipped.querySelector('i').className = 'bi bi-truck fs-2 text-primary';
                 }
-                if (['DELIVERED', 'COMPLETED'].includes(order.status)) {
+                if (['DELIVERED', 'COMPLETED'].includes(activeStatus)) {
                     stDelivered.className = 'p-3 rounded bg-success text-white border border-success h-100';
                     stDelivered.querySelector('i').className = 'bi bi-house-check fs-2 text-white';
                 }
@@ -230,32 +260,12 @@
                 </tr>`;
             }).join('');
 
+            const displayTotal = isSupplier && order.supplier_total_amount !== undefined ? order.supplier_total_amount : (isSupplier ? total : parseFloat(order.total_amount));
             document.getElementById('itemsTotal').textContent = `Rs. ${total.toLocaleString('en-IN')}`;
-            document.getElementById('orderGrandTotal').textContent = `Rs. ${parseFloat(order.total_amount).toLocaleString('en-IN')}`;
+            document.getElementById('orderGrandTotal').textContent = `Rs. ${displayTotal.toLocaleString('en-IN')}`;
         } catch (err) {
             document.getElementById('orderLoading').innerHTML = `<p class="text-danger py-4">${err.message || "{% trans 'Failed to load order details.' %}"}</p>`;
         }
     }
-
-    document.addEventListener('DOMContentLoaded', async () => {
-        const parts = window.location.pathname.split('/').filter(Boolean);
-        currentOrderId = parts[2]; // /marketplace/orders/<id>/
-
-        await loadOrderDetail();
-
-        document.getElementById('cancelOrderBtn')?.addEventListener('click', async () => {
-            if (!confirm("{% trans 'Are you sure you want to cancel this order? Deducted inventory items will be restored.' %}")) return;
-
-            try {
-                const res = await apiFetch(`/marketplace/orders/${currentOrderId}/cancel/`, {
-                    method: 'POST'
-                });
-                showToast(res.message || "{% trans 'Order cancelled successfully.' %}", 'info');
-                await loadOrderDetail();
-            } catch (err) {
-                showToast(err.message || "{% trans 'Failed to cancel order.' %}", 'danger');
-            }
-        });
-    });
 </script>
 {% endblock %}

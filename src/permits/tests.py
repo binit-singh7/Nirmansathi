@@ -1,4 +1,6 @@
-from django.test import TestCase
+import tempfile
+import shutil
+from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from locations.models import Province, District, Municipality, Ward
@@ -6,7 +8,16 @@ from permits.models import PermitApplication
 
 User = get_user_model()
 
+PERMITS_TEST_MEDIA_ROOT = tempfile.mkdtemp()
+
+
+@override_settings(MEDIA_ROOT=PERMITS_TEST_MEDIA_ROOT)
 class PermitOfficerAuthorizationTests(TestCase):
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        shutil.rmtree(PERMITS_TEST_MEDIA_ROOT, ignore_errors=True)
+
     def setUp(self):
         self.client = APIClient()
 

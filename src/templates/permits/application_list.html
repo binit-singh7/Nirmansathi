@@ -63,9 +63,11 @@
             }
 
             tbody.innerHTML = permits.map(p => {
-                const badgeClass = p.status === 'APPROVED' ? 'badge-approved' :
-                    p.status === 'REJECTED' ? 'badge-rejected' :
-                        p.status === 'UNDER_REVIEW' ? 'badge-review' : 'badge-pending';
+                const badgeClass = p.status === 'COMPLETED' ? 'bg-success' :
+                    p.status === 'CONSTRUCTION_ONGOING' ? 'bg-primary' :
+                        p.status === 'APPROVED' ? 'bg-info text-dark' :
+                            p.status === 'REJECTED' ? 'bg-danger' :
+                                p.status === 'UNDER_REVIEW' ? 'bg-warning text-dark' : 'bg-secondary';
                 const dateStr = new Date(p.created_at).toLocaleDateString();
                 return `
         <tr>

@@ -188,7 +188,10 @@
     async function loadSupplierOrders() {
         const tbody = document.getElementById('supplierOrdersBody');
         try {
-            const orders = await apiFetch('/marketplace/orders/');
+            const rawOrders = await apiFetch('/marketplace/orders/');
+            const rawList = Array.isArray(rawOrders) ? rawOrders : (rawOrders.results || []);
+            // Only orders containing this supplier's items
+            const orders = rawList.filter(o => o.items && o.items.length > 0);
             document.getElementById('supStatOrders').textContent = orders.length;
 
             if (orders.length === 0) {
@@ -203,24 +206,31 @@
                 return;
             }
 
-            tbody.innerHTML = orders.map(o => `
+            tbody.innerHTML = orders.map(o => {
+                const activeStatus = o.supplier_status || (o.items && o.items.length > 0 ? o.items[0].status : o.status);
+                const statusDisplay = o.supplier_status_display || o.status_display || activeStatus;
+                const supplierAmount = o.supplier_total_amount !== undefined ? o.supplier_total_amount : (o.items ? o.items.reduce((sum, it) => sum + parseFloat(it.subtotal || 0), 0) : parseFloat(o.total_amount || 0));
+
+                return `
       <tr>
-        <td class="fw-bold text-primary">${o.order_reference}</td>
-        <td>${o.buyer_name || '{% trans "Customer" %}'}</td>
-        <td class="small">${o.shipping_address}</td>
-        <td class="fw-bold">Rs. ${parseFloat(o.total_amount).toLocaleString('en-IN')}</td>
-        <td><span class="badge ${o.payment_status === 'PAID' ? 'bg-success' : 'bg-danger'}">${o.payment_status_display || o.payment_status}</span></td>
-        <td><span class="badge bg-info text-dark">${o.status_display || o.status}</span></td>
+        <td class="fw-bold text-primary">
+            <a href="/marketplace/orders/${o.id}/" class="text-decoration-none text-navy">${o.order_reference || '#' + o.id}</a>
+        </td>
+        <td>${o.buyer_name || o.customer_name || '{% trans "Customer" %}'}</td>
+        <td class="small">${o.shipping_address || '—'}</td>
+        <td class="fw-bold text-primary">Rs. ${parseFloat(supplierAmount || 0).toLocaleString('en-IN')}</td>
+        <td><span class="badge ${o.payment_status === 'PAID' ? 'bg-success' : 'bg-warning text-dark'}">${o.payment_status_display || o.payment_status}</span></td>
+        <td><span class="badge bg-info text-dark">${statusDisplay}</span></td>
         <td class="text-end">
-          <select class="form-select form-select-sm" onchange="updateOrderStatus(${o.id}, this.value, this)">
-            <option value="PENDING" ${o.status === 'PENDING' ? 'selected' : ''}>${_t('status_pending', 'Pending')}</option>
-            <option value="CONFIRMED" ${o.status === 'CONFIRMED' ? 'selected' : ''}>${_t('status_confirmed', 'Confirm')}</option>
-            <option value="SHIPPED" ${o.status === 'SHIPPED' ? 'selected' : ''}>${_t('status_shipped', 'Ship Material')}</option>
-            <option value="DELIVERED" ${o.status === 'DELIVERED' || o.status === 'COMPLETED' ? 'selected' : ''}>${_t('status_delivered', 'Delivered')}</option>
+          <select class="form-select form-select-sm" onchange="updateOrderStatus(${o.id}, this.value, this)" ${o.payment_status !== 'PAID' ? 'disabled' : ''}>
+            <option value="CONFIRMED" ${activeStatus === 'CONFIRMED' ? 'selected' : ''}>${_t('status_confirmed', 'Confirmed')}</option>
+            <option value="PROCESSING" ${activeStatus === 'PROCESSING' ? 'selected' : ''}>${_t('status_processing', 'Processing')}</option>
+            <option value="SHIPPED" ${activeStatus === 'SHIPPED' ? 'selected' : ''}>${_t('status_shipped', 'Shipped')}</option>
+            <option value="DELIVERED" ${activeStatus === 'DELIVERED' || activeStatus === 'COMPLETED' ? 'selected' : ''}>${_t('status_delivered', 'Delivered')}</option>
           </select>
         </td>
-      </tr>
-    `).join('');
+      </tr>`;
+            }).join('');
         } catch (err) {
             tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger py-4">${err.message}</td></tr>`;
         }

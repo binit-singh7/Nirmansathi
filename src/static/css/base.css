@@ -1,28 +1,74 @@
-/* NirmanSathi Main Custom Stylesheet */
+/* NirmanSathi Main Unified Stylesheet — Teal / Slate / Amber Design System */
 :root {
-  --ns-primary: #0f3460;
-  --ns-primary-hover: #16213e;
-  --ns-secondary: #00b4d8;
-  --ns-accent: #e94560;
+  --ns-primary: #0f766e;
+  --ns-primary-dark: #115e59;
+  --ns-primary-soft: #ecfdf5;
+
+  --ns-accent: #f59e0b;
+  --ns-accent-dark: #d97706;
+
+  --ns-dark: #172033;
+  --ns-text: #334155;
+  --ns-muted: #64748b;
+
+  --ns-bg: #f8fafc;
+  --ns-white: #ffffff;
+  --ns-border: #e2e8f0;
+
+  --ns-radius-sm: 10px;
+  --ns-radius-md: 16px;
+  --ns-radius-lg: 24px;
+
+  --ns-shadow-sm: 0 4px 14px rgba(15, 23, 42, 0.06);
+  --ns-shadow-md: 0 12px 30px rgba(15, 23, 42, 0.08);
+  --ns-shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.12);
+
+  /* Compatibility & Semantic Aliases */
+  --ns-primary-hover: var(--ns-primary-dark);
+  --ns-secondary: var(--ns-dark);
   --ns-success: #10b981;
-  --ns-warning: #f59e0b;
+  --ns-warning: var(--ns-accent);
   --ns-danger: #ef4444;
-  --ns-bg-light: #f8fafc;
-  --ns-card-bg: rgba(255, 255, 255, 0.95);
-  --ns-shadow-sm: 0 2px 8px rgba(15, 52, 96, 0.06);
-  --ns-shadow-md: 0 8px 24px rgba(15, 52, 96, 0.1);
-  --ns-shadow-lg: 0 16px 32px rgba(15, 52, 96, 0.15);
-  --ns-radius: 12px;
+  --ns-bg-light: var(--ns-bg);
+  --ns-card-bg: #ffffff;
+  --ns-radius: var(--ns-radius-md);
+}
+
+/* ─── Global Overflow Fix — Prevent horizontal scrolling on any page ─── */
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: #f1f5f9;
-  color: #1e293b;
+  background-color: var(--ns-bg);
+  color: var(--ns-text);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  max-width: 100%;
 }
+
+/* Ensure no child element stretches beyond the viewport */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+img,
+video,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  height: auto;
+}
+
+
 
 html[lang="ne"] body,
 body.lang-ne,
@@ -105,65 +151,246 @@ main {
 }
 
 
-/* Glassmorphism Cards */
-.card-ns {
+/* Modern NirmanSathi Cards */
+.card-ns,
+.card {
   background: var(--ns-card-bg);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--ns-radius);
+  border: 1px solid var(--ns-border);
+  border-radius: var(--ns-radius-md);
   box-shadow: var(--ns-shadow-sm);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.card-ns:hover {
+.card-ns:hover,
+.card:hover {
   box-shadow: var(--ns-shadow-md);
 }
 
 .card-ns-interactive:hover {
   transform: translateY(-3px);
+  border-color: rgba(15, 118, 110, 0.25);
 }
 
-/* Buttons */
+/* =========================================================
+   NIRMANSATHI BUTTONS
+   ========================================================= */
+.ns-btn,
+.btn-ns-primary,
+.btn-ns-secondary,
+.btn-ns-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 20px;
+  border-radius: var(--ns-radius-sm);
+  font-size: 0.94rem;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.ns-btn:hover,
+.btn-ns-primary:hover,
+.btn-ns-secondary:hover,
+.btn-ns-accent:hover {
+  transform: translateY(-2px);
+}
+
+.ns-btn-primary,
 .btn-ns-primary {
-  background-color: var(--ns-primary);
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0.55rem 1.4rem;
+  color: #ffffff !important;
+  background: var(--ns-primary) !important;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.20);
+}
+
+.ns-btn-primary:hover,
+.btn-ns-primary:hover {
+  color: #ffffff !important;
+  background: var(--ns-primary-dark) !important;
+  box-shadow: 0 12px 25px rgba(15, 118, 110, 0.25);
+}
+
+.ns-btn-secondary,
+.btn-ns-secondary {
+  color: var(--ns-dark) !important;
+  background: #ffffff !important;
+  border-color: var(--ns-border) !important;
+  box-shadow: var(--ns-shadow-sm);
+}
+
+.ns-btn-secondary:hover,
+.btn-ns-secondary:hover {
+  color: var(--ns-primary-dark) !important;
+  border-color: rgba(15, 118, 110, 0.25) !important;
+  background: #f8fffd !important;
+  box-shadow: var(--ns-shadow-md);
+}
+
+.ns-btn-accent,
+.btn-ns-accent {
+  color: var(--ns-dark) !important;
+  background: var(--ns-accent) !important;
+  box-shadow: 0 8px 18px rgba(245, 158, 11, 0.25);
+}
+
+.ns-btn-accent:hover,
+.btn-ns-accent:hover {
+  color: #ffffff !important;
+  background: var(--ns-accent-dark) !important;
+}
+
+.ns-btn-light {
+  background: #ffffff !important;
+  color: var(--ns-primary-dark) !important;
+  box-shadow: var(--ns-shadow-sm);
+}
+
+.ns-btn-light:hover {
+  color: var(--ns-primary-dark) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* =========================================================
+   BADGES & CHIPS
+   ========================================================= */
+.ns-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ns-primary-soft);
+  border: 1px solid rgba(15, 118, 110, 0.12);
+  color: var(--ns-primary-dark);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ns-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ns-primary);
+}
+
+/* =========================================================
+   PORTAL & FEATURE CARDS
+   ========================================================= */
+.ns-portal {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid var(--ns-border);
+  border-radius: var(--ns-radius-lg);
+  padding: 28px;
+  box-shadow: var(--ns-shadow-lg);
+}
+
+.ns-portal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.ns-portal-label {
+  margin: 0 0 6px;
+  color: var(--ns-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.ns-portal-title {
+  margin: 0;
+  color: var(--ns-dark);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.ns-portal-icon {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--ns-primary-soft);
+  color: var(--ns-primary);
+  font-size: 1.2rem;
+}
+
+.ns-role-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ns-role-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 15px 16px;
+  border: 1px solid var(--ns-border);
+  border-radius: 14px;
+  color: var(--ns-dark);
+  text-decoration: none;
+  background: #ffffff;
   transition: all 0.2s ease;
 }
 
-.btn-ns-primary:hover {
-  background-color: var(--ns-primary-hover);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(15, 52, 96, 0.25);
+.ns-role-link:hover {
+  color: var(--ns-primary-dark);
+  border-color: rgba(15, 118, 110, 0.25);
+  background: #f8fffd;
+  transform: translateX(3px);
 }
 
-.btn-ns-secondary {
-  background-color: var(--ns-secondary);
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  border-radius: 8px;
-  padding: 0.55rem 1.4rem;
+.ns-role-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.btn-ns-secondary:hover {
-  background-color: #0096c7;
-  color: #ffffff;
+.ns-role-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #f1f5f9;
+  font-size: 1rem;
 }
 
-.btn-ns-accent {
-  background-color: var(--ns-accent);
-  color: #ffffff;
-  border: none;
-  font-weight: 600;
-  border-radius: 8px;
+.ns-role-name {
+  display: block;
+  font-weight: 700;
+  font-size: 0.94rem;
 }
 
-.btn-ns-accent:hover {
-  background-color: #d63447;
-  color: #ffffff;
+.ns-role-description {
+  display: block;
+  margin-top: 2px;
+  color: var(--ns-muted);
+  font-size: 0.76rem;
+}
+
+.ns-arrow {
+  color: var(--ns-muted);
+  font-size: 1.1rem;
 }
 
 /* Hero Section */
@@ -309,4 +536,531 @@ main {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* ─── Responsive Layout Overflow Fixes ─── */
+
+/* Prevent phase cards row from overflowing horizontally */
+#phaseCardsContainer {
+  flex-wrap: wrap !important;
+}
+
+/* Ensure all dynamic button-groups wrap properly */
+.btn-group {
+  flex-wrap: wrap;
+}
+
+/* Constrain dynamically-injected card/action HTML to parent width */
+#activePhaseActionBox,
+#phaseReviewActionCard,
+#finalCompletionReviewBox {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+}
+
+/* Ensure officer review two-column grid collapses gracefully */
+@media (max-width: 991.98px) {
+  #officerPhaseSection .table-responsive {
+    overflow-x: auto;
+  }
+
+  .col-lg-7,
+  .col-lg-5 {
+    max-width: 100%;
+    flex: 0 0 100%;
+  }
+}
+
+/* Status timeline row should wrap gracefully on small screens */
+#statusTimelineRow > [class*="col-"] {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Ensure navbar and its container never create scrollbars */
+.navbar-ns,
+.navbar-ns .container {
+  overflow: visible !important;
+}
+
+/* Fix any pre or code blocks that may overflow */
+pre, code {
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-width: 100%;
+}
+
+/* =========================================================
+   GLOBAL NIRMANSATHI DESIGN UTILITIES
+   ========================================================= */
+
+/* Typography & Colors */
+.text-primary {
+  color: var(--ns-primary) !important;
+}
+
+.bg-primary {
+  background-color: var(--ns-primary) !important;
+}
+
+.border-primary {
+  border-color: var(--ns-primary) !important;
+}
+
+.text-warning {
+  color: var(--ns-accent) !important;
+}
+
+.bg-warning {
+  background-color: var(--ns-accent) !important;
+}
+
+.border-warning {
+  border-color: var(--ns-accent) !important;
+}
+
+.text-navy,
+.text-dark-ns {
+  color: var(--ns-dark) !important;
+}
+
+.text-teal,
+.text-primary-ns {
+  color: var(--ns-primary) !important;
+}
+
+.text-gold,
+.text-accent-ns {
+  color: var(--ns-accent) !important;
+}
+
+.bg-primary-soft {
+  background-color: var(--ns-primary-soft) !important;
+}
+
+.bg-dark-ns {
+  background-color: var(--ns-dark) !important;
+}
+
+/* Bootstrap Button Overrides */
+.btn-primary {
+  background-color: var(--ns-primary) !important;
+  border-color: var(--ns-primary) !important;
+  color: #ffffff !important;
+  border-radius: var(--ns-radius-sm) !important;
+  font-weight: 700 !important;
+  box-shadow: 0 8px 18px rgba(15, 118, 110, 0.20) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--ns-primary-dark) !important;
+  border-color: var(--ns-primary-dark) !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 25px rgba(15, 118, 110, 0.25) !important;
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+  color: var(--ns-primary) !important;
+  border-color: var(--ns-primary) !important;
+  background-color: transparent !important;
+  border-radius: var(--ns-radius-sm) !important;
+  font-weight: 600 !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--ns-primary) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(15, 118, 110, 0.20);
+}
+
+/* Trust Strip */
+.ns-trust {
+  border-top: 1px solid var(--ns-border);
+  border-bottom: 1px solid var(--ns-border);
+  background: #ffffff;
+}
+
+.ns-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.ns-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px;
+  border-right: 1px solid var(--ns-border);
+}
+
+.ns-trust-item:last-child {
+  border-right: none;
+}
+
+.ns-trust-icon {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--ns-primary-soft);
+  color: var(--ns-primary);
+}
+
+.ns-trust-title {
+  margin: 0;
+  color: var(--ns-dark);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.ns-trust-text {
+  margin: 2px 0 0;
+  color: var(--ns-muted);
+  font-size: 0.76rem;
+}
+
+/* Section Components */
+.ns-section {
+  padding: 80px 0;
+}
+
+.ns-section-header {
+  max-width: 700px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.ns-section-kicker {
+  margin-bottom: 10px;
+  color: var(--ns-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.ns-section-title {
+  margin: 0;
+  color: var(--ns-dark);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+}
+
+.ns-section-text {
+  margin: 14px auto 0;
+  color: var(--ns-muted);
+  line-height: 1.75;
+}
+
+/* Workflow Step Components */
+.ns-workflow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.ns-step {
+  position: relative;
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid var(--ns-border);
+  border-radius: var(--ns-radius-md);
+  box-shadow: var(--ns-shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ns-step:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--ns-shadow-md);
+}
+
+.ns-step-number {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--ns-primary-soft);
+  color: var(--ns-primary);
+  font-weight: 800;
+  font-size: 0.85rem;
+  margin-bottom: 22px;
+}
+
+.ns-step-title {
+  margin: 0 0 8px;
+  color: var(--ns-dark);
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.ns-step-text {
+  margin: 0;
+  color: var(--ns-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+/* Services Grid */
+.ns-service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.ns-service {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  border: 1px solid var(--ns-border);
+  border-radius: var(--ns-radius-lg);
+  background: #ffffff;
+  transition: all 0.25s ease;
+}
+
+.ns-service:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--ns-shadow-md);
+  border-color: rgba(15, 118, 110, 0.20);
+}
+
+.ns-service-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 22px;
+  border-radius: 15px;
+  background: var(--ns-primary-soft);
+  color: var(--ns-primary);
+  font-size: 1.25rem;
+}
+
+.ns-service-title {
+  margin: 0 0 10px;
+  color: var(--ns-dark);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.ns-service-text {
+  flex: 1;
+  margin: 0 0 24px;
+  color: var(--ns-muted);
+  line-height: 1.7;
+  font-size: 0.9rem;
+}
+
+.ns-service-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ns-primary);
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ns-service-link:hover {
+  color: var(--ns-primary-dark);
+}
+
+/* Lifecycle Section */
+.ns-lifecycle-wrapper {
+  padding: 45px;
+  border-radius: var(--ns-radius-lg);
+  background: var(--ns-dark);
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.ns-lifecycle-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.ns-lifecycle-title {
+  margin: 0 0 14px;
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.ns-lifecycle-text {
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 1.75;
+}
+
+.ns-lifecycle-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.ns-lifecycle-item {
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ns-lifecycle-number {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ns-accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.ns-lifecycle-item strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.ns-lifecycle-item span {
+  display: block;
+  margin-top: 4px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+/* Final CTA Card */
+.ns-final-card {
+  position: relative;
+  padding: 55px;
+  text-align: center;
+  border-radius: var(--ns-radius-lg);
+  background: var(--ns-primary);
+  overflow: hidden;
+}
+
+.ns-final-card::before,
+.ns-final-card::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  pointer-events: none;
+}
+
+.ns-final-card::before {
+  width: 280px;
+  height: 280px;
+  top: -150px;
+  left: -100px;
+}
+
+.ns-final-card::after {
+  width: 350px;
+  height: 350px;
+  right: -170px;
+  bottom: -200px;
+}
+
+.ns-final-content {
+  position: relative;
+  z-index: 1;
+}
+
+.ns-final-title {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-weight: 800;
+}
+
+.ns-final-text {
+  max-width: 620px;
+  margin: 0 auto 25px;
+  color: rgba(255, 255, 255, 0.80);
+  line-height: 1.7;
+}
+
+/* Form Controls — modern teal focus */
+.form-control,
+.form-select {
+  border-radius: var(--ns-radius-sm);
+  border: 1px solid var(--ns-border);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.92rem;
+  color: var(--ns-text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--ns-primary);
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+  outline: none;
+}
+
+/* Responsive Overrides */
+@media (max-width: 991px) {
+  .ns-workflow {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ns-service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ns-lifecycle-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .ns-portal {
+    padding: 22px;
+  }
+
+  .ns-trust-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ns-trust-item {
+    border-right: none;
+    border-bottom: 1px solid var(--ns-border);
+  }
+
+  .ns-trust-item:last-child {
+    border-bottom: none;
+  }
+
+  .ns-section {
+    padding: 65px 0;
+  }
+
+  .ns-workflow {
+    grid-template-columns: 1fr;
+  }
+
+  .ns-lifecycle-wrapper {
+    padding: 30px 22px;
+  }
+
+  .ns-lifecycle-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ns-final-card {
+    padding: 40px 22px;
+  }
 }

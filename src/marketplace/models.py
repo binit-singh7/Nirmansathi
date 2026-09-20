@@ -32,6 +32,14 @@ class Product(models.Model):
         on_delete=models.PROTECT,
         related_name='products'
     )
+    municipality = models.ForeignKey(
+        'locations.Municipality',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='products',
+        help_text=_("Marketplace location (municipality associated with this product/supplier)")
+    )
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2, help_text=_("Price in NPR per unit"))
     available_stock = models.PositiveIntegerField(default=0, help_text=_("Available stock count"))
@@ -48,6 +56,8 @@ class Product(models.Model):
     def clean(self):
         if self.price <= 0:
             raise ValidationError({'price': 'Price must be greater than zero.'})
+        if self.available_stock < 0:
+            raise ValidationError({'available_stock': 'Available stock cannot be negative.'})
 
     def __str__(self):
         return f"{self.name} - NPR {self.price}/{self.unit} ({self.supplier.username})"

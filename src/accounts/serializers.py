@@ -10,10 +10,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = [
             'id', 'full_name', 'citizenship_number',
-            'company_name', 'company_pan_vat', 'address', 'avatar',
+            'nid_document', 'nid_verified',
+            'company_name', 'company_pan_vat',
+            'address', 'bio', 'avatar',
             'created_at', 'updated_at'
         ]
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'nid_verified', 'created_at', 'updated_at']
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -31,15 +33,56 @@ class CustomUserSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'verification_status', 'verified_at', 'rejection_reason', 'is_active', 'date_joined']
 
 
+class UpdateCurrentUserSerializer(serializers.ModelSerializer):
+    """Allows user to update their own username, email, and phone."""
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'phone_number']
+
+    def validate_email(self, value):
+        user = self.instance
+        if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+            raise serializers.ValidationError('A user with this email already exists.')
+        return value
+
+    def validate_username(self, value):
+        if len(value) < 3:
+            raise serializers.ValidationError('Username must be at least 3 characters long.')
+        user = self.instance
+        if User.objects.exclude(pk=user.pk).filter(username=value).exists():
+            raise serializers.ValidationError('A user with this username already exists.')
+        return value
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True, min_length=6)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        if data['new_password'] != data['confirm_password']:
+            raise serializers.ValidationError({'confirm_password': 'New passwords do not match.'})
+        return data
+
+    def validate_current_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError('Current password is incorrect.')
+        return value
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
     full_name = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    citizenship_number = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    nid_document = serializers.ImageField(write_only=True, required=False)
 
     class Meta:
         model = User
         fields = [
             'id', 'username', 'email', 'password', 'role',
-            'phone_number', 'municipality', 'full_name'
+            'phone_number', 'municipality', 'full_name',
+            'citizenship_number', 'nid_document'
         ]
 
     def validate_username(self, value):
@@ -64,8 +107,10 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         full_name = validated_data.pop('full_name', '')
+        citizenship_number = validated_data.pop('citizenship_number', '')
+        nid_document = validated_data.pop('nid_document', None)
         password = validated_data.pop('password')
-        
+
         user = User.objects.create_user(
             password=password,
             **validated_data
@@ -77,10 +122,22 @@ class RegisterSerializer(serializers.ModelSerializer):
         else:
             user.verification_status = User.VerificationStatus.NOT_APPLICABLE
             user.save(update_fields=['verification_status'])
-        
-        # Create profile automatically
-        UserProfile.objects.create(user=user, full_name=full_name)
+
+        # Create profile automatically — store NID document if provided.
+        # nid_verified is intentionally left False here; it is only set True
+        # by RegisterView after a confirmed server-side OCR match.
+        profile = UserProfile.objects.create(
+            user=user,
+            full_name=full_name,
+            citizenship_number=citizenship_number or '',
+        )
+        if nid_document:
+            profile.nid_document = nid_document
+            profile.nid_verified = False  # must be confirmed by OCR, not assumed
+            profile.save(update_fields=['nid_document', 'nid_verified'])
+
         return user
+
 
 
 class AdminUserListSerializer(serializers.ModelSerializer):
@@ -94,9 +151,8 @@ class AdminUserListSerializer(serializers.ModelSerializer):
             'id', 'username', 'email', 'role', 'phone_number',
             'municipality', 'municipality_name', 'verification_status',
             'verified_at', 'rejection_reason',
-            'is_active', 'is_staff', 'date_joined', 'profile'
+            'profile', 'is_active', 'date_joined'
         ]
-        read_only_fields = fields
 
     def get_municipality_name(self, obj):
         return obj.municipality.name if obj.municipality else None
@@ -128,5 +184,3 @@ class AuditLogSerializer(serializers.ModelSerializer):
             'actor', 'actor_username', 'action', 'ip_address',
             'status', 'status_display', 'metadata'
         ]
-        read_only_fields = fields
-

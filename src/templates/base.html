@@ -10,7 +10,8 @@
   <!-- Google Fonts: Inter & Noto Sans Devanagari for Nepali Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
 
   <!-- Bootstrap 5 CSS -->
@@ -32,7 +33,8 @@
         <img src="/static/images/nepal_emblem.svg" alt="{% trans 'Nepal Emblem' %}" class="navbar-emblem">
         <div class="navbar-brand-text">
           <span class="navbar-title">Nirman<span class="highlight-gold">Sathi</span></span>
-          <span class="navbar-subtitle">{% trans "Government of Nepal" %} | {% trans "Digital Construction Platform" %}</span>
+          <span class="navbar-subtitle"> {% trans "Government of Nepal" %} | {% trans "Digital Construction Platform" %}
+          </span>
         </div>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMainContent"
@@ -45,6 +47,15 @@
           <!-- Dynamic Role Navigation Items via base.js -->
         </ul>
         <div class="d-flex align-items-center gap-2 flex-shrink-0" id="navbarRightSection">
+          <!-- Global Cart Button (Citizens & Guests) -->
+          <a href="/marketplace/cart/" class="btn btn-outline-light btn-sm position-relative d-none" id="navbarCartBtn"
+            aria-label="{% trans 'View Cart' %}" title="{% trans 'View Cart' %}">
+            <i class="bi bi-cart3"></i>
+            <span class="d-inline d-lg-none ms-1 fw-semibold">{% trans "Cart" %}</span>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
+              id="navGlobalCartBadge">0</span>
+          </a>
+
           <!-- Language Switcher Form & Dropdown -->
           <form action="{% url 'set_language' %}" method="post" id="siteLanguageForm" class="d-inline-flex m-0">
             {% csrf_token %}
@@ -52,19 +63,26 @@
             <input name="language" type="hidden" id="siteLanguageInput" value="{{ LANGUAGE_CODE }}">
             <div class="dropdown">
               <button class="btn btn-outline-light btn-sm dropdown-toggle d-flex align-items-center gap-1 py-1 px-2"
-                      type="button" id="langDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{% trans 'Change Language' %}">
+                type="button" id="langDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false"
+                aria-label="{% trans 'Change Language' %}">
                 <i class="bi bi-translate text-warning"></i>
-                <span class="fw-semibold" style="font-size:0.82rem;">{% if LANGUAGE_CODE == 'ne' %}नेपाली{% else %}EN{% endif %}</span>
+                <span class="fw-semibold" style="font-size:0.82rem;">
+                  {% if LANGUAGE_CODE == 'ne' %}नेपाली{% else %}EN{%endif %}
+                </span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0 mt-1" aria-labelledby="langDropdownBtn">
                 <li>
-                  <button type="button" class="dropdown-item d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE == 'en' %}active fw-bold{% endif %}" onclick="changeSiteLanguage('en')">
+                  <button type="button"
+                    class="dropdown-item d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE == 'en' %}active fw-bold{% endif %}"
+                    onclick="changeSiteLanguage('en')">
                     <span>🇬🇧 English</span>
                     {% if LANGUAGE_CODE == 'en' %}<i class="bi bi-check2 text-primary ms-2"></i>{% endif %}
                   </button>
                 </li>
                 <li>
-                  <button type="button" class="dropdown-item d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE == 'ne' %}active fw-bold{% endif %}" onclick="changeSiteLanguage('ne')">
+                  <button type="button"
+                    class="dropdown-item d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE == 'ne' %}active fw-bold{% endif %}"
+                    onclick="changeSiteLanguage('ne')">
                     <span>🇳🇵 नेपाली</span>
                     {% if LANGUAGE_CODE == 'ne' %}<i class="bi bi-check2 text-primary ms-2"></i>{% endif %}
                   </button>
@@ -89,29 +107,29 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-dark text-white py-4 mt-auto">
+  <footer class="text-white py-5 mt-auto" style="background-color: var(--ns-dark, #172033); border-top: 1px solid rgba(255,255,255,0.08);">
     <div class="container text-center text-md-start">
-      <div class="row gy-3">
+      <div class="row gy-4">
         <div class="col-md-6">
-          <h5 class="fw-bold text-warning"><i class="bi bi-building-gear me-2"></i>NirmanSathi</h5>
-          <p class="small text-secondary mb-0">{% trans "Nepal Residential Building Permit E-Governance & Construction Material Marketplace. Streamlining urban construction and governance." %}</p>
+          <h5 class="fw-bold text-warning mb-2"><i class="bi bi-building-gear me-2"></i>NirmanSathi</h5>
+          <p class="small mb-0" style="color: #94a3b8; max-width: 500px; line-height: 1.7;">{% trans "Nepal Residential Building Permit E-Governance & Construction Material Marketplace. Streamlining urban construction and governance." %}</p>
         </div>
         <div class="col-md-3">
-          <h6>{% trans "Quick Links" %}</h6>
-          <ul class="list-unstyled small mb-0">
-            <li><a href="/" class="text-secondary text-decoration-none">{% trans "Home" %}</a></li>
-            <li><a href="/marketplace/" class="text-secondary text-decoration-none">{% trans "Marketplace" %}</a></li>
-            <li><a href="/login/" class="text-secondary text-decoration-none">{% trans "Login" %}</a></li>
+          <h6 class="text-white fw-bold mb-3">{% trans "Quick Links" %}</h6>
+          <ul class="list-unstyled small mb-0 d-flex flex-column gap-2">
+            <li><a href="/" class="text-decoration-none" style="color: #cbd5e1; transition: color 0.2s ease;" onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color='#cbd5e1'">{% trans "Home" %}</a></li>
+            <li><a href="/marketplace/" class="text-decoration-none" style="color: #cbd5e1; transition: color 0.2s ease;" onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color='#cbd5e1'">{% trans "Marketplace" %}</a></li>
+            <li><a href="/login/" class="text-decoration-none" style="color: #cbd5e1; transition: color 0.2s ease;" onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color='#cbd5e1'">{% trans "Login" %}</a></li>
           </ul>
         </div>
         <div class="col-md-3">
-          <h6>{% trans "E-Governance Portal" %}</h6>
-          <p class="small text-secondary mb-1"><i class="bi bi-geo-alt me-1"></i>{% trans "Ministry of Urban Development, Nepal" %}</p>
-          <p class="small text-secondary"><i class="bi bi-shield-check me-1"></i>{% trans "Official CSIT E-Governance Project" %}</p>
+          <h6 class="text-white fw-bold mb-3">{% trans "E-Governance Portal" %}</h6>
+          <p class="small mb-2" style="color: #94a3b8;"><i class="bi bi-geo-alt me-1 text-warning"></i>{% trans "Ministry of Urban Development, Nepal" %}</p>
+          <p class="small mb-0" style="color: #94a3b8;"><i class="bi bi-shield-check me-1 text-teal"></i>{% trans "Official CSIT E-Governance Project" %}</p>
         </div>
       </div>
-      <hr class="border-secondary my-3">
-      <div class="text-center small text-secondary">
+      <hr class="my-4" style="border-color: rgba(255,255,255,0.08);">
+      <div class="text-center small" style="color: #64748b;">
         &copy; {% now "Y" %} {% trans "NirmanSathi E-Governance Platform. All rights reserved." %}
       </div>
     </div>
@@ -135,6 +153,7 @@
         register: "{% trans 'Register' %}",
         logout: "{% trans 'Logout' %}",
         dashboard: "{% trans 'Dashboard' %}",
+        my_profile: "{% trans 'My Profile & Details' %}",
         citizen: "{% trans 'Citizen' %}",
         municipality_officer: "{% trans 'Municipality Officer' %}",
         supplier: "{% trans 'Supplier' %}",
@@ -184,7 +203,20 @@
         status_cancelled: "{% trans 'Cancelled' %}",
         status_paid: "{% trans 'Paid' %}",
         status_unpaid: "{% trans 'Unpaid' %}",
-        status_failed: "{% trans 'Failed' %}"
+        status_failed: "{% trans 'Failed' %}",
+        status_processing: "{% trans 'Processing' %}",
+        awaiting_payment: "{% trans 'Awaiting Payment' %}",
+        close: "{% trans 'Close' %}",
+        confirm: "{% trans 'Confirm Change' %}",
+        review: "{% trans 'Review' %}",
+        start_processing: "{% trans 'Start Processing' %}",
+        mark_shipped: "{% trans 'Mark as Shipped' %}",
+        mark_delivered: "{% trans 'Mark Delivered' %}",
+        updating: "{% trans 'Updating...' %}",
+        update_failed: "{% trans 'Failed to update order status.' %}",
+        order_status_updated: "{% trans 'Order status updated' %}",
+        download_failed: "{% trans 'Failed to download file.' %}",
+        unauthorized_download: "{% trans 'Unauthorized to download this document. Please log in.' %}"
       }
     };
 

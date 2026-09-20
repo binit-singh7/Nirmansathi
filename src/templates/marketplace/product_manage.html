@@ -22,17 +22,39 @@
             <div class="card card-ns shadow-sm p-4">
                 <form id="productForm">
                     <div class="row g-3 mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="productCategory" class="form-label fw-semibold">{% trans "Material Category *" %}</label>
                             <select class="form-select" id="productCategory" required>
                                 <option value="">{% trans "-- Loading Categories --" %}</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
-                            <label for="productName" class="form-label fw-semibold">{% trans "Product Name *" %}</label>
-                            <input type="text" class="form-control" id="productName"
-                                placeholder="{% trans 'e.g. Shivam OPC Cement (Grade 43)' %}" required>
+                        <div class="col-md-4">
+                            <label for="productProvince" class="form-label fw-semibold">{% trans "Supply Province (Optional)" %}</label>
+                            <select class="form-select" id="productProvince">
+                                <option value="">{% trans "-- All Provinces --" %}</option>
+                            </select>
                         </div>
+                        <div class="col-md-4">
+                            <label for="productMunicipalitySearch" class="form-label fw-semibold">{% trans "Supply Municipality (Optional)" %}</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="productMunicipalitySearch"
+                                    list="productMunicipalityList" placeholder="{% trans 'Search municipality / district...' %}" autocomplete="off">
+                                <datalist id="productMunicipalityList"></datalist>
+                                <button class="btn btn-outline-secondary" type="button" id="clearProductMunBtn" onclick="clearProductMunicipality()" title="{% trans 'Clear selection (Nationwide)' %}">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+                            <input type="hidden" id="productMunicipality" value="">
+                            <div id="selectedMunicipalityBadge" class="form-text small text-success d-none">
+                                <i class="bi bi-check-circle-fill me-1"></i><span id="selectedMunicipalityText"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="productName" class="form-label fw-semibold">{% trans "Product Name *" %}</label>
+                        <input type="text" class="form-control" id="productName"
+                            placeholder="{% trans 'e.g. Shivam OPC Cement (Grade 43)' %}" required>
                     </div>
 
                     <div class="mb-3">
@@ -92,9 +114,33 @@
 {% block extra_js %}
 <script>
     let editProductId = null;
+    let allProvinces = [];
+    let allMunicipalities = [];
 
     document.addEventListener('DOMContentLoaded', async () => {
-        await loadCategories();
+        await Promise.all([loadCategories(), loadProvinces(), loadMunicipalities()]);
+
+        const provSelect = document.getElementById('productProvince');
+        provSelect.addEventListener('change', (e) => {
+            const provId = e.target.value;
+            populateProductMunicipalityDatalist(provId);
+
+            const hiddenMun = document.getElementById('productMunicipality').value;
+            if (hiddenMun) {
+                const mObj = allMunicipalities.find(m => String(m.id) === String(hiddenMun));
+                if (mObj && provId && String(mObj.province_id) !== String(provId)) {
+                    clearProductMunicipality();
+                }
+            }
+        });
+
+        const munInput = document.getElementById('productMunicipalitySearch');
+        munInput.addEventListener('input', (e) => {
+            handleProductMunicipalityInput(e.target.value);
+        });
+        munInput.addEventListener('change', (e) => {
+            handleProductMunicipalityInput(e.target.value);
+        });
 
         const urlParams = new URLSearchParams(window.location.search);
         editProductId = urlParams.get('id');
@@ -104,6 +150,52 @@
             await loadProductData(editProductId);
         }
     });
+
+    function handleProductMunicipalityInput(val) {
+        val = (val || '').trim();
+        const hiddenInput = document.getElementById('productMunicipality');
+        const badge = document.getElementById('selectedMunicipalityBadge');
+        const badgeText = document.getElementById('selectedMunicipalityText');
+        const provSelect = document.getElementById('productProvince');
+
+        if (!val) {
+            hiddenInput.value = '';
+            badge.classList.add('d-none');
+            return;
+        }
+
+        const matched = allMunicipalities.find(m => {
+            const label = m.district_name ? `${m.name} (${m.district_name})` : m.name;
+            return label.toLowerCase() === val.toLowerCase() || m.name.toLowerCase() === val.toLowerCase();
+        });
+
+        if (matched) {
+            hiddenInput.value = matched.id;
+            if (matched.province_id && !provSelect.value) {
+                provSelect.value = matched.province_id;
+                populateProductMunicipalityDatalist(matched.province_id);
+            }
+            badgeText.textContent = `${matched.name}${matched.district_name ? ', ' + matched.district_name : ''}${matched.province_name ? ' (' + matched.province_name + ')' : ''}`;
+            badge.classList.remove('d-none');
+        } else {
+            // Partial match attempt
+            const partial = allMunicipalities.filter(m => m.name.toLowerCase().includes(val.toLowerCase()));
+            if (partial.length === 1) {
+                hiddenInput.value = partial[0].id;
+                badgeText.textContent = `${partial[0].name}${partial[0].district_name ? ', ' + partial[0].district_name : ''}`;
+                badge.classList.remove('d-none');
+            } else {
+                hiddenInput.value = '';
+                badge.classList.add('d-none');
+            }
+        }
+    }
+
+    function clearProductMunicipality() {
+        document.getElementById('productMunicipalitySearch').value = '';
+        document.getElementById('productMunicipality').value = '';
+        document.getElementById('selectedMunicipalityBadge').classList.add('d-none');
+    }
 
     async function loadCategories() {
         try {
@@ -116,6 +208,48 @@
         }
     }
 
+    async function loadProvinces() {
+        try {
+            const res = await apiFetch('/locations/provinces/');
+            allProvinces = Array.isArray(res) ? res : (res.results || []);
+            const select = document.getElementById('productProvince');
+            allProvinces.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.name;
+                select.appendChild(opt);
+            });
+        } catch (err) {
+            console.error('Failed to load provinces', err);
+        }
+    }
+
+    async function loadMunicipalities() {
+        try {
+            const res = await apiFetch('/locations/municipalities/?include_all=true');
+            allMunicipalities = Array.isArray(res) ? res : (res.results || []);
+            populateProductMunicipalityDatalist('');
+        } catch (err) {
+            console.error('Failed to load municipalities', err);
+        }
+    }
+
+    function populateProductMunicipalityDatalist(provinceId) {
+        const datalist = document.getElementById('productMunicipalityList');
+        datalist.innerHTML = '';
+
+        const list = provinceId
+            ? allMunicipalities.filter(m => String(m.province_id) === String(provinceId))
+            : allMunicipalities;
+
+        list.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m.district_name ? `${m.name} (${m.district_name})` : m.name;
+            opt.dataset.id = m.id;
+            datalist.appendChild(opt);
+        });
+    }
+
     async function loadProductData(id) {
         try {
             const product = await apiFetch(`/marketplace/products/${id}/`);
@@ -126,6 +260,20 @@
             document.getElementById('productStock').value = product.available_stock;
             document.getElementById('productUnit').value = product.unit || 'Bag';
             document.getElementById('isAvailable').checked = product.is_active;
+
+            if (product.municipality) {
+                const mObj = allMunicipalities.find(m => String(m.id) === String(product.municipality));
+                if (mObj) {
+                    document.getElementById('productMunicipality').value = mObj.id;
+                    document.getElementById('productMunicipalitySearch').value = mObj.district_name ? `${mObj.name} (${mObj.district_name})` : mObj.name;
+                    if (mObj.province_id) {
+                        document.getElementById('productProvince').value = mObj.province_id;
+                        populateProductMunicipalityDatalist(mObj.province_id);
+                    }
+                    document.getElementById('selectedMunicipalityText').textContent = `${mObj.name}${mObj.district_name ? ', ' + mObj.district_name : ''}${mObj.province_name ? ' (' + mObj.province_name + ')' : ''}`;
+                    document.getElementById('selectedMunicipalityBadge').classList.remove('d-none');
+                }
+            }
         } catch (err) {
             showToast(err.message || "{% trans 'Failed to load product listing' %}", 'danger');
         }
@@ -148,6 +296,23 @@
         fd.append('available_stock', document.getElementById('productStock').value);
         fd.append('unit', document.getElementById('productUnit').value.trim());
         fd.append('is_active', document.getElementById('isAvailable').checked);
+
+        const municipalityVal = document.getElementById('productMunicipality').value;
+        if (municipalityVal) {
+            fd.append('municipality', municipalityVal);
+        } else {
+            // Check if user typed municipality text directly without selecting datalist
+            const typedVal = document.getElementById('productMunicipalitySearch').value.trim();
+            if (typedVal) {
+                const matched = allMunicipalities.find(m => {
+                    const label = m.district_name ? `${m.name} (${m.district_name})` : m.name;
+                    return label.toLowerCase() === typedVal.toLowerCase() || m.name.toLowerCase() === typedVal.toLowerCase();
+                });
+                if (matched) {
+                    fd.append('municipality', matched.id);
+                }
+            }
+        }
 
         const imageFile = document.getElementById('productImage').files[0];
         if (imageFile) {

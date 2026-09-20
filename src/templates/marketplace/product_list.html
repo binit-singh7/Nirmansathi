@@ -25,19 +25,60 @@
 
     <!-- Search & Filter Bar -->
     <div class="card card-ns p-3 mb-4 shadow-sm">
-        <div class="row g-3 align-items-center">
-            <div class="col-md-6">
+        <div class="row g-2 align-items-center mb-2">
+            <!-- Product Keyword Search -->
+            <div class="col-12 col-md-5">
                 <div class="input-group">
-                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
                     <input type="text" class="form-control border-start-0" id="searchInput"
                         placeholder="{% trans 'Search products (e.g. OPC Cement, TMT Rod)...' %}">
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="d-flex flex-wrap gap-2 justify-content-md-end" id="categoryFilters">
-                    <button class="btn btn-sm btn-primary active filter-btn" data-category="">{% trans "All Products" %}</button>
+
+            <!-- Province Dropdown Filter -->
+            <div class="col-6 col-md-3">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-map"></i></span>
+                    <select class="form-select border-start-0" id="provinceFilter" aria-label="{% trans 'Filter by Province' %}">
+                        <option value="">{% trans "All Provinces" %}</option>
+                    </select>
                 </div>
             </div>
+
+            <!-- Searchable Municipality / Location Text Input with Datalist -->
+            <div class="col-6 col-md-4">
+                <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-geo-alt"></i></span>
+                    <input type="text" class="form-control border-start-0 border-end-0" id="municipalitySearchInput"
+                        list="municipalityList" placeholder="{% trans 'Type municipality / district...' %}" autocomplete="off">
+                    <datalist id="municipalityList"></datalist>
+                    <button class="btn btn-outline-secondary" type="button" id="clearLocationBtn" onclick="clearMunicipalityFilter()" title="{% trans 'Clear Location' %}">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filters Row -->
+        <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between pt-2 border-top">
+            <div class="d-flex flex-wrap gap-2 align-items-center" id="categoryFilters">
+                <span class="small fw-bold text-muted me-1"><i class="bi bi-tags me-1"></i>{% trans "Categories:" %}</span>
+                <button class="btn btn-sm btn-primary active filter-btn" data-category="">{% trans "All Products" %}</button>
+            </div>
+            <button class="btn btn-sm btn-link text-decoration-none text-muted p-0" id="resetAllFiltersBtn" onclick="clearAllFilters()">
+                <i class="bi bi-arrow-counterclockwise me-1"></i>{% trans "Reset All" %}
+            </button>
+        </div>
+
+        <!-- Active Filter Indicator Banner -->
+        <div id="locationFilterInfo" class="mt-2 pt-2 border-top d-none">
+            <small class="text-muted d-flex align-items-center flex-wrap gap-2">
+                <span><i class="bi bi-funnel-fill text-primary me-1"></i>{% trans "Active filters:" %}</span>
+                <span id="activeFilterBadges" class="d-flex flex-wrap gap-1"></span>
+                <button class="btn btn-link btn-sm p-0 text-danger ms-auto" onclick="clearAllFilters()">
+                    <i class="bi bi-x-circle me-1"></i>{% trans "Clear all filters" %}
+                </button>
+            </small>
         </div>
     </div>
 
@@ -56,14 +97,189 @@
 <script src="/static/js/cart.js"></script>
 <script>
     let allProducts = [];
+    let allProvinces = [];
+    let allMunicipalities = [];
     let currentCategory = '';
+    let currentProvince = '';
+    let currentMunicipality = '';
+    let currentLocationText = '';
+    let currentSearch = '';
+    let debounceTimer = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
-        await loadCategories();
+        await Promise.all([loadCategories(), loadProvinces(), loadMunicipalities()]);
         await loadProducts();
 
-        document.getElementById('searchInput').addEventListener('input', filterAndRenderProducts);
+        // Product search input debounce
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearch = e.target.value.trim();
+            debouncedLoadProducts();
+        });
+
+        // Province dropdown change
+        document.getElementById('provinceFilter').addEventListener('change', (e) => {
+            currentProvince = e.target.value;
+            // Filter municipality datalist by chosen province
+            populateMunicipalityDatalist(currentProvince);
+            // If municipality was selected, verify if it belongs to selected province
+            if (currentMunicipality) {
+                const mObj = allMunicipalities.find(m => String(m.id) === String(currentMunicipality));
+                if (mObj && currentProvince && String(mObj.province_id) !== String(currentProvince)) {
+                    clearMunicipalityFilter(false);
+                }
+            }
+            updateFilterBadges();
+            loadProducts();
+        });
+
+        // Municipality text search input
+        const munInput = document.getElementById('municipalitySearchInput');
+        munInput.addEventListener('input', (e) => {
+            handleMunicipalityInputChange(e.target.value);
+        });
+        munInput.addEventListener('change', (e) => {
+            handleMunicipalityInputChange(e.target.value);
+        });
     });
+
+    function handleMunicipalityInputChange(val) {
+        val = (val || '').trim();
+        const matched = allMunicipalities.find(m => {
+            const label = m.district_name ? `${m.name} (${m.district_name})` : m.name;
+            return label.toLowerCase() === val.toLowerCase() || m.name.toLowerCase() === val.toLowerCase();
+        });
+
+        if (matched) {
+            currentMunicipality = matched.id;
+            currentLocationText = '';
+        } else {
+            currentMunicipality = '';
+            currentLocationText = val;
+        }
+
+        updateFilterBadges();
+        debouncedLoadProducts();
+    }
+
+    function debouncedLoadProducts() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            loadProducts();
+        }, 250);
+    }
+
+    function clearMunicipalityFilter(reload = true) {
+        document.getElementById('municipalitySearchInput').value = '';
+        currentMunicipality = '';
+        currentLocationText = '';
+        updateFilterBadges();
+        if (reload) loadProducts();
+    }
+
+    function clearAllFilters() {
+        document.getElementById('searchInput').value = '';
+        document.getElementById('provinceFilter').value = '';
+        document.getElementById('municipalitySearchInput').value = '';
+        currentSearch = '';
+        currentProvince = '';
+        currentMunicipality = '';
+        currentLocationText = '';
+        currentCategory = '';
+
+        document.querySelectorAll('.filter-btn').forEach(b => {
+            if (b.dataset.category === '') {
+                b.classList.remove('btn-outline-secondary');
+                b.classList.add('btn-primary', 'active');
+            } else {
+                b.classList.remove('btn-primary', 'active');
+                b.classList.add('btn-outline-secondary');
+            }
+        });
+
+        populateMunicipalityDatalist('');
+        updateFilterBadges();
+        loadProducts();
+    }
+
+    function updateFilterBadges() {
+        const info = document.getElementById('locationFilterInfo');
+        const badgeContainer = document.getElementById('activeFilterBadges');
+        const badges = [];
+
+        if (currentSearch) {
+            badges.push(`<span class="badge bg-secondary">"${currentSearch}"</span>`);
+        }
+
+        if (currentProvince) {
+            const pObj = allProvinces.find(p => String(p.id) === String(currentProvince));
+            const pName = pObj ? pObj.name : currentProvince;
+            badges.push(`<span class="badge bg-info text-dark"><i class="bi bi-map me-1"></i>${pName}</span>`);
+        }
+
+        if (currentMunicipality) {
+            const mObj = allMunicipalities.find(m => String(m.id) === String(currentMunicipality));
+            const mName = mObj ? (mObj.district_name ? `${mObj.name}, ${mObj.district_name}` : mObj.name) : currentMunicipality;
+            badges.push(`<span class="badge bg-primary"><i class="bi bi-geo-alt-fill me-1"></i>${mName}</span>`);
+        } else if (currentLocationText) {
+            badges.push(`<span class="badge bg-primary"><i class="bi bi-geo-alt me-1"></i>${currentLocationText}</span>`);
+        }
+
+        if (currentCategory) {
+            const catBtn = document.querySelector(`.filter-btn[data-category="${currentCategory}"]`);
+            const catName = catBtn ? catBtn.textContent : currentCategory;
+            badges.push(`<span class="badge bg-dark"><i class="bi bi-tag me-1"></i>${catName}</span>`);
+        }
+
+        if (badges.length > 0) {
+            badgeContainer.innerHTML = badges.join('');
+            info.classList.remove('d-none');
+        } else {
+            badgeContainer.innerHTML = '';
+            info.classList.add('d-none');
+        }
+    }
+
+    async function loadProvinces() {
+        try {
+            const res = await apiFetch('/locations/provinces/');
+            allProvinces = Array.isArray(res) ? res : (res.results || []);
+            const select = document.getElementById('provinceFilter');
+            allProvinces.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p.id;
+                opt.textContent = p.name;
+                select.appendChild(opt);
+            });
+        } catch (err) {
+            console.error('Failed to load provinces', err);
+        }
+    }
+
+    async function loadMunicipalities() {
+        try {
+            const res = await apiFetch('/locations/municipalities/?include_all=true');
+            allMunicipalities = Array.isArray(res) ? res : (res.results || []);
+            populateMunicipalityDatalist('');
+        } catch (err) {
+            console.error('Failed to load municipalities', err);
+        }
+    }
+
+    function populateMunicipalityDatalist(provinceId) {
+        const datalist = document.getElementById('municipalityList');
+        datalist.innerHTML = '';
+
+        const list = provinceId
+            ? allMunicipalities.filter(m => String(m.province_id) === String(provinceId))
+            : allMunicipalities;
+
+        list.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m.district_name ? `${m.name} (${m.district_name})` : m.name;
+            opt.dataset.id = m.id;
+            datalist.appendChild(opt);
+        });
+    }
 
     async function loadCategories() {
         try {
@@ -82,7 +298,8 @@
                     e.target.classList.remove('btn-outline-secondary');
                     e.target.classList.add('btn-primary', 'active');
                     currentCategory = cat.id;
-                    filterAndRenderProducts();
+                    updateFilterBadges();
+                    loadProducts();
                 });
                 filterContainer.appendChild(btn);
             });
@@ -92,44 +309,45 @@
     }
 
     async function loadProducts() {
+        document.getElementById('productsLoading').classList.remove('d-none');
+        document.getElementById('productsGrid').classList.add('d-none');
         try {
-            allProducts = await apiFetch('/marketplace/products/');
-            const user = getUser();
-            if (user && user.role === 'MATERIAL_SUPPLIER') {
-                allProducts = allProducts.filter(p => (p.supplier === user.id) || (p.supplier_name === user.username) || (String(p.supplier) === String(user.id)));
-            }
+            const params = new URLSearchParams();
+            if (currentCategory) params.set('category', currentCategory);
+            if (currentProvince) params.set('province', currentProvince);
+            if (currentMunicipality) params.set('municipality', currentMunicipality);
+            if (currentLocationText) params.set('location', currentLocationText);
+            if (currentSearch) params.set('search', currentSearch);
+
+            const qs = params.toString() ? `?${params.toString()}` : '';
+            allProducts = await apiFetch(`/marketplace/products/${qs}`);
             document.getElementById('productsLoading').classList.add('d-none');
             document.getElementById('productsGrid').classList.remove('d-none');
-            filterAndRenderProducts();
+            renderProducts(allProducts);
         } catch (err) {
             document.getElementById('productsLoading').innerHTML = `<p class="text-danger py-4">${err.message || "{% trans 'Failed to load products.' %}"}</p>`;
         }
     }
 
-    function filterAndRenderProducts() {
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+    function renderProducts(products) {
         const grid = document.getElementById('productsGrid');
         const user = getUser();
         const isSupplier = user && user.role === 'MATERIAL_SUPPLIER';
+        const list = Array.isArray(products) ? products : (products && Array.isArray(products.results) ? products.results : []);
 
-        const filtered = allProducts.filter(p => {
-            const matchesCat = !currentCategory || String(p.category) === String(currentCategory);
-            const matchesSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm) || (p.description && p.description.toLowerCase().includes(searchTerm));
-            return matchesCat && matchesSearch;
-        });
-
-        if (filtered.length === 0) {
+        if (!list || list.length === 0) {
             grid.innerHTML = `
       <div class="col-12 text-center py-5">
         <i class="bi bi-box-seam fs-1 text-secondary d-block mb-3"></i>
         <h5>{% trans "No construction materials found" %}</h5>
-        <p class="text-muted small">{% trans "Try adjusting your search query or category filter." %}</p>
+        <p class="text-muted small">{% trans "Try adjusting your search query, category, province, or municipality filter." %}</p>
+        <button class="btn btn-sm btn-outline-primary" onclick="clearAllFilters()"><i class="bi bi-arrow-counterclockwise me-1"></i>{% trans "Reset Filters" %}</button>
       </div>
     `;
             return;
         }
 
-        grid.innerHTML = filtered.map(p => `
+        grid.innerHTML = list.map(p => `
     <div class="col-sm-6 col-lg-4 col-xl-3">
       <div class="card card-ns product-card shadow-sm h-100 d-flex flex-column">
         <a href="/marketplace/products/${p.id}/" class="text-decoration-none">
@@ -141,8 +359,9 @@
           </div>
         </a>
         <div class="card-body d-flex flex-column">
-          <div class="mb-1">
+          <div class="mb-1 d-flex gap-1 flex-wrap">
             <span class="badge bg-secondary opacity-75">${p.category_name || '{% trans "Material" %}'}</span>
+            ${p.municipality_name ? `<span class="badge bg-info text-dark opacity-90" title="${p.municipality_district ? p.municipality_name + ', ' + p.municipality_district : p.municipality_name}"><i class="bi bi-geo-alt-fill me-1"></i>${p.municipality_name}</span>` : ''}
           </div>
           <a href="/marketplace/products/${p.id}/" class="text-decoration-none text-dark">
             <h6 class="fw-bold mb-1" style="min-height:2.5rem;line-height:1.3;">${p.name}</h6>

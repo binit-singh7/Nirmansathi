@@ -48,6 +48,71 @@ function setUser(userObj) {
   }
 }
 
+// Authenticated Download URL Helper (appends ?token=<jwt>)
+function getAuthDownloadUrl(endpoint) {
+  const token = getToken();
+  let url = endpoint;
+  if (!url.startsWith('http') && !url.startsWith('/api/v1') && !url.startsWith('/media/')) {
+    url = `${API_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
+  }
+  if (!token) return url;
+  const separator = url.includes('?') ? '&' : '?';
+  return `${url}${separator}token=${encodeURIComponent(token)}`;
+}
+
+// Authenticated File Downloader (Fetches blob via Authorization header and initiates download)
+async function downloadFileWithAuth(endpoint, defaultFilename = 'document.pdf') {
+  const token = getToken();
+  let url = endpoint;
+  if (!url.startsWith('http') && !url.startsWith('/api/v1') && !url.startsWith('/media/')) {
+    url = `${API_BASE}${url.startsWith('/') ? '' : '/'}${url}`;
+  }
+  const headers = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  try {
+    const res = await fetch(url, { headers });
+    if (!res.ok) {
+      if (res.status === 401) {
+        showToast(_t('unauthorized_download', 'Unauthorized to download this document. Please log in.'), 'danger');
+        return;
+      }
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || data.detail || `Download failed with status ${res.status}`);
+    }
+
+    const blob = await res.blob();
+    const disposition = res.headers.get('content-disposition');
+    let filename = defaultFilename;
+    if (disposition && disposition.includes('filename=')) {
+      const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+      if (match && match[1]) {
+        filename = match[1].replace(/['"]/g, '');
+      }
+    }
+
+    const blobUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
+  } catch (err) {
+    showToast(err.message || _t('download_failed', 'Failed to download file.'), 'danger');
+  }
+}
+
+function getCsrfToken() {
+  const match = document.cookie.match(/(^|;)\s*csrftoken\s*=\s*([^;]+)/);
+  if (match) return decodeURIComponent(match[2]);
+  const csrfInput = document.querySelector('input[name="csrfmiddlewaretoken"]');
+  return csrfInput ? csrfInput.value : '';
+}
+
 // API Fetch Helper
 async function apiFetch(endpoint, options = {}) {
   const token = getToken();
@@ -59,6 +124,12 @@ async function apiFetch(endpoint, options = {}) {
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  // Include CSRF token if present
+  const csrf = getCsrfToken();
+  if (csrf && !headers['X-CSRFToken']) {
+    headers['X-CSRFToken'] = csrf;
   }
 
   // Include current language header if available
@@ -197,6 +268,7 @@ function updateNavbarAuthUI() {
         </button>
         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userMenuBtn">
           <li><a class="dropdown-item fw-bold" href="${dashboardUrl}"><i class="bi bi-speedometer2 me-2"></i>${_t('dashboard', 'Dashboard')}</a></li>
+          <li><a class="dropdown-item" href="/profile/"><i class="bi bi-person-lines-fill me-2"></i>${_t('my_profile', 'My Profile & Details')}</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><button class="dropdown-item text-danger" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>${_t('logout', 'Logout')}</button></li>
         </ul>
@@ -258,20 +330,43 @@ function updateNavbarAuthUI() {
 // Cart Badge Count update
 function updateCartBadge() {
   const badge = document.getElementById('navCartCount');
-  if (!badge) return;
+  const globalBadge = document.getElementById('navGlobalCartBadge');
+  const cartBtn = document.getElementById('navbarCartBtn');
   const user = getUser();
+
+  if (user && user.role === 'MATERIAL_SUPPLIER') {
+    if (cartBtn) cartBtn.classList.add('d-none');
+    return;
+  }
+
+  // Only show cart button for CITIZEN role
+  if (!user || user.role !== 'CITIZEN') {
+    if (cartBtn) cartBtn.classList.add('d-none');
+    return;
+  }
+
+  if (cartBtn) cartBtn.classList.remove('d-none');
+
   if (user && getToken()) {
     apiFetch('/marketplace/cart/')
       .then(cart => {
         const count = cart.items ? cart.items.reduce((sum, item) => sum + item.quantity, 0) : 0;
-        badge.textContent = count;
-        badge.classList.toggle('d-none', count === 0);
+        if (badge) {
+          badge.textContent = count;
+          badge.classList.toggle('d-none', count === 0);
+        }
+        if (globalBadge) {
+          globalBadge.textContent = count;
+          globalBadge.classList.toggle('d-none', count === 0);
+        }
       })
       .catch(() => {
-        badge.classList.add('d-none');
+        if (badge) badge.classList.add('d-none');
+        if (globalBadge) globalBadge.classList.add('d-none');
       });
   } else {
-    badge.classList.add('d-none');
+    if (badge) badge.classList.add('d-none');
+    if (globalBadge) globalBadge.classList.add('d-none');
   }
 }
 

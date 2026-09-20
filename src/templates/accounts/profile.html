@@ -1,0 +1,546 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "My Profile & Account - NirmanSathi" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row g-4">
+
+        <!-- Left: Avatar & Role Card -->
+        <div class="col-lg-4 col-xl-3">
+            <div class="card card-ns shadow-sm text-center p-4 mb-4">
+                <div class="position-relative d-inline-block mx-auto mb-3" style="width:110px;height:110px;">
+                    <img id="avatarPreview" src="/static/images/default_avatar.png"
+                         alt="{% trans 'Profile Photo' %}"
+                         class="rounded-circle border border-3 border-primary shadow"
+                         style="width:110px;height:110px;object-fit:cover;">
+                    <label for="avatarFileInput" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow"
+                           style="width:34px;height:34px;cursor:pointer;" title="{% trans 'Change Photo' %}">
+                        <i class="bi bi-camera-fill" style="font-size:14px;"></i>
+                    </label>
+                    <input type="file" id="avatarFileInput" accept="image/*" class="d-none">
+                </div>
+
+                <h5 class="fw-bold text-navy mb-0" id="profileDisplayName">—</h5>
+                <small class="text-muted d-block mb-2" id="profileUsername">@—</small>
+
+                <div class="mb-3">
+                    <span class="badge px-3 py-1 fs-6" id="profileRoleBadge"></span>
+                </div>
+
+                <div class="text-muted small mb-2 text-truncate">
+                    <i class="bi bi-envelope me-1 text-primary"></i><span id="profileEmail">—</span>
+                </div>
+                <div class="text-muted small mb-3">
+                    <i class="bi bi-telephone me-1 text-primary"></i><span id="profilePhone">—</span>
+                </div>
+
+                <div class="text-muted small border-top pt-3">
+                    <i class="bi bi-calendar3 me-1"></i>{% trans "Member since" %} <span id="profileJoined">—</span>
+                </div>
+
+                <!-- NID Verification Badge -->
+                <div id="nidVerifiedBadge" class="mt-3 d-none">
+                    <span class="badge bg-success p-2 w-100"><i class="bi bi-patch-check-fill me-1"></i>{% trans "NID Document Verified" %}</span>
+                </div>
+                <div id="nidUnverifiedBadge" class="mt-3 d-none">
+                    <span class="badge bg-warning text-dark p-2 w-100"><i class="bi bi-exclamation-triangle-fill me-1"></i>{% trans "NID Unverified" %}</span>
+                </div>
+            </div>
+
+            <!-- Officer Verification Status Card -->
+            <div class="card card-ns shadow-sm p-3 d-none" id="officerStatusCard">
+                <h6 class="fw-bold text-navy mb-2"><i class="bi bi-shield-check me-1 text-primary"></i>{% trans "Officer Verification" %}</h6>
+                <div id="officerStatusContent"></div>
+            </div>
+        </div>
+
+        <!-- Right: Tabs Container -->
+        <div class="col-lg-8 col-xl-9">
+            <div class="card card-ns shadow-sm">
+                <div class="card-header bg-transparent border-bottom pt-3 pb-0">
+                    <ul class="nav nav-tabs border-0" id="profileTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active fw-semibold" id="tab-details" onclick="switchTab('details')">
+                                <i class="bi bi-person-lines-fill me-1"></i>{% trans "My Details" %}
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-semibold" id="tab-edit" onclick="switchTab('edit')">
+                                <i class="bi bi-pencil-square me-1"></i>{% trans "Edit Profile" %}
+                            </button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link fw-semibold" id="tab-password" onclick="switchTab('password')">
+                                <i class="bi bi-key-fill me-1"></i>{% trans "Change Password" %}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- DETAILS TAB -->
+                    <div id="pane-details">
+                        <div id="detailsLoading" class="text-center py-5">
+                            <div class="spinner-border text-primary me-2" role="status"></div>
+                            <span>{% trans "Loading profile..." %}</span>
+                        </div>
+                        <div id="detailsContent" class="d-none">
+                            <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
+                                <h5 class="fw-bold text-navy mb-0">
+                                    <i class="bi bi-person-badge me-2 text-primary"></i>{% trans "Profile Information" %}
+                                </h5>
+                                <button class="btn btn-sm btn-outline-primary fw-semibold" onclick="switchTab('edit')">
+                                    <i class="bi bi-pencil me-1"></i>{% trans "Edit Details" %}
+                                </button>
+                            </div>
+                            <div class="row g-3" id="detailsGrid"></div>
+                        </div>
+                    </div>
+
+                    <!-- EDIT TAB -->
+                    <div id="pane-edit" class="d-none">
+                        <h5 class="fw-bold text-navy mb-4 pb-2 border-bottom">
+                            <i class="bi bi-pencil-square me-2 text-primary"></i>{% trans "Edit Profile & Credentials" %}
+                        </h5>
+                        <div id="editAlert" class="alert d-none mb-3" role="alert"></div>
+
+                        <!-- 1. Account Credentials Form -->
+                        <form id="editAccountForm" class="mb-4">
+                            {% csrf_token %}
+                            <h6 class="fw-bold text-primary mb-3 small text-uppercase">
+                                <i class="bi bi-person-lock me-1"></i>{% trans "Account Information" %}
+                            </h6>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">{% trans "Username *" %}</label>
+                                    <input type="text" class="form-control" id="editUsername" minlength="3" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">{% trans "Email Address *" %}</label>
+                                    <input type="email" class="form-control" id="editEmail" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">{% trans "Phone Number" %}</label>
+                                    <input type="tel" class="form-control" id="editPhone" placeholder="98XXXXXXXX">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary fw-bold px-4" id="btnSaveAccount">
+                                <i class="bi bi-check-lg me-1"></i>{% trans "Save Account Details" %}
+                            </button>
+                        </form>
+
+                        <hr class="my-4">
+
+                        <!-- 2. Personal & Role Details Form -->
+                        <form id="editProfileForm">
+                            {% csrf_token %}
+                            <h6 class="fw-bold text-primary mb-3 small text-uppercase">
+                                <i class="bi bi-person-lines-fill me-1"></i>{% trans "Personal & Role Info" %}
+                            </h6>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">{% trans "Full Name" %}</label>
+                                    <input type="text" class="form-control" id="editFullName" placeholder="{% trans 'e.g. Ram Bahadur Shrestha' %}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">{% trans "Address / Location" %}</label>
+                                    <input type="text" class="form-control" id="editAddress" placeholder="{% trans 'e.g. Kathmandu, Bagmati Province' %}">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">{% trans "Bio / Description" %}</label>
+                                    <textarea class="form-control" id="editBio" rows="2" placeholder="{% trans 'Brief info about yourself or your organization...' %}"></textarea>
+                                </div>
+
+                                <!-- Citizen / Officer NID fields -->
+                                <div id="nidEditSection" class="col-md-6 d-none">
+                                    <label class="form-label fw-semibold">{% trans "Citizenship / NID Number" %}</label>
+                                    <input type="text" class="form-control" id="editCitizenshipNumber" placeholder="{% trans 'e.g. 12-01-75-12345' %}">
+                                    <div class="form-text small">{% trans "National Identity / Citizenship Number" %}</div>
+                                </div>
+                                <div id="nidDocEditSection" class="col-md-6 d-none">
+                                    <label class="form-label fw-semibold">{% trans "NID Document Card Photo" %}</label>
+                                    <input type="file" class="form-control" id="editNidDoc" accept="image/*">
+                                    <div id="existingNidDoc" class="mt-2 d-none">
+                                        <span class="badge bg-success me-1"><i class="bi bi-file-earmark-check me-1"></i>{% trans "Document Attached" %}</span>
+                                        <a id="existingNidDocLink" href="#" target="_blank" class="small fw-semibold text-primary">{% trans "View Document" %}</a>
+                                    </div>
+                                </div>
+
+                                <!-- Supplier-specific fields -->
+                                <div id="supplierEditSection" class="col-12 d-none">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">{% trans "Company / Business Name" %}</label>
+                                            <input type="text" class="form-control" id="editCompanyName">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">{% trans "PAN / VAT Number" %}</label>
+                                            <input type="text" class="form-control" id="editCompanyPanVat">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success fw-bold px-4" id="btnSaveProfile">
+                                <i class="bi bi-check-lg me-1"></i>{% trans "Save Profile Details" %}
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- PASSWORD TAB -->
+                    <div id="pane-password" class="d-none">
+                        <h5 class="fw-bold text-navy mb-4 pb-2 border-bottom">
+                            <i class="bi bi-key-fill me-2 text-primary"></i>{% trans "Change Password" %}
+                        </h5>
+                        <div id="pwAlert" class="alert d-none mb-3" role="alert"></div>
+
+                        <form id="changePasswordForm" style="max-width: 480px;">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">{% trans "Current Password *" %}</label>
+                                <input type="password" class="form-control" id="currentPassword" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">{% trans "New Password *" %}</label>
+                                <input type="password" class="form-control" id="newPassword" minlength="6" required>
+                                <div class="form-text small">{% trans "Must be at least 6 characters long." %}</div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">{% trans "Confirm New Password *" %}</label>
+                                <input type="password" class="form-control" id="confirmNewPassword" minlength="6" required>
+                            </div>
+                            <button type="submit" class="btn btn-warning fw-bold px-4" id="btnChangePassword">
+                                <i class="bi bi-lock-fill me-1"></i>{% trans "Update Password" %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let profileData = null;
+let userRole = null;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check if user is logged in
+    const token = typeof getToken === 'function' ? getToken() : localStorage.getItem('access_token');
+    if (!token) {
+        showToast("{% trans 'Please login to access your profile.' %}", 'warning');
+        setTimeout(() => { window.location.href = '/login/'; }, 800);
+        return;
+    }
+    await loadProfile();
+    setupAvatarUpload();
+});
+
+function switchTab(tab) {
+    ['details', 'edit', 'password'].forEach(t => {
+        const pane = document.getElementById('pane-' + t);
+        const tabBtn = document.getElementById('tab-' + t);
+        if (pane) pane.classList.toggle('d-none', t !== tab);
+        if (tabBtn) tabBtn.classList.toggle('active', t === tab);
+    });
+}
+
+async function loadProfile() {
+    try {
+        const [user, profile] = await Promise.all([
+            apiFetch('/accounts/me/'),
+            apiFetch('/accounts/profile/')
+        ]);
+        profileData = { ...user, profile };
+        userRole = user.role;
+        renderProfile(user, profile);
+    } catch (err) {
+        console.error('Failed to load profile:', err);
+        const loadingEl = document.getElementById('detailsLoading');
+        if (loadingEl) {
+            loadingEl.innerHTML = `<p class="text-danger"><i class="bi bi-exclamation-circle me-1"></i>${err.message || "{% trans 'Failed to load profile.' %}"}</p>`;
+        }
+    }
+}
+
+function renderProfile(user, profile) {
+    // Left panel
+    const avatarEl = document.getElementById('avatarPreview');
+    if (avatarEl && profile.avatar) avatarEl.src = profile.avatar;
+
+    const dispName = document.getElementById('profileDisplayName');
+    if (dispName) dispName.textContent = profile.full_name || user.username;
+
+    const uName = document.getElementById('profileUsername');
+    if (uName) uName.textContent = '@' + user.username;
+
+    const emailEl = document.getElementById('profileEmail');
+    if (emailEl) emailEl.textContent = user.email || '—';
+
+    const phoneEl = document.getElementById('profilePhone');
+    if (phoneEl) phoneEl.textContent = user.phone_number || '—';
+
+    const joinedEl = document.getElementById('profileJoined');
+    if (joinedEl) joinedEl.textContent = user.date_joined ? new Date(user.date_joined).toLocaleDateString() : '—';
+
+    const roleBadge = document.getElementById('profileRoleBadge');
+    if (roleBadge) {
+        const roleMap = {
+            'CITIZEN': ['bg-info text-dark', 'bi-person-fill', '{% trans "Citizen" %}'],
+            'MUNICIPALITY_OFFICER': ['bg-primary', 'bi-building-fill', '{% trans "Municipality Officer" %}'],
+            'MATERIAL_SUPPLIER': ['bg-warning text-dark', 'bi-shop-window', '{% trans "Material Supplier" %}'],
+            'ADMIN': ['bg-danger', 'bi-shield-fill', '{% trans "System Admin" %}'],
+        };
+        const [cls, icon, label] = roleMap[user.role] || ['bg-secondary', 'bi-person', user.role];
+        roleBadge.className = 'badge px-3 py-1 fs-6 ' + cls;
+        roleBadge.innerHTML = `<i class="bi ${icon} me-1"></i>${label}`;
+    }
+
+    // NID verification
+    const verifiedBadge = document.getElementById('nidVerifiedBadge');
+    const unverifiedBadge = document.getElementById('nidUnverifiedBadge');
+    if (profile.nid_verified) {
+        if (verifiedBadge) verifiedBadge.classList.remove('d-none');
+        if (unverifiedBadge) unverifiedBadge.classList.add('d-none');
+    } else if (profile.citizenship_number || profile.nid_document) {
+        if (unverifiedBadge) unverifiedBadge.classList.remove('d-none');
+        if (verifiedBadge) verifiedBadge.classList.add('d-none');
+    }
+
+    // Officer status card
+    const officerCard = document.getElementById('officerStatusCard');
+    if (user.role === 'MUNICIPALITY_OFFICER' && officerCard) {
+        officerCard.classList.remove('d-none');
+        const vsMap = {
+            'PENDING': ['bg-warning text-dark', '{% trans "Pending Admin Verification" %}'],
+            'APPROVED': ['bg-success', '{% trans "Verified & Active" %}'],
+            'REJECTED': ['bg-danger', '{% trans "Verification Rejected" %}'],
+        };
+        const [vsCls, vsLabel] = vsMap[user.verification_status] || ['bg-secondary', user.verification_status];
+        document.getElementById('officerStatusContent').innerHTML = `
+            <span class="badge ${vsCls} px-2 py-1 mb-2">${vsLabel}</span>
+            ${user.municipality_name ? `<div class="small text-muted"><i class="bi bi-geo-alt me-1"></i>${user.municipality_name}</div>` : ''}
+            ${user.rejection_reason ? `<div class="alert alert-danger small py-1 px-2 mt-2 mb-0">${user.rejection_reason}</div>` : ''}
+        `;
+    }
+
+    // Details grid
+    const details = [
+        { label: '{% trans "Full Name" %}', value: profile.full_name || '—', icon: 'bi-person' },
+        { label: '{% trans "Username" %}', value: user.username, icon: 'bi-at' },
+        { label: '{% trans "Email" %}', value: user.email, icon: 'bi-envelope' },
+        { label: '{% trans "Phone" %}', value: user.phone_number || '—', icon: 'bi-telephone' },
+        { label: '{% trans "Address" %}', value: profile.address || '—', icon: 'bi-geo-alt' },
+        { label: '{% trans "Bio" %}', value: profile.bio || '—', icon: 'bi-chat-left-text', full: true },
+    ];
+
+    if (user.role === 'CITIZEN' || user.role === 'MUNICIPALITY_OFFICER') {
+        details.push({ label: '{% trans "NID / Citizenship No." %}', value: profile.citizenship_number || '—', icon: 'bi-card-text' });
+    }
+    if (user.role === 'MATERIAL_SUPPLIER') {
+        details.push({ label: '{% trans "Company Name" %}', value: profile.company_name || '—', icon: 'bi-building' });
+        details.push({ label: '{% trans "PAN / VAT" %}', value: profile.company_pan_vat || '—', icon: 'bi-receipt' });
+    }
+    if (user.role === 'MUNICIPALITY_OFFICER') {
+        details.push({ label: '{% trans "Assigned Municipality" %}', value: user.municipality_name || '—', icon: 'bi-geo-alt-fill' });
+    }
+
+    const grid = document.getElementById('detailsGrid');
+    if (grid) {
+        grid.innerHTML = details.map(d => `
+            <div class="${d.full ? 'col-12' : 'col-md-6'}">
+                <div class="d-flex align-items-start p-3 rounded bg-light border">
+                    <i class="bi ${d.icon} text-primary me-3 mt-1 fs-5 flex-shrink-0"></i>
+                    <div>
+                        <div class="text-muted small fw-semibold mb-1">${d.label}</div>
+                        <div class="fw-bold text-dark">${d.value}</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    const loadingDiv = document.getElementById('detailsLoading');
+    const contentDiv = document.getElementById('detailsContent');
+    if (loadingDiv) loadingDiv.classList.add('d-none');
+    if (contentDiv) contentDiv.classList.remove('d-none');
+
+    // Pre-fill edit form
+    const editUsername = document.getElementById('editUsername');
+    if (editUsername) editUsername.value = user.username || '';
+    const editEmail = document.getElementById('editEmail');
+    if (editEmail) editEmail.value = user.email || '';
+    const editPhone = document.getElementById('editPhone');
+    if (editPhone) editPhone.value = user.phone_number || '';
+    const editFullName = document.getElementById('editFullName');
+    if (editFullName) editFullName.value = profile.full_name || '';
+    const editAddress = document.getElementById('editAddress');
+    if (editAddress) editAddress.value = profile.address || '';
+    const editBio = document.getElementById('editBio');
+    if (editBio) editBio.value = profile.bio || '';
+
+    // Show role-specific edit sections
+    if (user.role === 'CITIZEN' || user.role === 'MUNICIPALITY_OFFICER') {
+        const nidSec = document.getElementById('nidEditSection');
+        const nidDocSec = document.getElementById('nidDocEditSection');
+        if (nidSec) nidSec.classList.remove('d-none');
+        if (nidDocSec) nidDocSec.classList.remove('d-none');
+        const editCit = document.getElementById('editCitizenshipNumber');
+        if (editCit) editCit.value = profile.citizenship_number || '';
+        if (profile.nid_document) {
+            const exDoc = document.getElementById('existingNidDoc');
+            const exLink = document.getElementById('existingNidDocLink');
+            if (exDoc) exDoc.classList.remove('d-none');
+            if (exLink) exLink.href = profile.nid_document;
+        }
+    }
+    if (user.role === 'MATERIAL_SUPPLIER') {
+        const supSec = document.getElementById('supplierEditSection');
+        if (supSec) supSec.classList.remove('d-none');
+        const editComp = document.getElementById('editCompanyName');
+        if (editComp) editComp.value = profile.company_name || '';
+        const editPan = document.getElementById('editCompanyPanVat');
+        if (editPan) editPan.value = profile.company_pan_vat || '';
+    }
+}
+
+function setupAvatarUpload() {
+    const input = document.getElementById('avatarFileInput');
+    if (!input) return;
+    input.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            const img = document.getElementById('avatarPreview');
+            if (img) img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        const fd = new FormData();
+        fd.append('avatar', file);
+        try {
+            await apiFetch('/accounts/profile/', { method: 'PATCH', body: fd });
+            showToast("{% trans 'Profile photo updated!' %}", 'success');
+        } catch (err) {
+            showToast(err.message || "{% trans 'Failed to upload photo.' %}", 'danger');
+        }
+    });
+}
+
+// Save account details (username/email/phone)
+document.getElementById('editAccountForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btnSaveAccount');
+    const alertEl = document.getElementById('editAlert');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>{% trans "Saving..." %}';
+    alertEl.classList.add('d-none');
+
+    try {
+        await apiFetch('/accounts/me/update/', {
+            method: 'PATCH',
+            body: JSON.stringify({
+                username: document.getElementById('editUsername').value.trim(),
+                email: document.getElementById('editEmail').value.trim(),
+                phone_number: document.getElementById('editPhone').value.trim()
+            })
+        });
+        showToast("{% trans 'Account details updated!' %}", 'success');
+        await loadProfile();
+    } catch (err) {
+        alertEl.className = 'alert alert-danger mb-3';
+        alertEl.textContent = err.message || "{% trans 'Failed to update account.' %}";
+        alertEl.classList.remove('d-none');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>{% trans "Save Account Details" %}';
+    }
+});
+
+// Save profile details
+document.getElementById('editProfileForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btnSaveProfile');
+    const alertEl = document.getElementById('editAlert');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>{% trans "Saving..." %}';
+
+    const fd = new FormData();
+    fd.append('full_name', document.getElementById('editFullName').value.trim());
+    fd.append('address', document.getElementById('editAddress').value.trim());
+    fd.append('bio', document.getElementById('editBio').value.trim());
+
+    if (userRole === 'CITIZEN' || userRole === 'MUNICIPALITY_OFFICER') {
+        fd.append('citizenship_number', document.getElementById('editCitizenshipNumber').value.trim());
+        const nidFile = document.getElementById('editNidDoc').files[0];
+        if (nidFile) fd.append('nid_document', nidFile);
+    }
+    if (userRole === 'MATERIAL_SUPPLIER') {
+        fd.append('company_name', document.getElementById('editCompanyName').value.trim());
+        fd.append('company_pan_vat', document.getElementById('editCompanyPanVat').value.trim());
+    }
+
+    try {
+        await apiFetch('/accounts/profile/', { method: 'PATCH', body: fd });
+        showToast("{% trans 'Profile updated successfully!' %}", 'success');
+        await loadProfile();
+    } catch (err) {
+        alertEl.className = 'alert alert-danger mb-3';
+        alertEl.textContent = err.message || "{% trans 'Failed to update profile.' %}";
+        alertEl.classList.remove('d-none');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>{% trans "Save Profile Details" %}';
+    }
+});
+
+// Change password
+document.getElementById('changePasswordForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btnChangePassword');
+    const alertEl = document.getElementById('pwAlert');
+    alertEl.classList.add('d-none');
+
+    const newPw = document.getElementById('newPassword').value;
+    const confirmPw = document.getElementById('confirmNewPassword').value;
+
+    if (newPw !== confirmPw) {
+        alertEl.className = 'alert alert-danger mb-3';
+        alertEl.textContent = "{% trans 'New passwords do not match.' %}";
+        alertEl.classList.remove('d-none');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>{% trans "Updating..." %}';
+
+    try {
+        const res = await apiFetch('/accounts/me/change-password/', {
+            method: 'POST',
+            body: JSON.stringify({
+                current_password: document.getElementById('currentPassword').value,
+                new_password: newPw,
+                confirm_password: confirmPw
+            })
+        });
+        alertEl.className = 'alert alert-success mb-3';
+        alertEl.textContent = res.message || "{% trans 'Password changed! Please log in again.' %}";
+        alertEl.classList.remove('d-none');
+        document.getElementById('changePasswordForm').reset();
+        setTimeout(() => { clearSession(); window.location.href = '/login/'; }, 2000);
+    } catch (err) {
+        alertEl.className = 'alert alert-danger mb-3';
+        alertEl.textContent = err.message || "{% trans 'Failed to change password.' %}";
+        alertEl.classList.remove('d-none');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-lock-fill me-1"></i>{% trans "Update Password" %}';
+    }
+});
+</script>
+{% endblock %}

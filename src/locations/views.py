@@ -42,11 +42,17 @@ class MunicipalityViewSet(viewsets.ModelViewSet):
     serializer_class = MunicipalitySerializer
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [filters.SearchFilter]
-    search_fields = ['name']
+    search_fields = ['name', 'district__name', 'district__province__name', 'code']
 
     def get_queryset(self):
-        queryset = super().get_queryset().exclude(type=Municipality.TypeChoices.RURAL_MUNICIPALITY)
-        district_id = self.request.query_params.get('district')
+        queryset = super().get_queryset()
+        include_all = self.request.query_params.get('include_all', '').lower() in ('true', '1', 'yes')
+        if not include_all:
+            queryset = queryset.exclude(type=Municipality.TypeChoices.RURAL_MUNICIPALITY)
+        province_id = self.request.query_params.get('province') or self.request.query_params.get('province_id')
+        if province_id:
+            queryset = queryset.filter(district__province_id=province_id)
+        district_id = self.request.query_params.get('district') or self.request.query_params.get('district_id')
         if district_id:
             queryset = queryset.filter(district_id=district_id)
         return queryset

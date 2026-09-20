@@ -1,12 +1,19 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import ValidationError
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 
-from .serializers import RegisterSerializer, CustomUserSerializer, UserProfileSerializer
+from .serializers import (
+    RegisterSerializer, CustomUserSerializer, UserProfileSerializer,
+    UpdateCurrentUserSerializer, ChangePasswordSerializer,
+    AdminUserListSerializer, UserRoleUpdateSerializer,
+    OfficerVerificationSerializer, AuditLogSerializer
+)
 from .models import UserProfile, AuditLog
-from .utils import log_audit
+from .utils import log_audit, verify_nid_document
 
 User = get_user_model()
 
@@ -14,12 +21,30 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]
+    authentication_classes = []
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        citizenship_number = request.data.get('citizenship_number', '').strip()
+        nid_document = request.FILES.get('nid_document')
+        nid_verified = False
+
+        # An identity document supplied at registration must be verified before
+        # creating the account; never create a silently unverified identity.
+        if citizenship_number or nid_document:
+            nid_verified, verification_message = verify_nid_document(
+                citizenship_number, nid_document
+            )
+            if not nid_verified:
+                return Response(
+                    {'nid_document': [verification_message]},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
         user = serializer.save()
-        
+
         ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
         log_audit(
             category=AuditLog.Category.AUTH,
@@ -29,10 +54,47 @@ class RegisterView(generics.CreateAPIView):
             status=AuditLog.Status.SUCCESS
         )
 
+        # --- Server-side NID OCR verification ---
+        # nid_verified can only become True here; any frontend flag is ignored.
+        citizenship_number = request.data.get('citizenship_number', '').strip()
+        nid_document = request.FILES.get('nid_document')
+
+        # Verification is performed before account creation above. Keep this
+        # legacy branch unreachable while deployed clients transition.
+        if False:
+            try:
+                ocr_text = perform_ocr_on_image(nid_document)
+                candidates = extract_nid_candidates(ocr_text)
+                entered_norm = normalize_nid(citizenship_number)
+                ocr_matched = bool(ocr_text.strip()) and any(
+                    normalize_nid(c) == entered_norm for c in candidates
+                )
+            except Exception:
+                # OCR unavailable or image unreadable → fail-closed
+                ocr_matched = False
+
+            if ocr_matched:
+                profile = user.profile
+                profile.nid_verified = True
+                profile.save(update_fields=['nid_verified'])
+
+        if nid_verified:
+            profile = user.profile
+            profile.nid_verified = True
+            profile.save(update_fields=['nid_verified'])
+            log_audit(
+                category=AuditLog.Category.AUTH,
+                action=f"Verified NID/Citizenship document by OCR during registration for '{user.username}'.",
+                user=user,
+                ip_address=ip,
+                status=AuditLog.Status.SUCCESS,
+            )
+
         user_data = CustomUserSerializer(user, context=self.get_serializer_context()).data
-        
+
         return Response({
             'user': user_data,
+            'nid_verified': nid_verified,
             'message': 'User registered successfully. Please login to continue.'
         }, status=status.HTTP_201_CREATED)
 
@@ -48,15 +110,90 @@ class CurrentUserView(generics.RetrieveAPIView):
 class UserProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_object(self):
         profile, _ = UserProfile.objects.get_or_create(user=self.request.user)
         return profile
 
+    def perform_update(self, serializer):
+        profile = serializer.instance
+        has_nid_change = (
+            'citizenship_number' in serializer.validated_data
+            or 'nid_document' in serializer.validated_data
+        )
+
+        if not has_nid_change:
+            serializer.save()
+            return
+
+        citizenship_number = serializer.validated_data.get(
+            'citizenship_number', profile.citizenship_number
+        )
+        nid_document = serializer.validated_data.get('nid_document', profile.nid_document)
+        verified, message = verify_nid_document(citizenship_number, nid_document)
+        if not verified:
+            raise ValidationError({'nid_document': [message]})
+
+        serializer.save(nid_verified=True)
+        log_audit(
+            category=AuditLog.Category.AUTH,
+            action=f"Verified NID/Citizenship document by OCR for '{self.request.user.username}'.",
+            user=self.request.user,
+            ip_address=self.request.META.get('REMOTE_ADDR', '127.0.0.1'),
+            status=AuditLog.Status.SUCCESS,
+        )
+
+
+class UpdateCurrentUserView(APIView):
+    """Allows user to update their own basic account fields (username, email, phone)."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def patch(self, request):
+        serializer = UpdateCurrentUserSerializer(instance=request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
+        log_audit(
+            category=AuditLog.Category.AUTH,
+            action=f"Updated personal account information for '{user.username}'.",
+            user=user,
+            ip_address=ip,
+            status=AuditLog.Status.SUCCESS
+        )
+
+        return Response({
+            'message': 'Account details updated successfully.',
+            'user': CustomUserSerializer(user).data
+        }, status=status.HTTP_200_OK)
+
+
+class ChangePasswordView(APIView):
+    """Allows logged-in user to change their password securely."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = request.user
+        user.set_password(serializer.validated_data['new_password'])
+        user.save()
+
+        ip = request.META.get('REMOTE_ADDR', '127.0.0.1')
+        log_audit(
+            category=AuditLog.Category.AUTH,
+            action=f"Changed account password for user '{user.username}'.",
+            user=user,
+            ip_address=ip,
+            status=AuditLog.Status.SUCCESS
+        )
+
+        return Response({'message': 'Password changed successfully. Please log in again.'}, status=status.HTTP_200_OK)
+
 
 class AdminUserListView(generics.ListAPIView):
     """List all users in the system. Admin/staff only."""
-    from .serializers import AdminUserListSerializer
     serializer_class = AdminUserListSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -87,21 +224,18 @@ class AdminUserRoleUpdateView(APIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        # Prevent admins from demoting themselves
         if target_user.pk == user.pk:
             return Response(
                 {'detail': 'You cannot change your own role.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        from .serializers import UserRoleUpdateSerializer
         serializer = UserRoleUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         old_role = target_user.get_role_display()
         new_role = serializer.validated_data['role']
         target_user.role = new_role
-        # Sync is_staff flag for ADMIN role
         target_user.is_staff = (new_role == 'ADMIN')
         target_user.save(update_fields=['role', 'is_staff'])
 
@@ -124,7 +258,6 @@ class AdminUserRoleUpdateView(APIView):
 
 class AuditLogListView(generics.ListAPIView):
     """List system audit logs. Admin/staff only."""
-    from .serializers import AuditLogSerializer
     serializer_class = AuditLogSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -160,7 +293,6 @@ class AdminOfficerVerificationView(APIView):
 
     def post(self, request, pk):
         from django.utils import timezone
-        from .serializers import OfficerVerificationSerializer, CustomUserSerializer
 
         user = request.user
         if not (user.is_staff or user.role == 'ADMIN'):
@@ -223,4 +355,3 @@ class AdminOfficerVerificationView(APIView):
                 'message': f"Officer '{officer.username}' has been rejected.",
                 'officer': CustomUserSerializer(officer).data
             }, status=status.HTTP_200_OK)
-

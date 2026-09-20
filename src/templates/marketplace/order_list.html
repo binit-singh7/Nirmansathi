@@ -63,10 +63,12 @@
             }
 
             tbody.innerHTML = orders.map(o => {
-                const payBadge = o.payment_status === 'PAID' ? 'bg-success' : 'bg-danger';
-                const statusBadge = o.status === 'COMPLETED' ? 'badge-approved' :
-                    o.status === 'SHIPPED' ? 'badge-review' :
-                        o.status === 'CONFIRMED' ? 'badge-pending' : 'badge-pending';
+                const payBadge = o.payment_status === 'PAID' ? 'bg-success' : 'bg-warning text-dark';
+                const statusBadge = o.status === 'COMPLETED' || o.status === 'DELIVERED' ? 'bg-success' :
+                    o.status === 'SHIPPED' ? 'bg-info text-dark' :
+                        o.status === 'PROCESSING' ? 'bg-primary' :
+                            o.status === 'CANCELLED' ? 'bg-danger' :
+                                o.status === 'CONFIRMED' ? 'bg-warning text-dark' : 'bg-secondary';
                 const dateStr = new Date(o.created_at).toLocaleDateString();
 
                 return `

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 # Customize Django Admin Branding
 admin.site.site_header = "DIGITAL CONSTRUCTION PLATFORM"
@@ -18,7 +18,10 @@ urlpatterns = [
 
     # Direct Web Page Routes (HTML Templates)
     path('login/', TemplateView.as_view(template_name='accounts/login.html'), name='login'),
+    # Django default LOGIN_URL alias → redirect to our login page
+    path('accounts/login/', RedirectView.as_view(url='/login/', permanent=False), name='accounts_login_redirect'),
     path('register/', TemplateView.as_view(template_name='accounts/register.html'), name='register'),
+    path('profile/', TemplateView.as_view(template_name='accounts/profile.html'), name='profile'),
     path('configuration/', TemplateView.as_view(template_name='configuration.html'), name='configuration'),
     path('accounts/audit-logs/', TemplateView.as_view(template_name='accounts/audit_logs.html'), name='audit_logs'),
 

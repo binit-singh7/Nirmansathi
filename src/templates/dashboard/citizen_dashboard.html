@@ -136,7 +136,7 @@
             const tbody = document.getElementById('permitsTableBody');
 
             document.getElementById('totalPermitsCount').textContent = permits.length || 0;
-            const approved = permits.filter(p => p.status === 'APPROVED').length;
+            const approved = permits.filter(p => ['APPROVED', 'CONSTRUCTION_ONGOING', 'COMPLETED'].includes(p.status)).length;
             const pending = permits.filter(p => p.status === 'PENDING' || p.status === 'UNDER_REVIEW').length;
 
             document.getElementById('approvedPermitsCount').textContent = approved;
@@ -153,19 +153,23 @@
       `;
             } else {
                 tbody.innerHTML = permits.slice(0, 5).map(p => {
-                    const badgeClass = p.status === 'APPROVED' ? 'badge-approved' :
-                        p.status === 'REJECTED' ? 'badge-rejected' :
-                            p.status === 'UNDER_REVIEW' ? 'badge-review' : 'badge-pending';
+                    let badgeClass = 'badge bg-warning text-dark';
+                    if (p.status === 'COMPLETED') badgeClass = 'badge bg-success';
+                    else if (p.status === 'CONSTRUCTION_ONGOING') badgeClass = 'badge bg-primary';
+                    else if (p.status === 'APPROVED') badgeClass = 'badge bg-info text-dark';
+                    else if (p.status === 'REJECTED') badgeClass = 'badge bg-danger';
+                    else if (p.status === 'UNDER_REVIEW') badgeClass = 'badge bg-warning text-dark';
+
                     const dateStr = new Date(p.created_at).toLocaleDateString();
                     return `
           <tr>
             <td class="fw-bold">${p.reference_number}</td>
             <td>${p.application_type_display || p.application_type}</td>
             <td>${p.municipality_name || 'N/A'}</td>
-            <td><span class="badge ${badgeClass}">${p.status_display || p.status}</span></td>
+            <td><span class="${badgeClass}">${p.status_display || p.status}</span></td>
             <td class="small text-muted">${dateStr}</td>
             <td>
-              <a href="/permits/${p.id}/" class="btn btn-sm btn-outline-primary" title="${_t('view_details', 'View Details')}"><i class="bi bi-eye"></i></a>
+              <a href="/permits/${p.id}/" class="btn btn-sm btn-outline-primary" title="${_t('view_details', 'View Details')}"><i class="bi bi-eye me-1"></i>{% trans "Monitor" %}</a>
             </td>
           </tr>
         `;

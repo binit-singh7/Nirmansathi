@@ -26,22 +26,47 @@ class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.AllowAny]
 
 
+from django.db.models import Q
+
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.select_related('supplier', 'category').filter(is_active=True)
+    queryset = Product.objects.select_related(
+        'supplier', 'category',
+        'municipality', 'municipality__district', 'municipality__district__province'
+    ).filter(is_active=True)
     serializer_class = ProductSerializer
     permission_classes = [IsSupplierOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['name', 'description', 'category__name', 'supplier__username']
+    search_fields = [
+        'name', 'description', 'category__name', 'supplier__username',
+        'municipality__name', 'municipality__district__name', 'municipality__district__province__name'
+    ]
     ordering_fields = ['price', 'created_at', 'available_stock']
 
     def get_queryset(self):
         queryset = super().get_queryset()
         category_id = self.request.query_params.get('category')
         supplier_id = self.request.query_params.get('supplier')
+        municipality_id = self.request.query_params.get('municipality')
+        province_id = self.request.query_params.get('province') or self.request.query_params.get('province_id')
+        district_id = self.request.query_params.get('district') or self.request.query_params.get('district_id')
+        location = self.request.query_params.get('location')
+
         if category_id:
             queryset = queryset.filter(category_id=category_id)
         if supplier_id:
             queryset = queryset.filter(supplier_id=supplier_id)
+        if municipality_id:
+            queryset = queryset.filter(municipality_id=municipality_id)
+        if province_id:
+            queryset = queryset.filter(municipality__district__province_id=province_id)
+        if district_id:
+            queryset = queryset.filter(municipality__district_id=district_id)
+        if location:
+            queryset = queryset.filter(
+                Q(municipality__name__icontains=location) |
+                Q(municipality__district__name__icontains=location) |
+                Q(municipality__district__province__name__icontains=location)
+            )
         return queryset
 
     def perform_create(self, serializer):
@@ -103,6 +128,7 @@ class ShoppingCartViewSet(viewsets.ViewSet):
     def checkout(self, request):
         """
         Converts active shopping cart into an Order (FR-11)
+        Uses row locking (select_for_update) inside an atomic transaction to prevent race conditions.
         """
         cart, _ = ShoppingCart.objects.get_or_create(user=request.user)
         cart_items = cart.items.select_related('product').all()
@@ -119,18 +145,31 @@ class ShoppingCartViewSet(viewsets.ViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # Validate stock for all items before initiating order
-        for item in cart_items:
-            product = item.product
-            if item.quantity > product.available_stock:
-                return Response(
-                    {"error": f"Insufficient stock for '{product.name}'. Requested {item.quantity}, but only {product.available_stock} available."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-        total_amount = cart.get_total_price()
-
         with transaction.atomic():
+            # Lock all product rows involved in this checkout to prevent race conditions
+            product_ids = [item.product_id for item in cart_items]
+            locked_products = {
+                p.id: p for p in Product.objects.filter(id__in=product_ids).select_for_update()
+            }
+
+            # Validate stock after locking rows
+            for item in cart_items:
+                product = locked_products.get(item.product_id)
+                if not product or not product.is_active:
+                    transaction.set_rollback(True)
+                    return Response(
+                        {"error": f"Product '{item.product.name}' is no longer available."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+                if item.quantity > product.available_stock:
+                    transaction.set_rollback(True)
+                    return Response(
+                        {"error": f"Insufficient stock for '{product.name}'. Requested {item.quantity}, but only {product.available_stock} available."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
+            total_amount = cart.get_total_price()
+
             order = Order.objects.create(
                 buyer=request.user,
                 total_amount=total_amount,
@@ -141,7 +180,7 @@ class ShoppingCartViewSet(viewsets.ViewSet):
             )
 
             for item in cart_items:
-                product = item.product
+                product = locked_products[item.product_id]
                 OrderItem.objects.create(
                     order=order,
                     product=product,
@@ -153,7 +192,7 @@ class ShoppingCartViewSet(viewsets.ViewSet):
                     status=Order.OrderStatus.PENDING
                 )
 
-                # Deduct stock
+                # Deduct stock on locked product instance
                 product.available_stock -= item.quantity
                 product.save(update_fields=['available_stock'])
 

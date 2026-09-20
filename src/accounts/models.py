@@ -77,10 +77,16 @@ class CustomUser(AbstractUser):
 class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
     full_name = models.CharField(max_length=150, blank=True)
-    citizenship_number = models.CharField(max_length=50, blank=True, null=True)
+    citizenship_number = models.CharField(max_length=50, blank=True, null=True,
+        help_text=_("National ID / Citizenship number — verified via NID document OCR."))
+    nid_document = models.ImageField(upload_to='nid_documents/', blank=True, null=True,
+        help_text=_("Uploaded NID/Citizenship card image for identity verification."))
+    nid_verified = models.BooleanField(default=False,
+        help_text=_("True when the uploaded NID image OCR matched the manually entered citizenship number."))
     company_name = models.CharField(max_length=255, blank=True, null=True, help_text=_("For material suppliers"))
     company_pan_vat = models.CharField(max_length=50, blank=True, null=True, help_text=_("PAN/VAT for suppliers"))
     address = models.CharField(max_length=255, blank=True)
+    bio = models.TextField(blank=True, null=True, help_text=_("Short personal or business description."))
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -115,4 +121,3 @@ class AuditLog(models.Model):
 
     def __str__(self):
         return f"[{self.timestamp}] {self.category} - {self.actor_username}: {self.action} ({self.status})"
-

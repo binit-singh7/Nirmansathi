@@ -100,6 +100,18 @@
                             <label for="storeysCount" class="form-label fw-semibold">{% trans "Number of Storeys / Floors *" %}</label>
                             <input type="number" min="1" max="10" class="form-control" id="storeysCount" value="2"
                                 required>
+                            <div id="storeyPhasesPreview" class="mt-2 p-2 bg-light rounded border border-primary border-opacity-25 small">
+                                <div class="fw-bold text-navy mb-1 d-flex align-items-center justify-content-between">
+                                    <span><i class="bi bi-diagram-3-fill text-primary me-1"></i><span id="storeyPreviewHeading">{% trans "Monitored Construction Phases" %}</span></span>
+                                    <span class="badge bg-primary" id="storeyPhaseCountBadge">4 {% trans "Phases" %}</span>
+                                </div>
+                                <div class="text-muted small mb-2" style="font-size:0.75rem;">
+                                    {% trans "Sequential construction monitoring phases generated for your submitted storey count:" %}
+                                </div>
+                                <div id="storeyPhaseBadges" class="d-flex flex-wrap gap-1">
+                                    <!-- Populated dynamically via JS -->
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label for="estimatedCost" class="form-label fw-semibold">{% trans "Estimated Construction Cost (NPR) *" %}</label>
@@ -150,8 +162,46 @@
 {% block extra_js %}
 <script src="/static/js/permits.js"></script>
 <script>
+    function updateStoreyPhasesPreview() {
+        const count = Math.min(10, Math.max(1, parseInt(document.getElementById('storeysCount').value) || 1));
+        const floorLabels = [
+            '{% trans "First Floor" %}',
+            '{% trans "Second Floor" %}',
+            '{% trans "Third Floor" %}',
+            '{% trans "Fourth Floor" %}',
+            '{% trans "Fifth Floor" %}',
+            '{% trans "Sixth Floor" %}',
+            '{% trans "Seventh Floor" %}',
+            '{% trans "Eighth Floor" %}',
+            '{% trans "Ninth Floor" %}',
+            '{% trans "Tenth Floor" %}'
+        ];
+        
+        const phases = [
+            { seq: 1, name: '{% trans "Plinth Level" %}' }
+        ];
+        for (let i = 1; i <= count; i++) {
+            phases.push({ seq: i + 1, name: floorLabels[i - 1] || `Floor ${i}` });
+        }
+        phases.push({ seq: count + 2, name: '{% trans "Final Completion" %}' });
+        
+        document.getElementById('storeyPreviewHeading').textContent = `{% trans "Phases for" %} ${count} {% trans "Storey(s)" %}:`;
+        document.getElementById('storeyPhaseCountBadge').textContent = `${phases.length} {% trans "Phases" %}`;
+        
+        const badgesContainer = document.getElementById('storeyPhaseBadges');
+        badgesContainer.innerHTML = phases.map(p => 
+            `<span class="badge bg-white text-navy border border-secondary border-opacity-25 px-2 py-1"><span class="text-muted me-1">${p.seq}.</span>${p.name}</span>`
+        ).join('');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         initLocationCascades('province', 'district', 'municipality', 'ward');
+        const storeysInput = document.getElementById('storeysCount');
+        if (storeysInput) {
+            storeysInput.addEventListener('input', updateStoreyPhasesPreview);
+            storeysInput.addEventListener('change', updateStoreyPhasesPreview);
+            updateStoreyPhasesPreview();
+        }
     });
 
     document.getElementById('permitForm').addEventListener('submit', async (e) => {

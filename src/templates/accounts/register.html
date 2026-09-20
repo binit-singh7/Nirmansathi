@@ -6,7 +6,7 @@
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
+        <div class="col-md-8 col-lg-7">
             <div class="card card-ns shadow-lg p-4">
                 <div class="card-body">
                     <div class="text-center mb-4">
@@ -20,28 +20,27 @@
                     <div id="registerAlert" class="alert alert-danger d-none" role="alert"></div>
 
                     <form id="registerForm">
+                        {% csrf_token %}
+                        <!-- Basic Credentials -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label for="username" class="form-label fw-semibold">{% trans "Username *" %}</label>
-                                <input type="text" class="form-control" id="username" placeholder="{% trans 'Choose username' %}"
-                                    required>
+                                <input type="text" class="form-control" id="username" placeholder="{% trans 'Choose username' %}" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="fullName" class="form-label fw-semibold">{% trans "Full Name" %}</label>
-                                <input type="text" class="form-control" id="fullName"
-                                    placeholder="{% trans 'e.g. Ram Bahadur Shrestha' %}">
+                                <label for="fullName" class="form-label fw-semibold">{% trans "Full Name *" %}</label>
+                                <input type="text" class="form-control" id="fullName" placeholder="{% trans 'e.g. Ram Bahadur Shrestha' %}" required>
                             </div>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label for="email" class="form-label fw-semibold">{% trans "Email Address *" %}</label>
-                                <input type="email" class="form-control" id="email" placeholder="name@example.com"
-                                    required>
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="phoneNumber" class="form-label fw-semibold">{% trans "Phone Number" %}</label>
-                                <input type="tel" class="form-control" id="phoneNumber" placeholder="98XXXXXXXX">
+                                <label for="phoneNumber" class="form-label fw-semibold">{% trans "Phone Number *" %}</label>
+                                <input type="tel" class="form-control" id="phoneNumber" placeholder="98XXXXXXXX" required>
                             </div>
                         </div>
 
@@ -61,22 +60,85 @@
                         </div>
 
                         <div class="mb-3 d-none" id="municipalityGroup">
-                            <label for="municipality" class="form-label fw-semibold">{% trans "Assigned Municipality *" %}</label>
+                            <label for="municipality" class="form-label fw-semibold">{% trans "Municipality / Service Area *" %}</label>
+                            <div class="row g-2 mb-2">
+                                <div class="col-md-6">
+                                    <label for="municipalityProvinceFilter" class="visually-hidden">{% trans "Filter by province" %}</label>
+                                    <select class="form-select form-select-sm" id="municipalityProvinceFilter">
+                                        <option value="">{% trans "All Provinces" %}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="municipalityDistrictFilter" class="visually-hidden">{% trans "Filter by district" %}</label>
+                                    <select class="form-select form-select-sm" id="municipalityDistrictFilter" disabled>
+                                        <option value="">{% trans "All Districts" %}</option>
+                                    </select>
+                                </div>
+                            </div>
                             <select class="form-select" id="municipality">
                                 <option value="" selected disabled>{% trans "Select Municipality..." %}</option>
                             </select>
+                            <div class="form-text">{% trans "Use province and district filters to narrow the municipality list." %}</div>
                         </div>
 
+                        <!-- NATIONAL ID / CITIZENSHIP CARD VERIFICATION SECTION -->
+                        <div class="card bg-light border-0 shadow-sm p-3 mb-4 rounded-3" id="nidSectionCard">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <h6 class="fw-bold text-navy mb-0">
+                                    <i class="bi bi-person-vcard text-primary me-2"></i>{% trans "National ID / Citizenship Verification" %}
+                                </h6>
+                                <span class="badge bg-secondary" id="nidStatusBadge">
+                                    <i class="bi bi-shield me-1"></i>{% trans "Upload Required" %}
+                                </span>
+                            </div>
+                            <p class="text-muted small mb-3">
+                                {% trans "Enter your ID number and upload a clear photo of your National ID or Citizenship card. Your number will be verified against the document on the server." %}
+                            </p>
+
+                            <!-- NID Number Input -->
+                            <div class="mb-3">
+                                <label for="citizenshipNumber" class="form-label fw-semibold small">
+                                    {% trans "National ID / Citizenship Number *" %}
+                                </label>
+                                <input type="text" class="form-control" id="citizenshipNumber"
+                                       placeholder="{% trans 'e.g. 12-01-75-12345' %}" required>
+                                <div class="form-text small">
+                                    {% trans "Enter your exact ID number including hyphens (e.g. 12-34-56-78901)." %}
+                                </div>
+                            </div>
+
+                            <!-- Document Upload Input -->
+                            <div class="mb-3">
+                                <label for="nidDocument" class="form-label fw-semibold small">
+                                    {% trans "Upload NID / Citizenship Document Card *" %}
+                                </label>
+                                <input type="file" class="form-control" id="nidDocument" accept="image/*" required>
+                                <div class="form-text small">
+                                    {% trans "Accepted: JPG, PNG, WebP (Max 5MB). Ensure the document number is clearly legible." %}
+                                </div>
+                            </div>
+
+                            <!-- Image Preview & Remove -->
+                            <div id="nidPreviewContainer" class="position-relative mb-3 d-none text-center bg-white p-2 rounded border">
+                                <img id="nidPreviewImg" src="" alt="{% trans 'NID Card Preview' %}" class="img-fluid rounded" style="max-height: 180px; object-fit: contain;">
+                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle" id="btnRemoveNid" title="{% trans 'Remove Document' %}">
+                                    <i class="bi bi-x"></i>
+                                </button>
+                            </div>
+
+                            <!-- Verification Status Alert -->
+                            <div id="nidMatchAlert" class="alert py-2 px-3 small mt-2 d-none mb-0" role="alert"></div>
+                        </div>
+
+                        <!-- Password Fields -->
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label for="password" class="form-label fw-semibold">{% trans "Password *" %}</label>
-                                <input type="password" class="form-control" id="password" placeholder="{% trans 'Min 6 characters' %}"
-                                    minlength="6" required>
+                                <input type="password" class="form-control" id="password" placeholder="{% trans 'Min 6 characters' %}" minlength="6" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="confirmPassword" class="form-label fw-semibold">{% trans "Confirm Password *" %}</label>
-                                <input type="password" class="form-control" id="confirmPassword"
-                                    placeholder="{% trans 'Re-enter password' %}" minlength="6" required>
+                                <input type="password" class="form-control" id="confirmPassword" placeholder="{% trans 'Re-enter password' %}" minlength="6" required>
                             </div>
                         </div>
 
@@ -88,7 +150,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-warning w-100 py-2 fw-bold" id="registerSubmitBtn">
-                            <span>{% trans "Create Account" %}</span>
+                            <i class="bi bi-person-check-fill me-1"></i><span>{% trans "Create Account" %}</span>
                         </button>
                     </form>
 
@@ -106,36 +168,86 @@
 {% endblock %}
 
 {% block extra_js %}
+
+
 <script>
     let municipalitiesLoaded = false;
+    let municipalities = [];
 
+    // Load Municipalities for Officer role
     async function loadMunicipalities() {
         if (municipalitiesLoaded) return;
         try {
-            const data = await apiFetch('/locations/municipalities/');
-            const munis = Array.isArray(data) ? data : (data.results || []);
-            const select = document.getElementById('municipality');
-            select.innerHTML = '<option value="" selected disabled>{% trans "Select Municipality..." %}</option>';
-            munis.forEach(m => {
-                const opt = document.createElement('option');
-                opt.value = m.id;
-                opt.textContent = `${m.name} (${m.type_display || m.type || ''})`;
-                select.appendChild(opt);
-            });
+            const data = await apiFetch('/locations/municipalities/?include_all=true');
+            municipalities = Array.isArray(data) ? data : (data.results || []);
+            populateProvinceFilter();
+            renderMunicipalityOptions();
             municipalitiesLoaded = true;
         } catch (err) {
             console.error('Failed to load municipalities:', err);
         }
     }
 
+    function populateProvinceFilter() {
+        const select = document.getElementById('municipalityProvinceFilter');
+        const provinces = [...new Map(municipalities
+            .filter(m => m.province_id && m.province_name)
+            .map(m => [m.province_id, m.province_name]))]
+            .sort((a, b) => a[1].localeCompare(b[1]));
+
+        select.innerHTML = `<option value="">{% trans "All Provinces" %}</option>`;
+        provinces.forEach(([id, name]) => select.add(new Option(name, id)));
+    }
+
+    function populateDistrictFilter() {
+        const provinceId = document.getElementById('municipalityProvinceFilter').value;
+        const select = document.getElementById('municipalityDistrictFilter');
+        const districts = [...new Map(municipalities
+            .filter(m => !provinceId || String(m.province_id) === provinceId)
+            .filter(m => m.district && m.district_name)
+            .map(m => [m.district, m.district_name]))]
+            .sort((a, b) => a[1].localeCompare(b[1]));
+
+        select.innerHTML = `<option value="">{% trans "All Districts" %}</option>`;
+        districts.forEach(([id, name]) => select.add(new Option(name, id)));
+        select.disabled = districts.length === 0;
+    }
+
+    function renderMunicipalityOptions() {
+        const provinceId = document.getElementById('municipalityProvinceFilter').value;
+        const districtId = document.getElementById('municipalityDistrictFilter').value;
+        const select = document.getElementById('municipality');
+        const selectedValue = select.value;
+        const matches = municipalities
+            .filter(m => !provinceId || String(m.province_id) === provinceId)
+            .filter(m => !districtId || String(m.district) === districtId)
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        select.innerHTML = `<option value="" selected disabled>{% trans "Select Municipality..." %}</option>`;
+        matches.forEach(m => {
+            const location = [m.district_name, m.province_name].filter(Boolean).join(', ');
+            select.add(new Option(`${m.name} — ${location}`, m.id));
+        });
+        if (matches.some(m => String(m.id) === selectedValue)) select.value = selectedValue;
+        select.disabled = matches.length === 0;
+    }
+
+    document.getElementById('municipalityProvinceFilter').addEventListener('change', () => {
+        populateDistrictFilter();
+        renderMunicipalityOptions();
+    });
+    document.getElementById('municipalityDistrictFilter').addEventListener('change', renderMunicipalityOptions);
+
     document.getElementById('role').addEventListener('change', async (e) => {
         const isOfficer = e.target.value === 'MUNICIPALITY_OFFICER';
+        const needsMunicipality = isOfficer || e.target.value === 'MATERIAL_SUPPLIER';
         const notice = document.getElementById('officerNotice');
         const muniGroup = document.getElementById('municipalityGroup');
         const muniSelect = document.getElementById('municipality');
 
-        if (isOfficer) {
-            notice.classList.remove('d-none');
+        if (needsMunicipality) {
+            if (isOfficer) notice.classList.remove('d-none');
+            else notice.classList.add('d-none');
             muniGroup.classList.remove('d-none');
             muniSelect.setAttribute('required', 'required');
             await loadMunicipalities();
@@ -146,10 +258,54 @@
         }
     });
 
+    // File input change handler — image preview only (no client-side OCR)
+    document.getElementById('nidDocument').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const previewContainer = document.getElementById('nidPreviewContainer');
+        const previewImg = document.getElementById('nidPreviewImg');
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            previewImg.src = evt.target.result;
+            previewContainer.classList.remove('d-none');
+        };
+        reader.readAsDataURL(file);
+
+        // Reset status badge when a new file is chosen
+        const badge = document.getElementById('nidStatusBadge');
+        badge.className = 'badge bg-secondary';
+        badge.innerHTML = '<i class="bi bi-shield me-1"></i>{% trans "Ready to verify" %}';
+        const alertEl = document.getElementById('nidMatchAlert');
+        alertEl.classList.add('d-none');
+    });
+
+    // Remove NID handler
+    document.getElementById('btnRemoveNid').addEventListener('click', function() {
+        const fileInput = document.getElementById('nidDocument');
+        fileInput.value = '';
+        document.getElementById('nidPreviewContainer').classList.add('d-none');
+        const badge = document.getElementById('nidStatusBadge');
+        badge.className = 'badge bg-secondary';
+        badge.innerHTML = '<i class="bi bi-shield me-1"></i>{% trans "Upload Required" %}';
+        document.getElementById('nidMatchAlert').classList.add('d-none');
+    });
+
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function isValidPhone(phone) {
+        return /^[0-9]{10}$/.test(phone);
+    }
+
+    // Form Submission
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const alertEl = document.getElementById('registerAlert');
         const btn = document.getElementById('registerSubmitBtn');
+        const nidMatchAlert = document.getElementById('nidMatchAlert');
+        const badge = document.getElementById('nidStatusBadge');
 
         alertEl.classList.add('d-none');
 
@@ -161,29 +317,49 @@
         const municipality = document.getElementById('municipality').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
+        const citizenship_number = document.getElementById('citizenshipNumber').value.trim();
+        const nidFile = document.getElementById('nidDocument').files[0];
 
-        // Client-side validation
+        // --- Basic field validations ---
         if (!username || username.length < 3) {
             alertEl.textContent = "{% trans 'Username must be at least 3 characters long.' %}";
             alertEl.classList.remove('d-none');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
         if (!email || !isValidEmail(email)) {
             alertEl.textContent = "{% trans 'Please enter a valid email address.' %}";
             alertEl.classList.remove('d-none');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
-        if (phone_number && !isValidPhone(phone_number)) {
-            alertEl.textContent = "{% trans 'Please enter a valid phone number (10 digits).' %}";
+        if (!phone_number || !isValidPhone(phone_number)) {
+            alertEl.textContent = "{% trans 'Please enter a valid 10-digit phone number.' %}";
             alertEl.classList.remove('d-none');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             return;
         }
 
-        if (role === 'MUNICIPALITY_OFFICER' && !municipality) {
-            alertEl.textContent = "{% trans 'Please select your assigned municipality.' %}";
+        if (['MUNICIPALITY_OFFICER', 'MATERIAL_SUPPLIER'].includes(role) && !municipality) {
+            alertEl.textContent = "{% trans 'Please select your municipality or service area.' %}";
             alertEl.classList.remove('d-none');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        if (!citizenship_number) {
+            alertEl.textContent = "{% trans 'Please enter your National ID / Citizenship number.' %}";
+            alertEl.classList.remove('d-none');
+            document.getElementById('citizenshipNumber').focus();
+            return;
+        }
+
+        if (!nidFile) {
+            alertEl.textContent = "{% trans 'Please upload your National ID or Citizenship card document.' %}";
+            alertEl.classList.remove('d-none');
+            document.getElementById('nidSectionCard').scrollIntoView({ behavior: 'smooth' });
             return;
         }
 
@@ -199,39 +375,50 @@
             return;
         }
 
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function isValidPhone(phone) {
-            const phoneRegex = /^[0-9]{10}$/;
-            return phoneRegex.test(phone);
-        }
-
         btn.disabled = true;
-        btn.innerHTML = `<span class="loading-spinner me-2"></span>{% trans 'Creating Account...' %}`;
+        btn.innerHTML = `<span class="loading-spinner me-2"></span>{% trans 'Verifying document...' %}`;
 
-        const payload = {
-            username,
-            email,
-            password,
-            role,
-            phone_number,
-            full_name
-        };
-        if (role === 'MUNICIPALITY_OFFICER' && municipality) {
-            payload.municipality = parseInt(municipality);
+        // --- Step 1: Authenticate first to get a token for the verify endpoint ---
+        // The NID verify endpoint requires authentication. We register the user first
+        // (nid_verified stays False), then log in temporarily to run verification,
+        // then update profile. HOWEVER: per the simpler correct flow, we register
+        // and the RegisterView itself runs OCR internally — so we just POST once.
+        // The nid/verify/ endpoint is available for the profile-update scenario.
+        //
+        // For registration: just POST to register; backend runs OCR internally.
+
+        // Construct FormData for multipart upload
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('role', role);
+        formData.append('phone_number', phone_number);
+        formData.append('full_name', full_name);
+        formData.append('citizenship_number', citizenship_number);
+        formData.append('nid_document', nidFile);
+        if (['MUNICIPALITY_OFFICER', 'MATERIAL_SUPPLIER'].includes(role) && municipality) {
+            formData.append('municipality', municipality);
         }
 
         try {
             const res = await apiFetch('/accounts/register/', {
                 method: 'POST',
-                body: JSON.stringify(payload)
+                body: formData
             });
 
+            // Show NID verification result from server response
+            const nidVerified = res.user && res.user.profile && res.user.profile.nid_verified;
+            if (nidVerified) {
+                badge.className = 'badge bg-success';
+                badge.innerHTML = '<i class="bi bi-check-circle me-1"></i>{% trans "Document number verified" %}';
+                nidMatchAlert.className = 'alert alert-success py-2 px-3 small mt-2';
+                nidMatchAlert.innerHTML = '<i class="bi bi-patch-check-fill me-1"></i>{% trans "✓ Document number verified" %}';
+                nidMatchAlert.classList.remove('d-none');
+            }
+
             const successMsg = role === 'MUNICIPALITY_OFFICER'
-                ? "{% trans 'Officer registration submitted! Your account is pending admin verification. Redirecting to login...' %}"
+                ? "{% trans 'Officer registration submitted! Your account is pending administrative approval. Redirecting to login...' %}"
                 : "{% trans 'Registration successful! Redirecting to login page...' %}";
 
             showToast(successMsg, 'success', 5000);
@@ -239,12 +426,14 @@
             setTimeout(() => {
                 window.location.href = '/login/';
             }, 1800);
+
         } catch (err) {
             alertEl.textContent = err.message || "{% trans 'Registration failed. Please try again.' %}";
             alertEl.classList.remove('d-none');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } finally {
             btn.disabled = false;
-            btn.innerHTML = `<span>{% trans 'Create Account' %}</span>`;
+            btn.innerHTML = `<i class="bi bi-person-check-fill me-1"></i><span>{% trans "Create Account" %}</span>`;
         }
     });
 </script>

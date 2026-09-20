@@ -11,12 +11,17 @@ class WardSerializer(serializers.ModelSerializer):
 
 class MunicipalitySerializer(serializers.ModelSerializer):
     district_name = serializers.ReadOnlyField(source='district.name')
+    province_id = serializers.ReadOnlyField(source='district.province.id')
+    province_name = serializers.ReadOnlyField(source='district.province.name')
     type_display = serializers.ReadOnlyField(source='get_type_display')
     wards = WardSerializer(many=True, read_only=True)
 
     class Meta:
         model = Municipality
-        fields = ['id', 'name', 'type', 'type_display', 'district', 'district_name', 'wards']
+        fields = [
+            'id', 'name', 'type', 'type_display',
+            'district', 'district_name', 'province_id', 'province_name', 'wards'
+        ]
 
 
 class DistrictSerializer(serializers.ModelSerializer):
