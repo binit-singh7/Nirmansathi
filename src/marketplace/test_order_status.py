@@ -174,3 +174,26 @@ class MarketplaceLifecycleSecurityTests(TestCase):
         self.client.force_authenticate(user=self.supplier2)
         res_unauth = self.client.patch(f'/api/v1/marketplace/orders/{other_order.id}/', {'status': 'PROCESSING'}, format='json')
         self.assertIn(res_unauth.status_code, (403, 404))
+
+    def test_supplier_can_view_inactive_products(self):
+        # Create an inactive product for supplier1
+        inactive_prod = Product.objects.create(
+            supplier=self.supplier1, category=self.cat, name='Old Cement',
+            price=700.00, available_stock=0, unit='Bag', description='Discontinued', is_active=False
+        )
+
+        # Authenticated as supplier1: should return active + inactive products for supplier1
+        self.client.force_authenticate(user=self.supplier1)
+        res = self.client.get(f'/api/v1/marketplace/products/?supplier={self.supplier1.id}')
+        self.assertEqual(res.status_code, 200)
+        product_ids = [p['id'] for p in res.data]
+        self.assertIn(inactive_prod.id, product_ids)
+        self.assertIn(self.product1.id, product_ids)
+
+        # Authenticated as citizen: inactive product should be hidden
+        self.client.force_authenticate(user=self.buyer)
+        res_buyer = self.client.get(f'/api/v1/marketplace/products/?supplier={self.supplier1.id}')
+        self.assertEqual(res_buyer.status_code, 200)
+        buyer_prod_ids = [p['id'] for p in res_buyer.data]
+        self.assertNotIn(inactive_prod.id, buyer_prod_ids)
+        self.assertIn(self.product1.id, buyer_prod_ids)

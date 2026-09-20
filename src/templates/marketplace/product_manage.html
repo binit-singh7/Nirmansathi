@@ -1,88 +1,125 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Manage Product - NirmanSathi Marketplace" %}{% endblock %}
+{% block title %}{% trans "Manage Products - NirmanSathi Marketplace" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <div>
-                    <h2 class="fw-bold text-navy mb-1" id="formTitle"><i
-                            class="bi bi-box-seam text-warning me-2"></i>{% trans "Add Construction Material" %}</h2>
-                    <p class="text-muted small mb-0">{% trans "List your certified cement, steel, or aggregate materials on the NirmanSathi marketplace." %}</p>
+    <!-- Top Header -->
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+        <div>
+            <h2 class="fw-bold text-navy mb-1" id="formTitle"><i
+                    class="bi bi-box-seam text-warning me-2"></i>{% trans "Add Construction Material" %}</h2>
+            <p class="text-muted small mb-0">{% trans "List, edit, or update your certified cement, steel, or aggregate materials on NirmanSathi." %}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-primary" id="btnNewProduct" onclick="resetFormToAddMode()">
+                <i class="bi bi-plus-circle me-1"></i>{% trans "Add New Material" %}
+            </button>
+            <a href="/dashboard/supplier/" class="btn btn-outline-secondary"><i
+                    class="bi bi-speedometer2 me-1"></i>{% trans "Supplier Dashboard" %}</a>
+        </div>
+    </div>
+
+    <div id="productAlert" class="alert alert-danger d-none" role="alert"></div>
+
+    <!-- Form Section -->
+    <div class="card card-ns shadow-sm p-4 mb-5" id="productFormCard">
+        <form id="productForm">
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label for="productCategory" class="form-label fw-semibold">{% trans "Material Category *" %}</label>
+                    <select class="form-select" id="productCategory" required>
+                        <option value="">{% trans "-- Loading Categories --" %}</option>
+                    </select>
                 </div>
-                <a href="/dashboard/supplier/" class="btn btn-outline-secondary"><i
-                        class="bi bi-arrow-left me-1"></i>{% trans "Back to Inventory" %}</a>
+                <div class="col-md-6">
+                    <label for="productName" class="form-label fw-semibold">{% trans "Product Name *" %}</label>
+                    <input type="text" class="form-control" id="productName"
+                        placeholder="{% trans 'e.g. Shivam OPC Cement (Grade 43)' %}" required>
+                </div>
             </div>
 
-            <div id="productAlert" class="alert alert-danger d-none" role="alert"></div>
+            <div class="mb-3">
+                <label for="productDescription" class="form-label fw-semibold">{% trans "Material Specifications & Description *" %}</label>
+                <textarea class="form-control" id="productDescription" rows="3"
+                    placeholder="{% trans 'Enter grade, compliance standards (NS/IS), setting time, or quality details...' %}" required></textarea>
+            </div>
 
-            <div class="card card-ns shadow-sm p-4">
-                <form id="productForm">
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label for="productCategory" class="form-label fw-semibold">{% trans "Material Category *" %}</label>
-                            <select class="form-select" id="productCategory" required>
-                                <option value="">{% trans "-- Loading Categories --" %}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="productName" class="form-label fw-semibold">{% trans "Product Name *" %}</label>
-                            <input type="text" class="form-control" id="productName"
-                                placeholder="{% trans 'e.g. Shivam OPC Cement (Grade 43)' %}" required>
-                        </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-4">
+                    <label for="productPrice" class="form-label fw-semibold">{% trans "Unit Price (NPR) *" %}</label>
+                    <div class="input-group">
+                        <span class="input-group-text">Rs.</span>
+                        <input type="number" step="0.01" min="1" class="form-control" id="productPrice"
+                            placeholder="750.00" required>
                     </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="productStock" class="form-label fw-semibold">{% trans "Available Stock *" %}</label>
+                    <input type="number" min="0" class="form-control" id="productStock" placeholder="500"
+                        required>
+                </div>
+                <div class="col-md-4">
+                    <label for="productUnit" class="form-label fw-semibold">{% trans "Unit of Measure *" %}</label>
+                    <input type="text" class="form-control" id="productUnit"
+                        placeholder="{% trans 'e.g. Bag, Ton, Piece, Trip' %}" value="Bag" required>
+                </div>
+            </div>
 
-                    <div class="mb-3">
-                        <label for="productDescription" class="form-label fw-semibold">{% trans "Material Specifications & Description *" %}</label>
-                        <textarea class="form-control" id="productDescription" rows="3"
-                            placeholder="{% trans 'Enter grade, compliance standards (NS/IS), setting time, or quality details...' %}" required></textarea>
+            <div class="row g-3 mb-4 align-items-center">
+                <div class="col-md-8">
+                    <label for="productImage" class="form-label fw-semibold">{% trans "Product Image" %}</label>
+                    <input type="file" class="form-control" id="productImage" accept=".jpg,.jpeg,.png,.webp">
+                    <div class="form-text">{% trans "Optional product image." %}</div>
+                </div>
+                <div class="col-md-4 pt-md-4">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="isAvailable" checked>
+                        <label class="form-check-label fw-bold text-dark" for="isAvailable">{% trans "In Stock / Available" %}</label>
                     </div>
+                </div>
+            </div>
 
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-4">
-                            <label for="productPrice" class="form-label fw-semibold">{% trans "Unit Price (NPR) *" %}</label>
-                            <div class="input-group">
-                                <span class="input-group-text">Rs.</span>
-                                <input type="number" step="0.01" min="1" class="form-control" id="productPrice"
-                                    placeholder="750.00" required>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="productStock" class="form-label fw-semibold">{% trans "Available Stock *" %}</label>
-                            <input type="number" min="0" class="form-control" id="productStock" placeholder="500"
-                                required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="productUnit" class="form-label fw-semibold">{% trans "Unit of Measure *" %}</label>
-                            <input type="text" class="form-control" id="productUnit"
-                                placeholder="{% trans 'e.g. Bag, Ton, Piece, Trip' %}" value="Bag" required>
-                        </div>
-                    </div>
+            <div class="d-flex justify-content-end gap-3 border-top pt-3">
+                <button type="button" class="btn btn-light px-4" onclick="resetFormToAddMode()">{% trans "Cancel" %}</button>
+                <button type="submit" class="btn btn-warning fw-bold px-5" id="saveProductBtn">
+                    {% trans "Save Material Listing" %}
+                </button>
+            </div>
+        </form>
+    </div>
 
-                    <div class="row g-3 mb-4 align-items-center">
-                        <div class="col-md-8">
-                            <label for="productImage" class="form-label fw-semibold">{% trans "Product Image" %}</label>
-                            <input type="file" class="form-control" id="productImage" accept=".jpg,.jpeg,.png,.webp">
-                            <div class="form-text">{% trans "Optional product image." %}</div>
-                        </div>
-                        <div class="col-md-4 pt-md-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="isAvailable" checked>
-                                <label class="form-check-label fw-bold text-dark" for="isAvailable">{% trans "In Stock / Available" %}</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="d-flex justify-content-end gap-3 border-top pt-3">
-                        <a href="/dashboard/supplier/" class="btn btn-light px-4">{% trans "Cancel" %}</a>
-                        <button type="submit" class="btn btn-warning fw-bold px-5" id="saveProductBtn">
-                            {% trans "Save Material Listing" %}
-                        </button>
-                    </div>
-                </form>
+    <!-- Listed Materials Management Table -->
+    <div class="card card-ns shadow-sm">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0 text-navy">
+                <i class="bi bi-boxes text-warning me-2"></i>{% trans "Your Material Inventory" %}
+                <span class="badge bg-secondary ms-2" id="materialCountBadge">0</span>
+            </h5>
+            <small class="text-muted">{% trans "Click Edit to update any product specification or stock count." %}</small>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>{% trans "Product Name" %}</th>
+                            <th>{% trans "Category" %}</th>
+                            <th>{% trans "Unit Price" %}</th>
+                            <th>{% trans "Available Stock" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th class="text-end">{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody id="manageProductsBody">
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                <span class="loading-spinner me-2"></span>{% trans "Loading your materials..." %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -94,14 +131,21 @@
     let editProductId = null;
 
     document.addEventListener('DOMContentLoaded', async () => {
+        let user = getUser();
+        if (!user || !user.id) {
+            try {
+                user = await apiFetch('/accounts/me/');
+                if (user) setUser(user);
+            } catch (e) {}
+        }
+
         await loadCategories();
+        await loadSupplierProducts();
 
         const urlParams = new URLSearchParams(window.location.search);
-        editProductId = urlParams.get('id');
-
-        if (editProductId) {
-            document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square text-warning me-2"></i>{% trans "Edit Material Listing" %}`;
-            await loadProductData(editProductId);
+        const urlId = urlParams.get('id');
+        if (urlId) {
+            await editProduct(urlId);
         }
     });
 
@@ -116,7 +160,81 @@
         }
     }
 
-    async function loadProductData(id) {
+    async function loadSupplierProducts() {
+        const tbody = document.getElementById('manageProductsBody');
+        try {
+            let user = getUser();
+            if (!user || !user.id) {
+                try {
+                    user = await apiFetch('/accounts/me/');
+                    if (user) setUser(user);
+                } catch (e) {}
+            }
+
+            const endpoint = (user && user.id) ? `/marketplace/products/?supplier=${user.id}` : '/marketplace/products/?my_products=true';
+            const products = await apiFetch(endpoint);
+
+            const myProducts = Array.isArray(products) ? (
+                (user && user.id)
+                    ? products.filter(p => String(p.supplier) === String(user.id) || p.supplier_name === user.username)
+                    : products
+            ) : [];
+
+            document.getElementById('materialCountBadge').textContent = myProducts.length;
+
+            if (myProducts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="bi bi-box-seam fs-1 text-secondary d-block mb-2"></i>
+                            {% trans "No construction materials listed yet. Use the form above to add your first product." %}
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = myProducts.map(p => {
+                const isAvailable = p.is_active && p.available_stock > 0;
+                return `
+                    <tr id="prod-row-${p.id}">
+                        <td>
+                            <span class="fw-bold d-block text-dark">${p.name}</span>
+                            <small class="text-muted">${p.unit ? `${_t('unit', 'Unit')}: ${p.unit}` : ''}</small>
+                        </td>
+                        <td><span class="badge bg-secondary">${p.category_name || '{% trans "Material" %}'}</span></td>
+                        <td class="fw-bold text-primary">Rs. ${parseFloat(p.price).toLocaleString('en-IN')}</td>
+                        <td>
+                            <span class="fw-bold ${p.available_stock < 50 ? 'text-danger' : 'text-success'}">${p.available_stock}</span>
+                        </td>
+                        <td>
+                            <span class="badge ${isAvailable ? 'bg-success' : 'bg-danger'}">${isAvailable ? _t('in_stock', 'In Stock') : _t('out_of_stock', 'Out of Stock')}</span>
+                        </td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="editProduct(${p.id})">
+                                <i class="bi bi-pencil me-1"></i>${_t('edit', 'Edit')}
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.id})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">${err.message || "{% trans 'Failed to load materials' %}"}</td></tr>`;
+        }
+    }
+
+    async function editProduct(id) {
+        editProductId = id;
+        document.getElementById('formTitle').innerHTML = `<i class="bi bi-pencil-square text-warning me-2"></i>{% trans "Edit Material Listing" %}`;
+        
+        // Highlight active row in table if present
+        document.querySelectorAll('#manageProductsBody tr').forEach(r => r.classList.remove('table-warning'));
+        const row = document.getElementById(`prod-row-${id}`);
+        if (row) row.classList.add('table-warning');
+
         try {
             const product = await apiFetch(`/marketplace/products/${id}/`);
             document.getElementById('productCategory').value = product.category;
@@ -126,8 +244,31 @@
             document.getElementById('productStock').value = product.available_stock;
             document.getElementById('productUnit').value = product.unit || 'Bag';
             document.getElementById('isAvailable').checked = product.is_active;
+
+            document.getElementById('productFormCard').scrollIntoView({ behavior: 'smooth' });
         } catch (err) {
-            showToast(err.message || "{% trans 'Failed to load product listing' %}", 'danger');
+            showToast(err.message || "{% trans 'Failed to load product details' %}", 'danger');
+        }
+    }
+
+    function resetFormToAddMode() {
+        editProductId = null;
+        document.getElementById('productForm').reset();
+        document.getElementById('formTitle').innerHTML = `<i class="bi bi-box-seam text-warning me-2"></i>{% trans "Add Construction Material" %}`;
+        document.getElementById('isAvailable').checked = true;
+        document.querySelectorAll('#manageProductsBody tr').forEach(r => r.classList.remove('table-warning'));
+        document.getElementById('productAlert').classList.add('d-none');
+    }
+
+    async function deleteProduct(id) {
+        if (!confirm("{% trans 'Are you sure you want to delete this construction material listing?' %}")) return;
+        try {
+            await apiFetch(`/marketplace/products/${id}/`, { method: 'DELETE' });
+            showToast("{% trans 'Product deleted from inventory.' %}", 'info');
+            if (editProductId == id) resetFormToAddMode();
+            await loadSupplierProducts();
+        } catch (err) {
+            showToast(err.message || "{% trans 'Failed to delete product.' %}", 'danger');
         }
     }
 
@@ -163,16 +304,15 @@
                 body: fd
             });
 
-            showToast(`{% trans "Material listing saved successfully!" %}`, 'success');
-
-            setTimeout(() => {
-                window.location.href = '/dashboard/supplier/';
-            }, 1000);
+            showToast(editProductId ? "{% trans 'Material listing updated successfully!' %}" : "{% trans 'Material listing added successfully!' %}", 'success');
+            resetFormToAddMode();
+            await loadSupplierProducts();
         } catch (err) {
             alertEl.textContent = err.message || "{% trans 'Failed to save product. Please check input values.' %}";
             alertEl.classList.remove('d-none');
+        } finally {
             btn.disabled = false;
-            btn.innerHTML = `{% trans "Save Material Listing" %}`;
+            btn.innerHTML = "{% trans 'Save Material Listing' %}";
         }
     });
 </script>

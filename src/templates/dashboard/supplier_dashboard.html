@@ -125,9 +125,18 @@
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
-        const user = getUser();
+        let user = getUser();
+        if (!user || !user.id) {
+            try {
+                user = await apiFetch('/accounts/me/');
+                if (user) setUser(user);
+            } catch (e) {
+                console.error('Could not fetch user profile:', e);
+            }
+        }
+
         if (user) {
-            document.getElementById('supplierNameText').textContent = user.company_name || user.username;
+            document.getElementById('supplierNameText').textContent = (user.profile && user.profile.company_name) || user.company_name || user.username;
         }
 
         await loadInventory();
@@ -137,12 +146,22 @@
     async function loadInventory() {
         const tbody = document.getElementById('supplierInventoryBody');
         try {
-            const products = await apiFetch('/marketplace/products/');
+            let user = getUser();
+            if (!user || !user.id) {
+                try {
+                    user = await apiFetch('/accounts/me/');
+                    if (user) setUser(user);
+                } catch (e) {}
+            }
 
-            // Filter for current supplier
-            const user = getUser();
-            const myProducts = products.filter(p => !user || p.supplier === user.id || p.supplier_name === user.username);
-            const listToRender = myProducts.length > 0 ? myProducts : products;
+            const endpoint = (user && user.id) ? `/marketplace/products/?supplier=${user.id}` : '/marketplace/products/?my_products=true';
+            const products = await apiFetch(endpoint);
+
+            const listToRender = Array.isArray(products) ? (
+                (user && user.id)
+                    ? products.filter(p => String(p.supplier) === String(user.id) || p.supplier_name === user.username)
+                    : products
+            ) : [];
 
             document.getElementById('supStatProducts').textContent = listToRender.length;
             const lowStock = listToRender.filter(p => p.available_stock < 50).length;
@@ -160,7 +179,9 @@
                 return;
             }
 
-            tbody.innerHTML = listToRender.map(p => `
+            tbody.innerHTML = listToRender.map(p => {
+                const isAvailable = p.is_active && p.available_stock > 0;
+                return `
       <tr>
         <td>
           <span class="fw-bold d-block text-dark">${p.name}</span>
@@ -172,14 +193,15 @@
           <span class="fw-bold ${p.available_stock < 50 ? 'text-danger' : 'text-success'}">${p.available_stock}</span>
         </td>
         <td>
-          <span class="badge ${p.is_available ? 'bg-success' : 'bg-danger'}">${p.is_available ? _t('in_stock', 'In Stock') : _t('out_of_stock', 'Out of Stock')}</span>
+          <span class="badge ${isAvailable ? 'bg-success' : 'bg-danger'}">${isAvailable ? _t('in_stock', 'In Stock') : _t('out_of_stock', 'Out of Stock')}</span>
         </td>
         <td class="text-end">
           <a href="/marketplace/products/manage/?id=${p.id}" class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> ${_t('edit', 'Edit')}</a>
           <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.id})"><i class="bi bi-trash"></i></button>
         </td>
       </tr>
-    `).join('');
+    `;
+            }).join('');
         } catch (err) {
             tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger py-4">${err.message}</td></tr>`;
         }

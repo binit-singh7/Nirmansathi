@@ -27,7 +27,7 @@ class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.select_related('supplier', 'category').filter(is_active=True)
+    queryset = Product.objects.select_related('supplier', 'category').all()
     serializer_class = ProductSerializer
     permission_classes = [IsSupplierOrReadOnly]
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -35,13 +35,34 @@ class ProductViewSet(viewsets.ModelViewSet):
     ordering_fields = ['price', 'created_at', 'available_stock']
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = Product.objects.select_related('supplier', 'category').all()
+        user = self.request.user
+
         category_id = self.request.query_params.get('category')
         supplier_id = self.request.query_params.get('supplier')
-        if category_id:
-            queryset = queryset.filter(category_id=category_id)
-        if supplier_id:
-            queryset = queryset.filter(supplier_id=supplier_id)
+        my_products = self.request.query_params.get('my_products')
+
+        if category_id and str(category_id).isdigit():
+            queryset = queryset.filter(category_id=int(category_id))
+
+        if my_products in ['true', 'True', '1'] and user and user.is_authenticated:
+            queryset = queryset.filter(supplier=user)
+        elif supplier_id:
+            if supplier_id == 'me' and user and user.is_authenticated:
+                queryset = queryset.filter(supplier=user)
+            elif str(supplier_id).isdigit():
+                supplier_id_int = int(supplier_id)
+                queryset = queryset.filter(supplier_id=supplier_id_int)
+                if not (user and user.is_authenticated and (user.is_staff or getattr(user, 'role', None) == 'ADMIN' or user.id == supplier_id_int)):
+                    queryset = queryset.filter(is_active=True)
+            elif user and user.is_authenticated and (user.is_staff or getattr(user, 'role', None) in ['ADMIN', 'MATERIAL_SUPPLIER'] or getattr(user, 'is_material_supplier', False)):
+                queryset = queryset.filter(supplier=user)
+            else:
+                queryset = queryset.filter(is_active=True)
+        else:
+            if not (user and user.is_authenticated and (user.is_staff or getattr(user, 'role', None) in ['ADMIN', 'MATERIAL_SUPPLIER'] or getattr(user, 'is_material_supplier', False))):
+                queryset = queryset.filter(is_active=True)
+
         return queryset
 
     def perform_create(self, serializer):
